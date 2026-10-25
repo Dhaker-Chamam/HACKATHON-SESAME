@@ -310,6 +310,11 @@ function getActivePersona() {
 }
 
 function updateNavAccount() {
+  // With Supabase sign-in loaded (static/appointments.js), the navbar shows the signed-in user.
+  if (window.BPAccount) {
+    if (window.BPAccount.ready) window.BPAccount.updateNav();
+    return;
+  }
   const p = getActivePersona();
   const avatar = $("#nav-avatar");
   const name = $("#nav-name");
@@ -387,6 +392,11 @@ function renderAccountDialogContent() {
 }
 
 function openAccountModal() {
+  // Real sign-in replaces the persona switcher when static/appointments.js is loaded.
+  if (window.BPAccount) {
+    window.BPAccount.openAccountDialog();
+    return;
+  }
   const dlg = $("#account-dialog");
   const content = $("#account-dialog-content");
   if (!dlg || !content) return;
@@ -415,7 +425,7 @@ function selectPersona(id) {
   updateNavAccount();
   if (!$("#chat-panel").hidden) renderChat();
   const content = $("#account-dialog-content");
-  if (content) content.innerHTML = renderAccountDialogContent();
+  if (content && !window.BPAccount) content.innerHTML = renderAccountDialogContent();
   persist();
 }
 
@@ -932,6 +942,7 @@ function resultHtml(r) {
             <h2 id="todo-title">What You Should Do Before Departure</h2>
           </div>
           ${todoBody}
+          <div id="book-cta" aria-live="polite"></div>
         </section>
         ${r.recalibration ? chartHtml(r.recalibration, dest.name) : ""}
       </div>
@@ -965,6 +976,7 @@ async function loadResult({ keepFocus = null } = {}) {
     state.result = data;
     state.via = via;
     box.innerHTML = resultHtml(data);
+    document.dispatchEvent(new CustomEvent("bp:result", { detail: { result: data } }));
   } catch (err) {
     if (seq !== state.seq) return;
     box.innerHTML = `<div class="card error-card" style="padding: 24px;">
@@ -1145,6 +1157,7 @@ function wire() {
   });
 
   window.addEventListener("popstate", () => {
+    if (location.hash.startsWith("#appointments")) return; // the Appointments tab (static/appointments.js)
     const step = Number(Object.keys(STEP_HASH).find((k) => STEP_HASH[k] === location.hash)) || 1;
     if (canEnter(step) || step < state.step) {
       state.step = step;
@@ -1358,12 +1371,26 @@ async function boot() {
 
   const fromHash = Number(Object.keys(STEP_HASH).find((k) => STEP_HASH[k] === location.hash)) || saved.step || 1;
   state.step = Math.min(fromHash, state.maxStep);
-  history.replaceState({ step: state.step }, "", STEP_HASH[state.step]);
+  if (!location.hash.startsWith("#appointments")) history.replaceState({ step: state.step }, "", STEP_HASH[state.step]);
 
   wire();
   wireChat();
   updateNavAccount();
   render(false);
+
+  // Read-only bridge for static/appointments.js (sign-in, booking, Appointments tab).
+  window.BPApp = {
+    state: () => ({ destId: state.destId, deviceId: state.deviceId, step: state.step }),
+    stepHash: () => STEP_HASH[state.step],
+    dossiers: () => DOSSIERS,
+    destinationIds: () => dests().map((d) => d.id),
+    destName: (id) => (destById(id) || { name: id }).name,
+    deviceName: (id) => (deviceById(id) || { name: id }).name,
+    setPersona: (id) => {
+      if (id !== activePersonaId && PERSONAS.some((p) => p.id === id)) selectPersona(id);
+    },
+  };
+  document.dispatchEvent(new Event("bp:ready"));
 }
 
 boot();
