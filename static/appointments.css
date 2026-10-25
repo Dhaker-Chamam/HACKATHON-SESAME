@@ -53,6 +53,43 @@
 
 .bk-row { display: flex; gap: var(--s1); flex-wrap: wrap; }
 
+/* ---------- Initial authentication screen ---------- */
+.auth-gate {
+  min-height: calc(100vh - 92px);
+  display: grid;
+  place-items: center;
+  padding: var(--s4) var(--s2);
+  background:
+    radial-gradient(circle at 50% 0, var(--accent-soft), transparent 42%),
+    var(--surface-muted);
+}
+.auth-gate-card {
+  width: min(100%, 430px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding: clamp(24px, 5vw, 44px);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+.auth-gate-mark {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  margin-bottom: var(--s1);
+  border-radius: 14px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+.auth-gate-card h1 { margin: 0; font-size: clamp(1.8rem, 5vw, 2.4rem); }
+.auth-gate-lead { margin: 0 0 var(--s1); color: var(--text-muted); }
+.auth-gate-card .bk-login { margin-top: var(--s1); }
+
 /* ---------- Forms ---------- */
 .bk-login { display: flex; flex-direction: column; gap: 12px; }
 .bk-field { display: flex; flex-direction: column; gap: 6px; }
