@@ -413,6 +413,7 @@ function closeAccountModal() {
 function selectPersona(id) {
   activePersonaId = id;
   updateNavAccount();
+  if (!$("#chat-panel").hidden) renderChat();
   const content = $("#account-dialog-content");
   if (content) content.innerHTML = renderAccountDialogContent();
   persist();
@@ -1186,6 +1187,151 @@ function wire() {
   });
 }
 
+// ---------- Passport Assistant (chat) ----------
+// One conversation per account. The server grounds each answer in that account's profile and saved trips.
+
+const chat = { byPersona: {}, busy: false };
+const CHAT_SUGGESTIONS = [
+  "Will my device work on my next trip?",
+  "What should I do before I leave?",
+  "Compare my saved trips.",
+];
+
+const chatLog = (id = activePersonaId) => chat.byPersona[id] || (chat.byPersona[id] = []);
+
+// Escape first, then allow **bold** and bullet lists. Nothing else from the model becomes HTML.
+function richText(s) {
+  const out = [];
+  let list = null;
+  let para = [];
+  const flushPara = () => { if (para.length) { out.push(`<p>${para.join("<br>")}</p>`); para = []; } };
+  const flushList = () => { if (list) { out.push(`<ul>${list.map((i) => `<li>${i}</li>`).join("")}</ul>`); list = null; } };
+  for (const raw of esc(s).split("\n")) {
+    const line = raw.trim();
+    const bullet = line.match(/^(?:[-*•]|\d+\.)\s+(.*)$/);
+    if (bullet) { flushPara(); (list ||= []).push(bullet[1]); }
+    else if (!line) { flushPara(); flushList(); }
+    else { flushList(); para.push(line); }
+  }
+  flushPara();
+  flushList();
+  return out.join("").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
+
+function toolLabel(t) {
+  const a = t.args || {};
+  const dest = destById(a.destination_id);
+  const dev = deviceById(a.device_id);
+  if (t.name === "assess_trip") return `Rules engine: ${dest ? dest.name : a.destination_id} + ${dev ? dev.short : a.device_id}`;
+  if (t.name === "get_destination") return `Data: ${dest ? dest.name : a.destination_id}`;
+  if (t.name === "get_device") return `Data: ${dev ? dev.name : a.device_id}`;
+  return t.name;
+}
+
+function renderChat() {
+  const p = getActivePersona();
+  $("#chat-sub").textContent = `Answers for ${p.name}, from your profile and saved trips`;
+  const log = chatLog();
+  const box = $("#chat-log");
+  if (!log.length) {
+    box.innerHTML = `
+      <div class="chat-empty">
+        <p>Hi ${esc(p.shortName.split(" ")[0])}. I can explain your results, compare your saved trips and look up any destination or device. Verdicts always come from the rules engine.</p>
+        <div class="chat-suggestions">${CHAT_SUGGESTIONS.map((q) => `<button type="button" class="chat-suggestion" data-ask="${esc(q)}">${esc(q)}</button>`).join("")}</div>
+      </div>`;
+  } else {
+    box.innerHTML = log.map((m) => {
+      if (m.role === "user") return `<div class="chat-msg chat-msg-user">${esc(m.text)}</div>`;
+      if (m.role === "error") return `<div class="chat-msg chat-msg-error" role="alert">${esc(m.text)}</div>`;
+      const tools = m.tools && m.tools.length
+        ? `<div class="chat-tools"><span>Checked:</span>${m.tools.map((t) => `<span class="chat-tool">${esc(toolLabel(t))}</span>`).join("")}</div>`
+        : "";
+      return `<div class="chat-msg chat-msg-assistant">${richText(m.text)}${tools}</div>`;
+    }).join("") + (chat.busy ? '<div class="chat-typing">The assistant is thinking...</div>' : "");
+  }
+  box.scrollTop = box.scrollHeight;
+  $("#chat-send").disabled = chat.busy;
+}
+
+async function sendChat(text) {
+  const msg = text.trim();
+  if (!msg || chat.busy) return;
+  const personaId = activePersonaId;
+  const log = chatLog(personaId);
+  const userMsg = { role: "user", text: msg };
+  log.push(userMsg);
+  chat.busy = true;
+  renderChat();
+
+  // Failed questions and error notes are not sent back; the history must start with the user.
+  const history = log.filter((m) => (m.role === "user" && !m.failed) || m.role === "assistant")
+    .slice(-20).map(({ role, text: t }) => ({ role, text: t }));
+  while (history.length && history[0].role !== "user") history.shift();
+  const selection = state.destId && state.deviceId ? {
+    destination_id: state.destId, device_id: state.deviceId, stay_days: state.stayDays,
+    body_mass_kg: state.bodyMass, with_mitigations: state.withMit, step: state.step,
+  } : null;
+
+  let entry;
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ persona_id: personaId, messages: history, selection }),
+    });
+    const body = await res.json().catch(() => ({}));
+    entry = res.ok
+      ? { role: "assistant", text: body.reply, tools: body.tools_used }
+      : { role: "error", text: typeof body.detail === "string" ? body.detail : "The assistant could not answer. Try again." };
+  } catch {
+    entry = { role: "error", text: "The assistant needs the server and an internet connection." };
+  }
+  if (entry.role === "error") userMsg.failed = true;
+  log.push(entry);
+  chat.busy = false;
+  if (personaId === activePersonaId && !$("#chat-panel").hidden) renderChat();
+}
+
+function openChat() {
+  $("#chat-panel").hidden = false;
+  $("#chat-fab").setAttribute("aria-expanded", "true");
+  renderChat();
+  $("#chat-input").focus();
+}
+
+function closeChat() {
+  if ($("#chat-panel").hidden) return;
+  $("#chat-panel").hidden = true;
+  $("#chat-fab").setAttribute("aria-expanded", "false");
+  $("#chat-fab").focus();
+}
+
+function wireChat() {
+  $("#chat-fab").addEventListener("click", openChat);
+  $("#chat-close").addEventListener("click", closeChat);
+  $("#chat-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (chat.busy) return;
+    const input = $("#chat-input");
+    const text = input.value;
+    input.value = "";
+    sendChat(text);
+  });
+  $("#chat-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      $("#chat-form").requestSubmit();
+    }
+  });
+  $("#chat-log").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-ask]");
+    if (b) sendChat(b.dataset.ask);
+  });
+  $("#chat-panel").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeChat();
+  });
+}
+
 async function boot() {
   try {
     const files = ["destinations", "devices", "personas", "dossiers"];
@@ -1215,6 +1361,7 @@ async function boot() {
   history.replaceState({ step: state.step }, "", STEP_HASH[state.step]);
 
   wire();
+  wireChat();
   updateNavAccount();
   render(false);
 }

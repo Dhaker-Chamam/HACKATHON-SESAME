@@ -6,12 +6,15 @@ Run locally:  .venv\\Scripts\\python -m uvicorn app.main:app --host 127.0.0.1 --
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
+from . import chat
 from .datasource import load_catalog, log
 from .engine import AssessError, assess, validate_data
 
@@ -38,6 +41,33 @@ class AssessRequest(BaseModel):
     with_mitigations: bool = False
 
 
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    text: str = Field(min_length=1, max_length=2000)
+
+
+class ChatSelection(BaseModel):
+    destination_id: str | None = None
+    device_id: str | None = None
+    stay_days: int = Field(30, ge=1, le=1500)
+    body_mass_kg: float | None = Field(None, ge=20, le=300)
+    with_mitigations: bool = False
+    step: int = Field(1, ge=1, le=3)
+
+
+class ChatRequest(BaseModel):
+    persona_id: str
+    messages: list[ChatMessage] = Field(min_length=1, max_length=20)
+    selection: ChatSelection | None = None
+
+    @field_validator("messages")
+    @classmethod
+    def ends_with_user(cls, v: list[ChatMessage]) -> list[ChatMessage]:
+        if v[-1].role != "user":
+            raise ValueError("the last message must come from the user")
+        return v
+
+
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     response = await call_next(request)
@@ -61,12 +91,24 @@ async def _assess_error(_: Request, exc: AssessError):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": VERSION, "data_source": DATA_SOURCE}
+    return {"status": "ok", "version": VERSION, "data_source": DATA_SOURCE, "chat": chat.api_key() is not None}
 
 
 @app.post("/api/assess")
 def post_assess(req: AssessRequest):
     return assess(DATA, req.destination_id, req.device_id, req.stay_days, req.body_mass_kg, req.with_mitigations)
+
+
+@app.post("/api/chat")
+async def post_chat(req: ChatRequest, request: Request):
+    try:
+        chat.check_rate(request.client.host if request.client else "unknown")
+        selection = req.selection.model_dump() if req.selection else None
+        messages = [m.model_dump() for m in req.messages]
+        # The Gemini call blocks for seconds, so it runs off the event loop.
+        return await run_in_threadpool(chat.run_chat, CATALOG, DATA, req.persona_id, messages, selection)
+    except chat.ChatError as exc:
+        return JSONResponse(status_code=exc.status, content={"detail": str(exc)})
 
 
 @app.get("/data/{name}.json")

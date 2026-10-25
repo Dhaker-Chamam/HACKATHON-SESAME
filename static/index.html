@@ -46,6 +46,28 @@
     </div>
   </dialog>
 
+  <!-- Passport Assistant (Gemini chat, grounded in the rules engine) -->
+  <button type="button" class="chat-fab" id="chat-fab" aria-controls="chat-panel" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="chat-fab-label">Ask the assistant</span>
+  </button>
+  <section class="chat-panel" id="chat-panel" aria-labelledby="chat-title" hidden>
+    <header class="chat-head">
+      <div>
+        <h2 id="chat-title" class="chat-title">Passport Assistant</h2>
+        <p class="chat-sub" id="chat-sub">Answers for your account</p>
+      </div>
+      <button type="button" class="chat-close" id="chat-close" aria-label="Close the assistant">&times;</button>
+    </header>
+    <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+    <form class="chat-form" id="chat-form">
+      <label class="sr-only" for="chat-input">Message to the assistant</label>
+      <textarea id="chat-input" rows="2" maxlength="2000" placeholder="Ask about your trip or your device"></textarea>
+      <button type="submit" class="btn btn-primary chat-send" id="chat-send">Send</button>
+    </form>
+    <p class="chat-note">AI answers can be wrong. Verdicts come from the rules engine. Not medical advice. Messages are sent to Google Gemini.</p>
+  </section>
+
   <nav class="progress" aria-label="Progress">
     <div class="progress-inner">
       <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>

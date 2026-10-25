@@ -14,6 +14,7 @@ Decision support for travelers and flight surgeons. Not medical advice and not a
   .\.venv\Scripts\python -m pip install -r requirements.txt
   ```
 - **Supabase (optional):** copy `.env.example` to `.env` and fill in the project URL and publishable key. The server then reads the catalog from Supabase at startup. Without `.env`, or if Supabase cannot be reached, it uses the offline copy in `data/`. `GET /api/health` reports which one is in use (`data_source`).
+- **Assistant (optional):** add `GEMINI_API_KEY` to `.env` and restart the server. `GET /api/health` reports `"chat": true` when it is set. It needs internet; the rest of the app does not.
 - **Tests:** `.\.venv\Scripts\python -m pytest -q` (29 tests, always on the offline copy). They need Node.js for the parity test, which is skipped if Node is missing. To check that Supabase holds the same data: `$env:BP_TEST_SUPABASE = "1"; .\.venv\Scripts\python -m pytest -q tests/test_supabase_sync.py`.
 
 ## The flow
@@ -105,6 +106,32 @@ Errors:
 
 **Browser fallback.** If the API cannot be reached, the UI computes the same result in the browser with `static/engine.js`, from the same data files. It shows a notice when it does. `tests/test_parity.py` runs both engines on 240 input combinations and requires identical output.
 
+### Passport Assistant: `POST /api/chat`
+
+A chat panel (bottom right) answers questions for the account selected in the top bar, using Google Gemini (`gemini-3.5-flash-lite`). It is optional: without `GEMINI_API_KEY` in `.env` the rest of the app works and the panel says how to set it up.
+
+- **Personalized:** each request names the account (`persona_id`). The server adds that account's profile, its saved trips with their rules-engine results, and the trip open in the app. Other accounts' data is never included.
+- **Grounded:** the model cannot reach a verdict itself. It calls tools that run our own code: `assess_trip` (the rules engine), `get_destination` and `get_device` (the catalog). The panel lists the checks behind each answer.
+- **Limits:** 20 messages of history, 2,000 characters per message, 20 requests per minute per client, 4 tool rounds per answer. The API key stays on the server.
+
+Request:
+
+```json
+{ "persona_id": "alex",
+  "messages": [{ "role": "user", "text": "Is my knee OK on the Moon?" }],
+  "selection": { "destination_id": "moon", "device_id": "powered_knee", "stay_days": 30, "step": 3 } }
+```
+
+Response: `{ "reply": "...", "tools_used": [{ "name": "assess_trip", "args": { ... } }], "model": "gemini-3.5-flash-lite" }`
+
+| Code | Meaning |
+|---|---|
+| 404 | Unknown account |
+| 422 | Invalid history (for example the last message is not from the user, or a message is too long) |
+| 429 | More than 20 requests in a minute |
+| 502 / 504 | Gemini rejected the key, failed or timed out |
+| 503 | `GEMINI_API_KEY` is not set, or the Gemini quota is used up |
+
 ## How a result is computed
 
 Seven factors are checked for each device:
@@ -134,7 +161,10 @@ flowchart LR
     UI -. "server unreachable" .-> FB["Fallback (static/engine.js)"]
     API -- "GET /data/*.json" --> UI
     UI --> FB
-    TESTS["pytest: engine, API, JS parity"] -.-> ENG
+    UI -- "POST /api/chat" --> CHAT["Assistant (app/chat.py)"]
+    CHAT <-- "generateContent + tool calls" --> GEM["Google Gemini 3.5 Flash-Lite"]
+    CHAT -- "assess_trip" --> ENG
+    TESTS["pytest: engine, API, JS parity, chat (mock Gemini)"] -.-> ENG
 ```
 
 | Technology | Why it belongs |
@@ -145,7 +175,7 @@ flowchart LR
 | Vanilla HTML, CSS, JS | No build step and no external downloads. The font is bundled, so the demo works offline. |
 | Node.js (tests only) | Runs the browser engine to prove it matches the server. |
 | No user data stored | Supabase holds only the reference catalog and demo data. Assessments are not saved. |
-| No AI at runtime | No AI model makes any decision. The reasoning must be checkable by a clinician. |
+| Google Gemini (assistant only) | Explains results in plain language. Verdicts still come only from the rules engine, so the reasoning stays checkable by a clinician. The account's profile, saved trips and messages are sent to Google. |
 
 ## Design brief
 
@@ -217,6 +247,6 @@ flowchart LR
 
 Trademarks belong to their owners.
 
-**AI transparency.** We used Claude (Anthropic) to help plan the product, search the literature, design the interface and write code. Every numeric value is linked to its source or marked Team assumption or Placeholder. The team reviewed and tested the code. The product uses no AI at runtime.
+**AI transparency.** We used Claude (Anthropic) to help plan the product, search the literature, design the interface and write code. Every numeric value is linked to its source or marked Team assumption or Placeholder. The team reviewed and tested the code. At runtime, AI is used only in the optional Passport Assistant (Google Gemini), which explains results; every verdict comes from the deterministic rules engine.
 
 The earlier multi-device version is archived in `_archive/`.
