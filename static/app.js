@@ -33,120 +33,11 @@ const session = {
 };
 
 // ---------- Personas & Saved Patient Dossiers ----------
+// Loaded in boot() from /data/personas.json and /data/dossiers.json.
 
-const PERSONAS = [
-  {
-    id: "alex",
-    name: "Alex Mercer",
-    shortName: "Alex Mercer",
-    role: "Space Traveler",
-    org: "Artemis Commercial Lunar Program",
-    initials: "AM",
-    license: "Traveler ID #BP-7740",
-    device: "Powered Knee Prosthesis (Genium X3)",
-    doctor: "Dr. Sarah Chen, MD (ESA/NASA Flight Clinic)",
-    desc: "Lower-limb amputee planning a 30-day lunar expedition. Checking walking support, battery life, and lunar dust seals."
-  },
-  {
-    id: "elena",
-    name: "Elena Rostova",
-    shortName: "Elena Rostova",
-    role: "Orbital Passenger",
-    org: "Orbital Reef Commercial Station",
-    initials: "ER",
-    license: "Traveler ID #BP-5512",
-    device: "Micra AV Transcatheter Pacemaker",
-    doctor: "Dr. L. Moreau (Cardiology Space Medicine)",
-    desc: "Heart block patient scheduled for a 6-month stay in low Earth orbit. Checking radiation shielding and cabin air pressure."
-  },
-  {
-    id: "kenji",
-    name: "Kenji Sato",
-    shortName: "Kenji Sato",
-    role: "Martian Colonist",
-    org: "Mars Society / Jezero Settlement",
-    initials: "KS",
-    license: "Traveler ID #BP-3398",
-    device: "MiniMed 780G Insulin Pump",
-    doctor: "Dr. H. Takahashi (Endocrine Flight Support)",
-    desc: "Type 1 diabetic preparing for 1 year in Martian habitat. Checking air bubble degassing and insulin cold storage."
-  },
-  {
-    id: "maya",
-    name: "Dr. Maya Patel",
-    shortName: "Maya Patel",
-    role: "Research Passenger",
-    org: "Europa Deep-Probe Science Team",
-    initials: "MP",
-    license: "Traveler ID #BP-9201",
-    device: "Percept PC Deep Brain Stimulator",
-    doctor: "Dr. K. Vance (Telemedicine Protocol Lead)",
-    desc: "Managing movement disorder during a 6-month science voyage. Testing high cosmic radiation exposure and magnetic fields."
-  },
-  {
-    id: "mcfall",
-    name: "John McFall, CBE",
-    shortName: "John McFall",
-    role: "Parastronaut Candidate",
-    org: "European Space Agency (Fly! Study)",
-    initials: "JM",
-    license: "ESA Flight Trainee #ESA-2022-MF",
-    device: "Active Microprocessor Prosthesis",
-    doctor: "ESA Aerospace Medicine Division",
-    desc: "Testing lower-limb prosthetic safety, balance, and motor recalibration in microgravity."
-  }
-];
+let PERSONAS = [];
 
-const DOSSIERS = [
-  {
-    id: "DOS-402",
-    patient: "Alex Mercer",
-    destId: "moon",
-    deviceId: "powered_knee",
-    stayDays: 30,
-    bodyMass: 80,
-    withMit: false,
-    badgeCls: "warn",
-    badgeLabel: "Conditional",
-    summary: "Moon (Shackleton Base) • Powered Knee Prosthesis • 30 Days"
-  },
-  {
-    id: "DOS-109",
-    patient: "Elena Rostova",
-    destId: "orbit",
-    deviceId: "pacemaker",
-    stayDays: 182,
-    bodyMass: 65,
-    withMit: false,
-    badgeCls: "warn",
-    badgeLabel: "Conditional",
-    summary: "Orbital Habitat (LEO) • Transvenous Pacemaker • 6 Months"
-  },
-  {
-    id: "DOS-318",
-    patient: "Kenji Sato",
-    destId: "mars",
-    deviceId: "insulin_pump",
-    stayDays: 365,
-    bodyMass: 72,
-    withMit: false,
-    badgeCls: "warn",
-    badgeLabel: "Conditional",
-    summary: "Mars (Jezero Crater Base) • Insulin Infusion Pump • 1 Year"
-  },
-  {
-    id: "DOS-550",
-    patient: "Dr. Maya Patel",
-    destId: "europa",
-    deviceId: "dbs",
-    stayDays: 182,
-    bodyMass: 58,
-    withMit: false,
-    badgeCls: "warn",
-    badgeLabel: "Conditional",
-    summary: "Europa (Subsurface Ocean) • Deep Brain Stimulator • 6 Months"
-  }
-];
+let DOSSIERS = [];
 
 let activePersonaId = "alex";
 
@@ -1297,10 +1188,14 @@ function wire() {
 
 async function boot() {
   try {
-    const [d1, d2] = await Promise.all([fetch("/data/destinations.json"), fetch("/data/devices.json")]);
-    if (!d1.ok || !d2.ok) throw new Error("Data files missing.");
-    DATA.destinations = await d1.json();
-    DATA.devices = await d2.json();
+    const files = ["destinations", "devices", "personas", "dossiers"];
+    const res = await Promise.all(files.map((f) => fetch(`/data/${f}.json`)));
+    if (res.some((r) => !r.ok)) throw new Error("Data files missing.");
+    const [dests, devs, personas, dossiers] = await Promise.all(res.map((r) => r.json()));
+    DATA.destinations = dests;
+    DATA.devices = devs;
+    PERSONAS = personas.personas;
+    DOSSIERS = dossiers.dossiers;
   } catch {
     $("#view").innerHTML = '<div class="card error-card" style="padding: 24px;"><h2>Data files failed to load</h2><p>Please launch the app via run.bat or run.ps1 and refresh.</p></div>';
     return;

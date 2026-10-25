@@ -8,9 +8,13 @@ client = TestClient(app)
 
 
 def test_health_and_data_files():
-    assert client.get("/api/health").json()["status"] == "ok"
+    health = client.get("/api/health").json()
+    assert health["status"] == "ok" and health["data_source"] == "local"
     assert client.get("/data/destinations.json").json()["destinations"][0]["id"] == "orbit"
     assert len(client.get("/data/devices.json").json()["devices"]) >= 4
+    assert client.get("/data/personas.json").json()["personas"][0]["id"] == "alex"
+    assert len(client.get("/data/dossiers.json").json()["dossiers"]) >= 1
+    assert client.get("/data/secrets.json").status_code == 404
 
 
 def test_assess_contract():

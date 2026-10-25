@@ -13,7 +13,8 @@ Decision support for travelers and flight surgeons. Not medical advice and not a
   py -3.12 -m venv .venv
   .\.venv\Scripts\python -m pip install -r requirements.txt
   ```
-- **Tests:** `.\.venv\Scripts\python -m pytest -q` (29 tests). They need Node.js for the parity test, which is skipped if Node is missing.
+- **Supabase (optional):** copy `.env.example` to `.env` and fill in the project URL and publishable key. The server then reads the catalog from Supabase at startup. Without `.env`, or if Supabase cannot be reached, it uses the offline copy in `data/`. `GET /api/health` reports which one is in use (`data_source`).
+- **Tests:** `.\.venv\Scripts\python -m pytest -q` (29 tests, always on the offline copy). They need Node.js for the parity test, which is skipped if Node is missing. To check that Supabase holds the same data: `$env:BP_TEST_SUPABASE = "1"; .\.venv\Scripts\python -m pytest -q tests/test_supabase_sync.py`.
 
 ## The flow
 
@@ -32,12 +33,18 @@ There is one tab, **Medical Device Configuration**, with three steps and a progr
 
 ## Data rules
 
-Every value lives in two files, read by both the server and the browser fallback:
+The catalog lives in Supabase (Postgres), project `bionic-passport`. The server loads it at startup and serves it to the browser as `/data/*.json`, so the browser never talks to Supabase. The files in `data/` are the offline copy, used when Supabase is not configured or unreachable:
 
-| File | Contents |
-|---|---|
-| `data/destinations.json` | Gravity, temperatures, cabin pressure and oxygen, radiation, light delay, dust |
-| `data/devices.json` | Device limits, decision thresholds (`policy`), mitigations, and the knee torque model |
+| File | Supabase table | Contents |
+|---|---|---|
+| `data/destinations.json` | `destinations` | Gravity, temperatures, cabin pressure and oxygen, radiation, light delay, dust |
+| `data/devices.json` | `devices` | Device limits, decision thresholds (`policy`), mitigations, and the knee torque model |
+| `data/personas.json` | `personas` | Demo profiles in the account switcher |
+| `data/dossiers.json` | `dossiers` | Saved demo trips, linked to a persona, a destination and a device |
+
+Each table row holds one JSON record unchanged in its `data` column. The other top-level keys of each file (`_readme`, `standard_gravity_ms2`, `policy`) are in `catalog_settings`. The tables are read-only through the Data API: row-level security is on, and the `anon` and `authenticated` roles only have `select`. The schema is in `supabase/schema.sql`.
+
+**Changing data:** edit the file in `data/`, run `.\.venv\Scripts\python scripts\export_supabase_seed.py`, and run the generated `supabase/seed.sql` in the Supabase SQL editor. The seed upserts every record and deletes rows that are no longer in `data/`.
 
 Each value carries an `evidence` level and a `source` (title and URL):
 
@@ -122,20 +129,22 @@ Seven factors are checked for each device:
 flowchart LR
     UI["Browser: index.html, app.js, styles.css"] -- "POST /api/assess" --> API["FastAPI (app/main.py)"]
     API --> ENG["Engine (app/engine.py)"]
-    DATA[("data/destinations.json, data/devices.json")] --> ENG
+    SB[("Supabase: destinations, devices, personas, dossiers")] -- "startup (app/datasource.py)" --> API
+    COPY[("Offline copy: data/*.json")] -. "Supabase unreachable" .-> API
     UI -. "server unreachable" .-> FB["Fallback (static/engine.js)"]
-    DATA -. "GET /data/*.json" .-> UI
-    DATA --> FB
+    API -- "GET /data/*.json" --> UI
+    UI --> FB
     TESTS["pytest: engine, API, JS parity"] -.-> ENG
 ```
 
 | Technology | Why it belongs |
 |---|---|
 | Python + FastAPI | Small, typed API. Validation via Pydantic. |
-| JSON data files | One source of truth, reviewable, with evidence and source on every value. |
+| Supabase (Postgres) | Hosts the catalog. Read-only through the Data API, with row-level security. |
+| JSON data files | Offline copy of the catalog, reviewable in git, with evidence and source on every value. |
 | Vanilla HTML, CSS, JS | No build step and no external downloads. The font is bundled, so the demo works offline. |
 | Node.js (tests only) | Runs the browser engine to prove it matches the server. |
-| No database | Nothing personal is stored. |
+| No user data stored | Supabase holds only the reference catalog and demo data. Assessments are not saved. |
 | No AI at runtime | No AI model makes any decision. The reasoning must be checkable by a clinician. |
 
 ## Design brief

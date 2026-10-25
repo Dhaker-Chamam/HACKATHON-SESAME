@@ -1,0 +1,53 @@
+{
+  "_readme": "Bionic Passport saved demo trips (dossiers). Each one replays an assessment: destId and deviceId must exist in destinations.json and devices.json, and patient must match a persona name. Served by the server from Supabase, with this file as the offline copy.",
+  "dossiers": [
+    {
+      "id": "DOS-402",
+      "patient": "Alex Mercer",
+      "destId": "moon",
+      "deviceId": "powered_knee",
+      "stayDays": 30,
+      "bodyMass": 80,
+      "withMit": false,
+      "badgeCls": "warn",
+      "badgeLabel": "Conditional",
+      "summary": "Moon (Shackleton Base) • Powered Knee Prosthesis • 30 Days"
+    },
+    {
+      "id": "DOS-109",
+      "patient": "Elena Rostova",
+      "destId": "orbit",
+      "deviceId": "pacemaker",
+      "stayDays": 182,
+      "bodyMass": 65,
+      "withMit": false,
+      "badgeCls": "warn",
+      "badgeLabel": "Conditional",
+      "summary": "Orbital Habitat (LEO) • Transvenous Pacemaker • 6 Months"
+    },
+    {
+      "id": "DOS-318",
+      "patient": "Kenji Sato",
+      "destId": "mars",
+      "deviceId": "insulin_pump",
+      "stayDays": 365,
+      "bodyMass": 72,
+      "withMit": false,
+      "badgeCls": "warn",
+      "badgeLabel": "Conditional",
+      "summary": "Mars (Jezero Crater Base) • Insulin Infusion Pump • 1 Year"
+    },
+    {
+      "id": "DOS-550",
+      "patient": "Dr. Maya Patel",
+      "destId": "europa",
+      "deviceId": "dbs",
+      "stayDays": 182,
+      "bodyMass": 58,
+      "withMit": false,
+      "badgeCls": "warn",
+      "badgeLabel": "Conditional",
+      "summary": "Europa (Subsurface Ocean) • Deep Brain Stimulator • 6 Months"
+    }
+  ]
+}

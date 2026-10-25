@@ -1,0 +1,65 @@
+{
+  "_readme": "Bionic Passport demo personas shown in the account switcher. Demo profiles, not patient records. Served by the server from Supabase, with this file as the offline copy.",
+  "personas": [
+    {
+      "id": "alex",
+      "name": "Alex Mercer",
+      "shortName": "Alex Mercer",
+      "role": "Space Traveler",
+      "org": "Artemis Commercial Lunar Program",
+      "initials": "AM",
+      "license": "Traveler ID #BP-7740",
+      "device": "Powered Knee Prosthesis (Genium X3)",
+      "doctor": "Dr. Sarah Chen, MD (ESA/NASA Flight Clinic)",
+      "desc": "Lower-limb amputee planning a 30-day lunar expedition. Checking walking support, battery life, and lunar dust seals."
+    },
+    {
+      "id": "elena",
+      "name": "Elena Rostova",
+      "shortName": "Elena Rostova",
+      "role": "Orbital Passenger",
+      "org": "Orbital Reef Commercial Station",
+      "initials": "ER",
+      "license": "Traveler ID #BP-5512",
+      "device": "Micra AV Transcatheter Pacemaker",
+      "doctor": "Dr. L. Moreau (Cardiology Space Medicine)",
+      "desc": "Heart block patient scheduled for a 6-month stay in low Earth orbit. Checking radiation shielding and cabin air pressure."
+    },
+    {
+      "id": "kenji",
+      "name": "Kenji Sato",
+      "shortName": "Kenji Sato",
+      "role": "Martian Colonist",
+      "org": "Mars Society / Jezero Settlement",
+      "initials": "KS",
+      "license": "Traveler ID #BP-3398",
+      "device": "MiniMed 780G Insulin Pump",
+      "doctor": "Dr. H. Takahashi (Endocrine Flight Support)",
+      "desc": "Type 1 diabetic preparing for 1 year in Martian habitat. Checking air bubble degassing and insulin cold storage."
+    },
+    {
+      "id": "maya",
+      "name": "Dr. Maya Patel",
+      "shortName": "Maya Patel",
+      "role": "Research Passenger",
+      "org": "Europa Deep-Probe Science Team",
+      "initials": "MP",
+      "license": "Traveler ID #BP-9201",
+      "device": "Percept PC Deep Brain Stimulator",
+      "doctor": "Dr. K. Vance (Telemedicine Protocol Lead)",
+      "desc": "Managing movement disorder during a 6-month science voyage. Testing high cosmic radiation exposure and magnetic fields."
+    },
+    {
+      "id": "mcfall",
+      "name": "John McFall, CBE",
+      "shortName": "John McFall",
+      "role": "Parastronaut Candidate",
+      "org": "European Space Agency (Fly! Study)",
+      "initials": "JM",
+      "license": "ESA Flight Trainee #ESA-2022-MF",
+      "device": "Active Microprocessor Prosthesis",
+      "doctor": "ESA Aerospace Medicine Division",
+      "desc": "Testing lower-limb prosthetic safety, balance, and motor recalibration in microgravity."
+    }
+  ]
+}

@@ -88,12 +88,16 @@ def _walk(path: str, node) -> None:
             _walk(f"{path}[{i}]", child)
 
 
-def load_data(data_dir: Path = DATA_DIR) -> dict:
-    dests = json.loads((data_dir / "destinations.json").read_text(encoding="utf-8"))
-    devs = json.loads((data_dir / "devices.json").read_text(encoding="utf-8"))
+def validate_data(dests: dict, devs: dict) -> dict:
     _walk("destinations", dests)
     _walk("devices", devs)
     return {"destinations": dests, "devices": devs}
+
+
+def load_data(data_dir: Path = DATA_DIR) -> dict:
+    dests = json.loads((data_dir / "destinations.json").read_text(encoding="utf-8"))
+    devs = json.loads((data_dir / "devices.json").read_text(encoding="utf-8"))
+    return validate_data(dests, devs)
 
 
 # ---------- factors ----------

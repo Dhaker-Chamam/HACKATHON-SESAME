@@ -7,17 +7,20 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from .engine import DATA_DIR, AssessError, assess, load_data
+from .datasource import load_catalog, log
+from .engine import AssessError, assess, validate_data
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 VERSION = "2.0.0"
 
-DATA = load_data()  # validated at import: the app does not start with unsourced values
+CATALOG, DATA_SOURCE = load_catalog()  # Supabase, or the offline copy in data/
+DATA = validate_data(CATALOG["destinations"], CATALOG["devices"])  # the app does not start with unsourced values
+log.info("Catalog loaded from %s", DATA_SOURCE)
 
 app = FastAPI(
     title="Bionic Passport API",
@@ -58,7 +61,7 @@ async def _assess_error(_: Request, exc: AssessError):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": VERSION}
+    return {"status": "ok", "version": VERSION, "data_source": DATA_SOURCE}
 
 
 @app.post("/api/assess")
@@ -66,5 +69,11 @@ def post_assess(req: AssessRequest):
     return assess(DATA, req.destination_id, req.device_id, req.stay_days, req.body_mass_kg, req.with_mitigations)
 
 
-app.mount("/data", StaticFiles(directory=DATA_DIR), name="data")
+@app.get("/data/{name}.json")
+def data_file(name: str):
+    if name not in CATALOG:
+        raise HTTPException(status_code=404, detail="Not found")
+    return CATALOG[name]
+
+
 app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
