@@ -7,8 +7,11 @@
   <meta name="description" content="Check whether a medical implant or prosthesis will work in an orbital habitat, on the Moon or on Mars, and what must change.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="appointments.css">
   <script src="engine.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="vendor/supabase.js" defer></script>
+  <script src="appointments.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#view">Skip to content</a>
@@ -22,12 +25,13 @@
       <div class="nav-right">
         <div class="tabs" role="tablist" aria-label="Sections">
           <button type="button" class="tab" role="tab" aria-selected="true" id="tab-config" aria-controls="view">Medical Device Configuration</button>
+          <button type="button" class="tab" role="tab" aria-selected="false" id="tab-appts" aria-controls="appointments-view" tabindex="-1">Appointments</button>
         </div>
-        <button type="button" class="account-btn" id="account-btn" aria-haspopup="dialog" aria-expanded="false" title="Open My Traveler Passport and Saved Trips">
-          <span class="account-avatar" id="nav-avatar">BP</span>
+        <button type="button" class="account-btn" id="account-btn" aria-haspopup="dialog" aria-expanded="false" title="Sign in, your account and saved trips">
+          <span class="account-avatar" id="nav-avatar">?</span>
           <span class="account-text">
-            <span class="account-name" id="nav-name">Account</span>
-            <span class="account-role" id="nav-role">Authenticated traveler</span>
+            <span class="account-name" id="nav-name">Sign in</span>
+            <span class="account-role" id="nav-role">Not signed in</span>
           </span>
           <svg class="account-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8l4 4 4-4"/></svg>
         </button>
@@ -45,6 +49,28 @@
       <!-- Dynamically populated by app.js -->
     </div>
   </dialog>
+
+  <!-- Passport Assistant (Gemini chat, grounded in the rules engine) -->
+  <button type="button" class="chat-fab" id="chat-fab" aria-controls="chat-panel" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="chat-fab-label">Ask the assistant</span>
+  </button>
+  <section class="chat-panel" id="chat-panel" aria-labelledby="chat-title" hidden>
+    <header class="chat-head">
+      <div>
+        <h2 id="chat-title" class="chat-title">Passport Assistant</h2>
+        <p class="chat-sub" id="chat-sub">Answers for your account</p>
+      </div>
+      <button type="button" class="chat-close" id="chat-close" aria-label="Close the assistant">&times;</button>
+    </header>
+    <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+    <form class="chat-form" id="chat-form">
+      <label class="sr-only" for="chat-input">Message to the assistant</label>
+      <textarea id="chat-input" rows="2" maxlength="2000" placeholder="Ask about your trip or your device"></textarea>
+      <button type="submit" class="btn btn-primary chat-send" id="chat-send">Send</button>
+    </form>
+    <p class="chat-note">AI answers can be wrong. Verdicts come from the rules engine. Not medical advice. Messages are sent to Google Gemini.</p>
+  </section>
 
   <nav class="progress" aria-label="Progress">
     <div class="progress-inner">
