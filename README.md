@@ -1,149 +1,176 @@
 # Bionic Passport
 
-Checks whether medical implants and prostheses will work in space habitats and spacesuits, and what has to change.
+Checks whether a medical implant or prosthesis will work in an orbital habitat, on the Moon or on Mars, and what must change. Beyond 2030 challenge (IEEE Lumen 2.0).
 
-Beyond 2030 challenge (IEEE Lumen 2.0). Research prototype for decision support: not medical advice, not a medical device, not a clearance to fly.
+Decision support for travelers and flight surgeons. Not medical advice and not a clearance to fly.
 
 ## Run it (local, no internet needed)
 
-1. Double-click `run.bat`. It starts the server and opens http://127.0.0.1:8000.
-2. Or in PowerShell: `.\run.ps1`, then open http://127.0.0.1:8000.
+- **Windows:** double-click `run.bat`. It starts the server and opens http://127.0.0.1:8000.
+- **PowerShell:** `.\run.ps1`, then open http://127.0.0.1:8000.
+- **First time on a new machine:**
+  ```
+  py -3.12 -m venv .venv
+  .\.venv\Scripts\python -m pip install -r requirements.txt
+  ```
+- **Tests:** `.\.venv\Scripts\python -m pytest -q` (29 tests). They need Node.js for the parity test, which is skipped if Node is missing.
 
-First-time setup on a new machine:
+## The flow
 
+There is one tab, **Medical Device Configuration**, with three steps and a progress bar at the bottom.
+
+1. **Destination.** Choose Orbital Habitat, Moon or Mars. Each card shows gravity, outside temperature and light delay. Choose a stay length: 1 week, 1 month (default), 6 months or 1 year.
+2. **Device.** Choose a powered knee prosthesis, pacemaker, insulin pump or cochlear implant. For the knee only, set body mass.
+3. **Result.**
+   - A verdict badge: Compatible, Conditional or Not compatible. It always has an icon and a label.
+   - One plain sentence.
+   - The factors checked, worst first, each with an evidence tag and a source link.
+   - What to do.
+   - A "with fixes" toggle.
+   - For the knee, a torque chart.
+   - An instant destination switch and an export (print or PDF).
+
+## Data rules
+
+Every value lives in two files, read by both the server and the browser fallback:
+
+| File | Contents |
+|---|---|
+| `data/destinations.json` | Gravity, temperatures, cabin pressure and oxygen, radiation, light delay, dust |
+| `data/devices.json` | Device limits, decision thresholds (`policy`), mitigations, and the knee torque model |
+
+Each value carries an `evidence` level and a `source` (title and URL):
+
+| Evidence level | Meaning |
+|---|---|
+| Spaceflight data | Measured in space or on the Moon or Mars |
+| Aviation data | Measured in aircraft or at airliner cabin pressure |
+| Manufacturer spec | From the device's published instructions or specifications |
+| Standard | From a standard, regulation or official guideline |
+| Research study | From a ground-based study or analysis |
+| Physics | Derived from physical laws |
+| Team assumption | Our own modeling choice, explained in the note |
+| Placeholder | A stand-in value, explained in the note |
+
+- **Placeholders are marked.** Values marked `Placeholder` carry the note "PLACEHOLDER, replace with sourced data". The server refuses to start if a placeholder is not labeled that way.
+- **Unchecked sources are marked.** `"verified": false` means the source is real but still needs checking against the original document. The UI shows "to verify".
+
+**Placeholders to replace:**
+
+| File | Field | What it is |
+|---|---|---|
+| `devices.json` | `torque_model.stance_nm_per_kg` (0.5) | Earth stance torque per kg |
+| `devices.json` | `torque_model.swing_nm_per_kg` (0.25) | Earth swing torque per kg |
+| `devices.json` | `torque_model.swing_gravity_share` (0.2) | Share of swing torque caused by leg weight |
+| `destinations.json` | `orbit.outside_temp_c` (−157 to 121 °C) | Outside temperature in orbit; widely cited, no NASA primary source found |
+
+## API
+
+`POST /api/assess`
+
+Request:
+
+```json
+{ "destination_id": "moon", "device_id": "powered_knee", "stay_days": 30, "body_mass_kg": 80, "with_mitigations": false }
 ```
-py -3.12 -m venv .venv
-.\.venv\Scripts\python -m pip install -r requirements.txt
+
+Response:
+
+```json
+{
+  "status": "compatible | conditional | not_compatible",
+  "summary": "string",
+  "factors": [{ "factor": "pressure", "destination_value": "56.5 kPa cabin", "device_limit": "Rated 70 to 106 kPa",
+                "status": "conditional", "explanation": "...", "evidence_level": "Manufacturer spec",
+                "source": { "title": "...", "url": "..." } }],
+  "mitigations": [{ "text": "...", "resolves": ["pressure"] }],
+  "mitigated_status": "conditional",
+  "recalibration": { "phases": ["stance", "swing"], "earth_nm": [40.0, 20.0], "destination_nm": [6.6, 16.7] }
+}
 ```
 
-Run the tests: `.\.venv\Scripts\python -m pytest -q` (29 tests).
+Errors:
 
-## The problem
+| Code | Meaning |
+|---|---|
+| 404 | Unknown destination or device |
+| 422 | Input out of range, for example body mass outside the knee's 50 to 116 kg rating |
 
-- **The future.** The ISS is planned to retire around 2030 and commercial stations and lunar missions take over. Artemis II flew around the Moon in April 2026.
-- **Who is flying.**
-  - 2021: Hayley Arceneaux reached orbit with an internal leg prosthesis.
-  - 2025: ESA medically cleared John McFall, a lower-limb amputee, for long ISS missions.
-  - 2025: Glucose monitors and insulin pens were tested on the ISS.
-  - December 2025: Michaela Benthaus became the first wheelchair user in space.
-- **What goes wrong.** Medical devices are specified for Earth.
-  - Pressure:
-    - An insulin pump is rated 70 to 106 kPa.
-    - NASA's recommended exploration atmosphere is 56.5 kPa with 34% oxygen.
-    - A spacesuit is 29.6 kPa of pure oxygen.
-  - Gravity: a powered prosthesis is tuned for 1 g. The Moon gives 0.165 g and Mars 0.38 g.
-  - Remote monitoring: it assumes Earth networks, but Mars is 3 to 22 minutes away by light.
-- **Why current solutions fail.** Device manuals stop at Earth limits. Commercial spaceflight participants only need informed consent. Today a flight surgeon checks each traveler by hand, from scattered manuals and papers.
+**Browser fallback.** If the API cannot be reached, the UI computes the same result in the browser with `static/engine.js`, from the same data files. It shows a notice when it does. `tests/test_parity.py` runs both engines on 240 input combinations and requires identical output.
 
-## Target users
+## How a result is computed
 
-- Flight surgeons and spaceflight operators' medical teams, who decide.
-- Travelers with implants, who need to prepare.
-- Device manufacturers, who need to know which tests are missing for space use.
+Seven factors are checked for each device:
 
-## What we built
+| Factor | Rule |
+|---|---|
+| Gravity | Gravity-dependent functions: knee stance support, pacemaker motion sensor, pump bubble removal |
+| Temperature | Cabin temperature vs. the device's operating and charging range, with a 5 °C margin. The outside extremes do not reach worn devices. |
+| Air pressure | Cabin pressure vs. the device's rated range. For implants, compared with airliner cabin pressure. For the pump, gas expansion on arrival vs. the 1.36× airliner case. |
+| Oxygen | Battery-powered devices in oxygen-enriched air (above 23.5%) |
+| Radiation | An upper bound on total dose, with travel included for Mars. Rare memory errors are flagged for life-sustaining devices. |
+| Dust | Devices with moving joints or open ports, in bases where dust gets inside |
+| Light delay | Need for a specialist or remote monitoring vs. the delay to Earth |
 
-- **A compatibility check.** Pick a destination, add devices and see a result per device:
-  - Compatible, Needs action, or Not compatible as-is.
-  - Every reason, the mitigation, and the source.
-- **Evidence marks on every number.** Each one shows whether it is:
-  - **F**: an established fact (measured, in a standard or in the manufacturer's manual);
-  - **E**: a published estimate;
-  - **A**: our assumption;
-  - **?**: still to verify against the original document.
-
-  Click any mark to see the citation. Unknown is never shown as compatible.
-- **Gravity recalibration for powered prostheses.**
-  - Weight-driven stance settings are scaled by `k = ((body mass + f × suit mass) / body mass) × (g / 9.80665)`. Here f is the share of suit weight carried by the legs, from 0 to 1.
-  - Swing settings are not scaled, because swing is driven by leg inertia.
-  - Example: a 120 N·m push-off on Earth becomes a 19.8 N·m starting value in a lunar habitat. On a lunar EVA it is 19.8 to 43.6 N·m.
-- **Compare destinations.** One matrix of devices against five destinations.
-- **Methods page.** Every rule, threshold and source.
-- **Print view and saved links.** A print view for the flight surgeon. Saved links are opt-in and deleted after 7 days.
-
-Seven device archetypes:
-- pacemaker
-- ICD
-- tubed insulin pump with CGM
-- cochlear implant
-- microprocessor knee
-- powered ankle
-- passive internal leg prosthesis
-
-Five destinations:
-- orbital station
-- lunar habitat
-- lunar EVA
-- Mars habitat
-- Mars EVA
+- **Verdict:** the worst factor sets the verdict.
+- **With fixes:** a fix either removes a risk ("Fixes") or only lowers it ("Lowers risk"). The "with fixes" status assumes the fixes are done and pass.
+- **Knee torque model:** stance torque scales with weight (gravity), and swing torque is mostly inertia. Earth values are placeholders scaled by body mass.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    UI["Browser UI: HTML, CSS, vanilla JS"] -- "JSON over HTTP (local)" --> API["FastAPI /api/*"]
-    API --> VAL["Pydantic validation"]
-    VAL --> ENG["Rules engine R1 to R9 (pure Python, deterministic)"]
-    ENG --> REC["Recalibration model"]
-    DATA[("Versioned JSON: environments, devices, sources")] --> VAL
-    API --> DB[("SQLite: opt-in saved reports, 7-day expiry")]
-    TESTS["pytest: 29 golden and API tests"] -.-> ENG
+    UI["Browser: index.html, app.js, styles.css"] -- "POST /api/assess" --> API["FastAPI (app/main.py)"]
+    API --> ENG["Engine (app/engine.py)"]
+    DATA[("data/destinations.json, data/devices.json")] --> ENG
+    UI -. "server unreachable" .-> FB["Fallback (static/engine.js)"]
+    DATA -. "GET /data/*.json" .-> UI
+    DATA --> FB
+    TESTS["pytest: engine, API, JS parity"] -.-> ENG
 ```
-
-| Part | File |
-|---|---|
-| API and security headers | `app/main.py` |
-| Rules R1 to R9 | `app/engine/rules.py` |
-| Thresholds with sources | `app/engine/policy.py` |
-| Gravity recalibration model | `app/engine/recalibration.py` |
-| Reference data (every value has a source and an evidence level) | `app/data/*.json` |
-| Startup check: refuses to run if a value has no source | `app/data_loader.py` |
-| Saved reports | `app/storage.py` |
-| Interface | `static/` |
-| Tests | `tests/` |
-
-The nine rules:
-
-| Rule | Checks |
-|---|---|
-| R1 | Pressure envelope |
-| R2 | Gas expansion in fluid paths |
-| R3 | Oxygen-enriched air × battery |
-| R4 | Temperature |
-| R5 | Radiation total-dose bound and memory upsets |
-| R6 | Gravity-dependent functions |
-| R7 | Follow-up vs. light delay |
-| R8 | Dust |
-| R9 | Power and charging |
-
-Full design, sources and reasoning: `BIONIC_PASSPORT_PLAN.md`.
-
-## Why these technologies
 
 | Technology | Why it belongs |
 |---|---|
-| Python + FastAPI | The engine is arithmetic and rules. Typed endpoints and validation in few lines. |
-| Pydantic | Rejects bad input and unsourced reference data. |
-| JSON data files | Every value carries its source and evidence level. Changes are reviewable. |
-| SQLite | Zero setup. Stores only opt-in saved reports. |
-| Vanilla JS, inline SVG chart | No build step and no external downloads. Works offline during the demo. |
-| No AI at runtime | No data exists to train or validate a model of device behavior off Earth. The reasoning must be checkable by a clinician. |
+| Python + FastAPI | Small, typed API. Validation via Pydantic. |
+| JSON data files | One source of truth, reviewable, with evidence and source on every value. |
+| Vanilla HTML, CSS, JS | No build step and no external downloads. The font is bundled, so the demo works offline. |
+| Node.js (tests only) | Runs the browser engine to prove it matches the server. |
+| No database | Nothing personal is stored. |
+| No AI at runtime | No AI model makes any decision. The reasoning must be checkable by a clinician. |
 
-## Security and privacy
+## Design brief
 
-- **Nothing is stored by default.** Saving is opt-in.
-- **Saved reports hold no identity.** They contain device types, settings and findings, with no name or identifiers. Each has a random 128-bit link, expires after 7 days, and can be deleted at once.
-- **The server is local.** It binds to 127.0.0.1 only.
-- **Strict browser protections.** A Content Security Policy (self only), no third-party scripts or trackers, and no data sent to any external service.
-- **Input validation.** All inputs are validated by schema; out-of-range values are rejected.
+| Element | Choice |
+|---|---|
+| Palette | Neutral background #F5F6F8, white surfaces, ink #172033, one accent #2F55D4 |
+| Status colors | Green #17784A, amber #8F5300, red #B42318. Each always paired with an icon and a label. All pass WCAG AA. |
+| Typography | Atkinson Hyperlegible Next (Braille Institute, bundled), one family. 18 px base on large screens; the verdict in 2.1 rem bold. |
+| Spacing | 8 px grid (8, 16, 24, 32, 40, 48, 64) |
+| Shape | 16 px card radius, 12 px controls, subtle two-layer shadows |
+| Space theme | Kept to the destination illustrations: calm night panels, no neon |
+| Components | Selectable radio cards, segmented controls, switch, status badge, evidence tag, fixed bottom progress bar |
+| Motion | Steps fade and rise 8 px in 220 ms. The progress fill takes 260 ms. Presses scale to 0.97. Reduced motion is respected. |
+| Chart | Earth in grey as the reference, the destination in the accent, values labeled, hover tooltip, table view |
+
+## 30-second demo walkthrough
+
+1. **Moon card**, keep 1 month, click **Continue**.
+2. **Powered knee prosthesis**, leave 80 kg, click **See result**.
+   - Point at the badge: Conditional.
+   - Point at the sentence and the knee chart: stance drops from 40 to 6.6 N·m, swing barely changes.
+3. Click **Mars** in "Change destination". The result recomputes instantly: the light delay row now flags it.
+4. Click **Orbital Habitat**. The chart shows that stance support no longer applies in microgravity.
+5. Click **Device** in the progress bar, choose **Insulin pump**, then **See result**, then click **Moon** in "Change destination".
+   - Turn on **Show status after these fixes**: Conditional becomes **Compatible**.
+6. Click **Export report** to show the print-ready page.
 
 ## Known limitations
 
-- No device was tested in low pressure, pure oxygen or reduced gravity.
-- Devices are archetypes from public manufacturer instructions, not specific models.
-- Some values are still marked "Verify" (see the Methods page), and the suit-interior temperature is a placeholder.
-- Radiation memory upsets are flagged, not quantified.
-- The gait model is quasi-static and ignores suit joint torques.
+- No device was tested in low pressure, oxygen-rich air or reduced gravity.
+- Devices are archetypes based on public manufacturer documents, not specific patients' devices.
+- The checks cover life inside a habitat. Spacewalks (pure oxygen at about 30 kPa) are not modeled in this flow.
+- The pacemaker is assumed pacing-dependent (worst case).
+- Radiation memory errors are flagged, not quantified.
 - No clinician has reviewed the rules yet.
 
 ## Credits
@@ -159,10 +186,28 @@ Full design, sources and reasoning: `BIONIC_PASSPORT_PLAN.md`.
 | Uvicorn | Server | BSD-3 |
 | httpx | Test client | BSD-3 |
 | pytest | Tests | MIT |
-| SQLite | Storage | Public domain |
+| Node.js | Tests only | MIT |
 
 **Typeface.** Atkinson Hyperlegible Next, by the Braille Institute, under the SIL Open Font License (`static/fonts/OFL.txt`).
 
-**Data.** Data comes from NASA fact sheets, standards and reports, peer-reviewed papers, and manufacturer instructions for use (Ottobock C-Leg and Empower, Medtronic MiniMed 780G, Cochlear). The full list is on the Methods page and in `app/data/sources.json`. Trademarks belong to their owners.
+**Illustrations and icons.** Custom SVG, drawn for this project.
 
-**AI transparency.** We used Claude (Anthropic) to help plan the product, search the literature and write code. Every numeric value was checked against its linked source or is marked Assumption or Verify. The team reviewed and tested the code. The product uses no AI at runtime.
+**Data sources.** Each value's source is listed in `data/*.json` and linked in the UI. The main ones:
+- NASA Moon and Mars fact sheets
+- NASA-STD-3001
+- NASA Exploration Atmospheres Working Group
+- Curiosity RAD (SwRI)
+- Chang'E-4 (Zhang et al. 2020)
+- Gaier 2005 (Apollo dust)
+- King et al. 2011 (insulin pumps at altitude)
+- OSHA 29 CFR 1910.146
+- AAPM TG-203
+- Össur Power Knee instructions
+- Medtronic MiniMed 780G specifications
+- Donelan and Kram 1997
+
+Trademarks belong to their owners.
+
+**AI transparency.** We used Claude (Anthropic) to help plan the product, search the literature, design the interface and write code. Every numeric value is linked to its source or marked Team assumption or Placeholder. The team reviewed and tested the code. The product uses no AI at runtime.
+
+The earlier multi-device version is archived in `_archive/`.

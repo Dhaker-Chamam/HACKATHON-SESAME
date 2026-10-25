@@ -1,0 +1,192 @@
+{
+  "_readme": "Bionic Passport destination data. Read by the server (app/engine.py) and by the browser fallback (static/engine.js). Every value has an evidence level and a source. Values with evidence 'Placeholder' are PLACEHOLDER, replace with sourced data. Values with \"verified\": false have a real source that still needs checking against the original document.",
+  "standard_gravity_ms2": {
+    "value": 9.80665, "unit": "m/s²", "evidence": "Standard", "verified": false,
+    "source": {"title": "BIPM, 3rd CGPM (1901): standard acceleration of gravity", "url": "https://www.bipm.org/en/committees/cg/cgpm/3-1901"}
+  },
+  "destinations": [
+    {
+      "id": "orbit",
+      "name": "Orbital Habitat",
+      "place": "Low Earth orbit",
+      "where": "in the orbital habitat",
+      "gravity_ms2": {
+        "value": 0, "unit": "m/s²", "evidence": "Physics",
+        "note": "Continuous free fall: nothing has weight (microgravity).",
+        "source": {"title": "Physics: orbital free fall", "url": null}
+      },
+      "outside_temp_c": {
+        "min": -157, "max": 121, "unit": "°C", "evidence": "Placeholder",
+        "note": "PLACEHOLDER, replace with sourced data. Widely cited hull range in sunlight and shadow; no NASA primary page found.",
+        "source": {"title": "ScienceABC: Is it hot or cold at the International Space Station?", "url": "https://www.scienceabc.com/nature/universe/is-it-hot-or-cold-at-the-international-space-station.html"}
+      },
+      "cabin_temp_c": {
+        "min": 18, "max": 27, "unit": "°C", "evidence": "Standard",
+        "note": "NASA crew health limit for cabin temperature (NASA-STD-3001, V2 6012).",
+        "source": {"title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)", "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"}
+      },
+      "cabin_pressure_kpa": {
+        "value": 101.3, "unit": "kPa", "evidence": "Spaceflight data", "verified": false,
+        "note": "ISS cabin is held near sea-level pressure (14.7 psia).",
+        "source": {"title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa, about 21% oxygen", "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"}
+      },
+      "oxygen_percent": {
+        "value": 21, "unit": "%", "evidence": "Spaceflight data", "verified": false,
+        "source": {"title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa, about 21% oxygen", "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"}
+      },
+      "radiation_msv_day": {
+        "value": 0.88, "unit": "mSv/day", "evidence": "Spaceflight data", "verified": false,
+        "note": "Upper end of 80 to 160 mSv per six months, depending on the solar cycle. Secondary source; replace with the NASA report.",
+        "source": {"title": "ABC News citing a 2017 NASA report: ISS crews receive 80 to 160 mSv in six months", "url": "https://abc7news.com/15271598"}
+      },
+      "transit_days_each_way": {
+        "value": 0, "unit": "days", "evidence": "Team assumption",
+        "note": "Launch to orbit takes hours to days; travel dose is ignored.",
+        "source": {"title": "Bionic Passport team assumption", "url": null}
+      },
+      "transit_radiation_msv_day": null,
+      "light_delay_s": {
+        "min": 0, "max": 1, "unit": "s", "evidence": "Team assumption",
+        "note": "Near-continuous relay coverage with sub-second delay.",
+        "source": {"title": "Bionic Passport team assumption", "url": null}
+      },
+      "blackout": {
+        "value": false, "evidence": "Team assumption",
+        "source": {"title": "Bionic Passport team assumption", "url": null}
+      },
+      "dust": {
+        "value": "none", "evidence": "Team assumption",
+        "source": {"title": "Bionic Passport team assumption", "url": null}
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3, "to": 101.3, "unit": "kPa", "evidence": "Spaceflight data", "verified": false,
+        "note": "Launch and arrival stay at sea-level pressure.",
+        "source": {"title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa", "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"}
+      }
+    },
+    {
+      "id": "moon",
+      "name": "Moon",
+      "place": "Lunar base, south polar region",
+      "where": "in a lunar base",
+      "gravity_ms2": {
+        "value": 1.62, "unit": "m/s²", "evidence": "Spaceflight data",
+        "source": {"title": "NASA Moon Fact Sheet (2024)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"}
+      },
+      "outside_temp_c": {
+        "min": -178, "max": 117, "unit": "°C", "evidence": "Spaceflight data",
+        "note": "95 to 390 K at the equator, night to day.",
+        "source": {"title": "NASA Moon Fact Sheet (2024)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"}
+      },
+      "cabin_temp_c": {
+        "min": 18, "max": 27, "unit": "°C", "evidence": "Standard",
+        "note": "NASA crew health limit, applied as a design requirement for the base.",
+        "source": {"title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)", "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"}
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5, "unit": "kPa", "evidence": "Standard", "verified": false,
+        "note": "8.2 psia exploration atmosphere recommended by NASA's Exploration Atmospheres Working Group. The real Artemis base atmosphere is not final.",
+        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+      },
+      "oxygen_percent": {
+        "value": 34, "unit": "%", "evidence": "Standard", "verified": false,
+        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+      },
+      "radiation_msv_day": {
+        "value": 1.369, "unit": "mSv/day", "evidence": "Spaceflight data", "verified": false,
+        "note": "Chang'E-4 measurement on the open surface. Used as an upper bound; base shielding lowers it.",
+        "source": {"title": "Zhang et al. 2020, Science Advances: first radiation dose measured on the lunar surface", "url": "https://doi.org/10.1126/sciadv.aaz1334"}
+      },
+      "transit_days_each_way": {
+        "value": 0, "unit": "days", "evidence": "Team assumption",
+        "note": "The three-day trip adds little dose and is ignored.",
+        "source": {"title": "Bionic Passport team assumption", "url": null}
+      },
+      "transit_radiation_msv_day": null,
+      "light_delay_s": {
+        "min": 1.21, "max": 1.35, "unit": "s", "evidence": "Physics",
+        "note": "Earth-Moon distance 363,300 to 405,500 km divided by the speed of light.",
+        "source": {"title": "NASA Moon Fact Sheet (2024): perigee and apogee", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"}
+      },
+      "blackout": {
+        "value": false, "evidence": "Team assumption",
+        "source": {"title": "Bionic Passport team assumption", "url": null}
+      },
+      "dust": {
+        "value": "habitat", "evidence": "Spaceflight data",
+        "note": "Apollo crews carried lunar dust into the cabin. It clogged mechanisms, abraded surfaces and damaged seals; ground tests underestimated it.",
+        "source": {"title": "Gaier 2005, NASA/TM-2005-213610: effects of lunar dust on EVA systems during Apollo", "url": "https://ntrs.nasa.gov/citations/20050160460"}
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3, "to": 56.5, "unit": "kPa", "evidence": "Standard", "verified": false,
+        "note": "From sea-level pressure on Earth to the base atmosphere.",
+        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+      }
+    },
+    {
+      "id": "mars",
+      "name": "Mars",
+      "place": "Mars surface base",
+      "where": "in a Mars base",
+      "gravity_ms2": {
+        "value": 3.73, "unit": "m/s²", "evidence": "Spaceflight data",
+        "source": {"title": "NASA Mars Fact Sheet (2025)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"}
+      },
+      "outside_temp_c": {
+        "min": -89, "max": -31, "unit": "°C", "evidence": "Spaceflight data",
+        "note": "Daily range measured at the Viking 1 lander site (184 to 242 K). Average about -59 °C.",
+        "source": {"title": "NASA Mars Fact Sheet (2025)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"}
+      },
+      "cabin_temp_c": {
+        "min": 18, "max": 27, "unit": "°C", "evidence": "Standard",
+        "note": "NASA crew health limit, applied as a design requirement for the base.",
+        "source": {"title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)", "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"}
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5, "unit": "kPa", "evidence": "Team assumption",
+        "note": "Assumes the same exploration atmosphere as a lunar base.",
+        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+      },
+      "oxygen_percent": {
+        "value": 34, "unit": "%", "evidence": "Team assumption",
+        "note": "Assumes the same exploration atmosphere as a lunar base.",
+        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+      },
+      "radiation_msv_day": {
+        "value": 0.67, "unit": "mSv/day", "evidence": "Spaceflight data",
+        "note": "Curiosity rover surface average, August 2012 to June 2013.",
+        "source": {"title": "SwRI (2013): first radiation measurements from the surface of Mars (Hassler et al., Science 2014)", "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars"}
+      },
+      "transit_days_each_way": {
+        "value": 180, "unit": "days", "evidence": "Team assumption",
+        "note": "Six-month transfer each way, a common planning value.",
+        "source": {"title": "Bionic Passport team assumption", "url": null}
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.8, "unit": "mSv/day", "evidence": "Spaceflight data",
+        "note": "Measured inside the Curiosity spacecraft on the way to Mars.",
+        "source": {"title": "SwRI (2013): first radiation measurements from the surface of Mars", "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars"}
+      },
+      "light_delay_s": {
+        "min": 182, "max": 1339, "unit": "s", "evidence": "Physics",
+        "note": "Earth-Mars distance 54.6 to 401.4 million km divided by the speed of light.",
+        "source": {"title": "NASA Mars Fact Sheet (2025): distance from Earth", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"}
+      },
+      "blackout": {
+        "value": true, "evidence": "Research study",
+        "note": "Solar conjunction disrupts links for about two weeks, roughly every two years.",
+        "source": {"title": "NASA Langley (2022): Communication delays, disruptions, and blackouts for crewed Mars missions", "url": "https://ntrs.nasa.gov/citations/20220013418"}
+      },
+      "dust": {
+        "value": "habitat", "evidence": "Team assumption",
+        "note": "By analogy with Apollo cabin dust. Martian soil also contains perchlorate, a toxic salt.",
+        "source": {"title": "Hecht et al. 2009, Science: perchlorate in Martian soil at the Phoenix site", "url": "https://doi.org/10.1126/science.1172466"}
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3, "to": 56.5, "unit": "kPa", "evidence": "Team assumption",
+        "note": "From sea-level pressure on Earth to the assumed base atmosphere.",
+        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+      }
+    }
+  ]
+}

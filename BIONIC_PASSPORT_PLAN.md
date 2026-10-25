@@ -2,7 +2,7 @@
 
 Hackathon: Beyond 2030 (IEEE Lumen 2.0). Plan date: 2026-10-25.
 
-**Build status:** built and tested (29 tests pass). Run `run.bat`. See `README.md` for the submission summary. The demo script in section 10.1 matches the built app.
+**Build status (v2):** the interface was redesigned into a 3-step flow (destination, device, result) with 3 destinations and 4 devices. `README.md` is now the reference for the flow, API contract, data files and the 30-second demo walkthrough. Sections 2, 6, 8 and 10.1 below describe the earlier multi-device version, which is archived in `_archive/`.
 
 **Inputs and assumptions about this plan**
 - The specification book was not in the project folder. This plan follows the rules quoted in the brief.

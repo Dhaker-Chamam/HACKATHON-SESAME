@@ -4,33 +4,40 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bionic Passport</title>
-  <meta name="description" content="Check whether medical implants and prostheses will work in space habitats and spacesuits, and what has to change.">
+  <meta name="description" content="Check whether a medical implant or prosthesis will work in an orbital habitat, on the Moon or on Mars, and what must change.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <script src="engine.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
-  <a class="skip" href="#app">Skip to content</a>
-  <header class="masthead">
-    <div class="masthead-inner">
-      <a class="brand" href="#/">
-        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="17"/><path d="M15 32h34M32 15c-7 9-7 25 0 34M32 15c7 9 7 25 0 34"/></svg>
-        <span>Bionic Passport</span>
-      </a>
-      <nav class="nav" aria-label="Main">
-        <a href="#/assess" data-nav="assess">Assessment</a>
-        <a href="#/compare" data-nav="compare">Compare destinations</a>
-        <a href="#/methods" data-nav="methods">Methods and sources</a>
-      </nav>
+  <a class="skip" href="#view">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14"/><circle cx="32" cy="32" r="15"/><path d="M17 32h30M32 17c-6 8-6 22 0 30M32 17c6 8 6 22 0 30"/></svg>
+        Bionic Passport
+      </span>
+      <div class="tabs" role="tablist" aria-label="Sections">
+        <button type="button" class="tab" role="tab" aria-selected="true" id="tab-config" aria-controls="view">Medical Device Configuration</button>
+      </div>
     </div>
   </header>
-  <main id="app" tabindex="-1">
-    <p class="loading">Loading reference data…</p>
+
+  <main id="view" class="view" role="tabpanel" aria-labelledby="tab-config" tabindex="-1">
+    <p class="boot">Loading destinations and devices…</p>
   </main>
-  <div id="popover" class="popover" role="dialog" aria-modal="false" hidden></div>
-  <footer class="site-footer">
-    <p>Research prototype for decision support. Not medical advice, not a medical device, not a clearance to fly.</p>
-    <p id="versions" class="versions"></p>
-  </footer>
+
+  <nav class="progress" aria-label="Progress">
+    <div class="progress-inner">
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+      <ol class="progress-steps">
+        <li><button type="button" class="pstep" data-step="1"><span class="pdot">1</span><span class="plabel">Destination</span></button></li>
+        <li><button type="button" class="pstep" data-step="2"><span class="pdot">2</span><span class="plabel">Device</span></button></li>
+        <li><button type="button" class="pstep" data-step="3"><span class="pdot">3</span><span class="plabel">Result</span></button></li>
+      </ol>
+    </div>
+  </nav>
+  <div id="tooltip" class="tooltip" role="status" hidden></div>
 </body>
 </html>
