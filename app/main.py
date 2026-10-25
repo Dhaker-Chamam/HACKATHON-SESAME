@@ -105,8 +105,10 @@ async def security_headers(request: Request, call_next):
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["X-Frame-Options"] = "DENY"
     if not request.url.path.startswith(("/docs", "/redoc", "/openapi.json")):
+        # style-src-attr: the UI sets gauge widths and colors in style attributes; <style> blocks stay blocked.
         response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; "
+            "default-src 'self'; img-src 'self' data:; style-src 'self'; style-src-attr 'unsafe-inline'; "
+            "script-src 'self'; "
             f"connect-src {CONNECT_SRC}; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
         )
     if request.url.path.startswith(("/api/", "/data/")):
