@@ -13,9 +13,9 @@ Decision support for travelers and flight surgeons. Not medical advice and not a
   py -3.12 -m venv .venv
   .\.venv\Scripts\python -m pip install -r requirements.txt
   ```
-- **Supabase (optional):** copy `.env.example` to `.env` and fill in the project URL and publishable key. The server then reads the catalog from Supabase at startup. Without `.env`, or if Supabase cannot be reached, it uses the offline copy in `data/`. `GET /api/health` reports which one is in use (`data_source`).
+- **Supabase:** copy `.env.example` to `.env` and fill in the project URL and publishable key. The server then reads the catalog from Supabase at startup and the browser enables authentication and appointments. Without `.env`, or if Supabase cannot be reached, the catalog uses the offline copy in `data/` and booking/authentication stays unavailable. `GET /api/health` reports which catalog is in use (`data_source`).
 - **Assistant (optional):** add `GEMINI_API_KEY` to `.env` and restart the server. `GET /api/health` reports `"chat": true` when it is set. It needs internet; the rest of the app does not.
-- **Tests:** `.\.venv\Scripts\python -m pytest -q` (29 tests, always on the offline copy). They need Node.js for the parity test, which is skipped if Node is missing. To check that Supabase holds the same data: `$env:BP_TEST_SUPABASE = "1"; .\.venv\Scripts\python -m pytest -q tests/test_supabase_sync.py`.
+- **Tests:** `.\.venv\Scripts\python -m pytest -q` (40 passed in the current baseline, with Supabase-dependent tests skipped unless enabled). They need Node.js for the parity test, which is skipped if Node is missing. To check that Supabase holds the same data: `$env:BP_TEST_SUPABASE = "1"; .\.venv\Scripts\python -m pytest -q tests/test_supabase_sync.py`.
 
 ## The flow
 
@@ -203,6 +203,20 @@ flowchart LR
    - Turn on **Show status after these fixes**: Conditional becomes **Compatible**.
 6. Click **Export report** to show the print-ready page.
 
+## Authentication
+
+When Supabase is configured, the app starts on a login screen. The medical device dashboard,
+Appointments tab, account menu and booking actions appear only after a Supabase Auth session is
+available. Sessions persist in the browser and are restored automatically on a later visit.
+
+The browser uses only `SUPABASE_PUBLISHABLE_KEY`. Never put a `sb_secret_` or service-role key in
+`.env` under a browser-facing variable or expose it through `/api/config`.
+
+New users can be registered through Supabase Auth. The profile migration creates a corresponding
+`public.profiles` row automatically, using the registration name or email prefix. This profile is
+required by the booking RPC. The same migration backfills profiles for Auth users that existed
+before the trigger was installed.
+
 ## Appointments and booking (Supabase)
 
 After a result, **Book appointment** books a manufacturer service visit for the fixes that need one. The **Appointments** tab lists the signed-in user's flight surgeon and service appointments. The browser talks to Supabase directly with supabase-js and the publishable key. Row Level Security and two database functions enforce access; FastAPI only serves `/api/config` (the Supabase URL and publishable key, never a secret key).
@@ -219,12 +233,50 @@ All providers are fictional ("Demo data: fictional providers" in the UI). Site n
 **Setup on a Supabase project**
 
 1. Run `supabase/schema.sql` and the catalog seed (`python scripts/export_supabase_seed.py`, then run `supabase/seed.sql`), if not done yet.
-2. Run the three migrations in `supabase/migrations/` in order (SQL editor, `supabase db push`, or the MCP `apply_migration` tool):
+2. Run the four migrations in `supabase/migrations/` in order (SQL editor, `supabase db push`, or the MCP `apply_migration` tool):
    - `20261025042300_booking_schema.sql`: profiles, sites, site_transfers, services, service_rules, providers, slots, appointments, and the `type` and `mean_radius_km` columns on destinations.
    - `20261025042309_booking_rls.sql`: explicit grants and Row Level Security on every table.
    - `20261025042340_booking_functions.sql`: `find_providers`, `required_services`, `book_slot`, `cancel_appointment`, `haversine_km`.
+   - `20261025050000_create_traveler_profiles.sql`: automatically creates and backfills a traveler profile for each Auth user.
 3. Run `supabase/seed_booking.sql`. It creates the demo accounts, providers, and slots for the next 14 days. Re-run it any time to reset the demo.
 4. Put `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` in `.env` (see `.env.example`) and start the app.
+
+### Supabase CLI on Windows
+
+Install and authenticate the CLI:
+
+```powershell
+npm.cmd install --global supabase
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+supabase login
+supabase link --project-ref <your-project-ref>
+```
+
+The project reference is the first hostname component of the API URL. For example,
+`https://abcdefghijklmnop.supabase.co` uses `abcdefghijklmnop`.
+
+Apply migrations with:
+
+```powershell
+supabase db push --linked
+```
+
+`supabase db push` does not require Docker. `supabase db pull --linked` does require Docker
+Desktop or Podman because the CLI creates a temporary shadow database to compare schemas.
+Pull only when you need to inspect schema changes from the remote project.
+
+If the CLI reports a migration version that is present remotely but missing locally, do not repair
+the history blindly. First run:
+
+```powershell
+supabase migration list --linked
+git pull
+```
+
+Only use `supabase migration repair` after confirming whether the SQL for that migration was
+actually executed. Marking a migration as `applied` changes the history table; it does not run
+the migration SQL. If a migration was marked applied accidentally, revert that history entry and
+run `supabase db push --linked` so the SQL is executed.
 
 **How booking stays safe**
 

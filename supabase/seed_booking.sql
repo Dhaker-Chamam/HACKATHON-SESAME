@@ -1,4 +1,4 @@
--- Bionic Passport booking demo data. Run after the three booking migrations.
+-- Bionic Passport booking demo data. Run after the four booking migrations.
 -- Re-runnable: it resets all booking data and creates slots for the next 14 days from now().
 --
 -- ALL PROVIDERS AND PEOPLE BELOW ARE FICTIONAL. Site names are real places; coordinates are
