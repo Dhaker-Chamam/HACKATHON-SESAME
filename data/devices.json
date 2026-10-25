@@ -2,53 +2,107 @@
   "_readme": "Bionic Passport device data and decision thresholds. Read by the server (app/engine.py) and by the browser fallback (static/engine.js). Every value has an evidence level and a source. Values with evidence 'Placeholder' are PLACEHOLDER, replace with sourced data. Values with \"verified\": false have a real source that still needs checking. Mitigation text may use {pressure_kpa}.",
   "policy": {
     "temperature_margin_c": {
-      "value": 5, "unit": "°C", "evidence": "Team assumption",
+      "value": 5,
+      "unit": "°C",
+      "evidence": "Team assumption",
       "note": "Minimum margin between cabin temperature and the device's operating limits before we flag it.",
-      "source": {"title": "Bionic Passport team assumption", "url": null}
+      "source": {
+        "title": "Bionic Passport team assumption",
+        "url": null
+      }
     },
     "presumed_pressure_kpa": {
-      "min": 70, "max": 106, "unit": "kPa", "evidence": "Team assumption",
+      "min": 70,
+      "max": 106,
+      "unit": "kPa",
+      "evidence": "Team assumption",
       "note": "Used when a manufacturer publishes no pressure rating. Matches the 700 to 1060 hPa range that pump and knee makers publish.",
-      "source": {"title": "Bionic Passport team assumption", "url": null}
+      "source": {
+        "title": "Bionic Passport team assumption",
+        "url": null
+      }
     },
     "not_compatible_fraction": {
-      "value": 0.5, "unit": "", "evidence": "Team assumption",
+      "value": 0.5,
+      "unit": "",
+      "evidence": "Team assumption",
       "note": "Below half of the rated minimum pressure, the device counts as untested and high-risk.",
-      "source": {"title": "Bionic Passport team assumption", "url": null}
+      "source": {
+        "title": "Bionic Passport team assumption",
+        "url": null
+      }
     },
     "implant_reference_kpa": {
-      "value": 74.7, "unit": "kPa", "evidence": "Aviation data", "verified": false,
+      "value": 74.7,
+      "unit": "kPa",
+      "evidence": "Aviation data",
+      "verified": false,
       "note": "Airliner cabins are held near 560 mmHg (74.7 kPa). People with implants experience this routinely.",
-      "source": {"title": "Diabetologia (2024): insulin pumps in a hypobaric chamber at airliner cabin pressure", "url": "https://link.springer.com/article/10.1007/s00125-024-06295-1"}
+      "source": {
+        "title": "Diabetologia (2024): insulin pumps in a hypobaric chamber at airliner cabin pressure",
+        "url": "https://link.springer.com/article/10.1007/s00125-024-06295-1"
+      }
     },
     "gas_expansion_negligible": {
-      "value": 1.05, "unit": "x", "evidence": "Team assumption",
+      "value": 1.05,
+      "unit": "x",
+      "evidence": "Team assumption",
       "note": "Weather-scale pressure change.",
-      "source": {"title": "Bionic Passport team assumption", "url": null}
+      "source": {
+        "title": "Bionic Passport team assumption",
+        "url": null
+      }
     },
     "gas_expansion_airliner": {
-      "value": 1.36, "unit": "x", "evidence": "Aviation data",
+      "value": 1.36,
+      "unit": "x",
+      "evidence": "Aviation data",
       "note": "An airliner climb (760 to 560 mmHg) caused unintended delivery of about 0.62% of the pump cartridge volume.",
-      "source": {"title": "King et al. 2011, Diabetes Care: changes in altitude cause unintended insulin delivery from insulin pumps", "url": "https://doi.org/10.2337/dc11-0139"}
+      "source": {
+        "title": "King et al. 2011, Diabetes Care: changes in altitude cause unintended insulin delivery from insulin pumps",
+        "url": "https://doi.org/10.2337/dc11-0139"
+      }
     },
     "oxygen_enriched_percent": {
-      "value": 23.5, "unit": "%", "evidence": "Standard",
+      "value": 23.5,
+      "unit": "%",
+      "evidence": "Standard",
       "note": "Air above 23.5% oxygen by volume is oxygen-enriched: materials ignite and burn more easily.",
-      "source": {"title": "US OSHA 29 CFR 1910.146: definition of oxygen-enriched atmosphere", "url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.146"}
+      "source": {
+        "title": "US OSHA 29 CFR 1910.146: definition of oxygen-enriched atmosphere",
+        "url": "https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.146"
+      }
     },
     "dose_low_gy": {
-      "value": 2, "unit": "Gy", "evidence": "Standard", "verified": false,
+      "value": 2,
+      "unit": "Gy",
+      "evidence": "Standard",
+      "verified": false,
       "note": "Radiotherapy guidance for cardiac implants, used here only as an analogy for total dose.",
-      "source": {"title": "AAPM TG-203 (Miften et al. 2019, Medical Physics): radiotherapy and cardiac implants", "url": "https://doi.org/10.1002/mp.13838"}
+      "source": {
+        "title": "AAPM TG-203 (Miften et al. 2019, Medical Physics): radiotherapy and cardiac implants",
+        "url": "https://doi.org/10.1002/mp.13838"
+      }
     },
     "dose_high_gy": {
-      "value": 5, "unit": "Gy", "evidence": "Standard", "verified": false,
-      "source": {"title": "AAPM TG-203 (Miften et al. 2019, Medical Physics): radiotherapy and cardiac implants", "url": "https://doi.org/10.1002/mp.13838"}
+      "value": 5,
+      "unit": "Gy",
+      "evidence": "Standard",
+      "verified": false,
+      "source": {
+        "title": "AAPM TG-203 (Miften et al. 2019, Medical Physics): radiotherapy and cardiac implants",
+        "url": "https://doi.org/10.1002/mp.13838"
+      }
     },
     "live_session_max_delay_s": {
-      "value": 2, "unit": "s", "evidence": "Team assumption",
+      "value": 2,
+      "unit": "s",
+      "evidence": "Team assumption",
       "note": "Longest one-way delay that still allows a live video session with a specialist.",
-      "source": {"title": "Bionic Passport team assumption", "url": null}
+      "source": {
+        "title": "Bionic Passport team assumption",
+        "url": null
+      }
     }
   },
   "devices": [
@@ -59,61 +113,117 @@
       "summary": "A motorized knee that supports your weight and helps on stairs.",
       "worn": "external",
       "operating_temp_c": {
-        "min": -10, "max": 45, "unit": "°C", "evidence": "Manufacturer spec",
-        "source": {"title": "Össur Power Knee instructions for use (PKA01)", "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"}
+        "min": -10,
+        "max": 45,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "source": {
+          "title": "Össur Power Knee instructions for use (PKA01)",
+          "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"
+        }
       },
       "charging_temp_c": {
-        "min": 10, "max": 40, "unit": "°C", "evidence": "Manufacturer spec",
-        "source": {"title": "Össur Power Knee instructions for use (PKA01)", "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"}
+        "min": 10,
+        "max": 40,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "source": {
+          "title": "Össur Power Knee instructions for use (PKA01)",
+          "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"
+        }
       },
       "pressure_rating_kpa": {
-        "min": 70, "max": 106, "unit": "kPa", "evidence": "Manufacturer spec",
+        "min": 70,
+        "max": 106,
+        "unit": "kPa",
+        "evidence": "Manufacturer spec",
         "note": "700 to 1060 hPa for use and for charging.",
-        "source": {"title": "Össur Power Knee instructions for use (PKA01)", "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"}
+        "source": {
+          "title": "Össur Power Knee instructions for use (PKA01)",
+          "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"
+        }
       },
       "battery": {
-        "value": "lithium-ion", "evidence": "Manufacturer spec",
+        "value": "lithium-ion",
+        "evidence": "Manufacturer spec",
         "note": "95 Wh lithium-ion pack. The manufacturer says the knee is not suitable near flammable mixtures with oxygen.",
-        "source": {"title": "Össur Power Knee instructions for use (PKA01)", "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"}
+        "source": {
+          "title": "Össur Power Knee instructions for use (PKA01)",
+          "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"
+        }
       },
       "fluid_path": false,
       "life_critical": "no",
       "dust": {
-        "value": "sensitive", "evidence": "Manufacturer spec",
+        "value": "sensitive",
+        "evidence": "Manufacturer spec",
         "note": "Moving joint. The manufacturer says to remove the battery only in a dirt-free place.",
         "limit_text": "Battery swap only in a dirt-free place",
-        "source": {"title": "Össur Power Knee instructions for use (PKA01)", "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"}
+        "source": {
+          "title": "Össur Power Knee instructions for use (PKA01)",
+          "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"
+        }
       },
       "follow_up": {
-        "value": "local_programming", "evidence": "Team assumption",
+        "value": "local_programming",
+        "evidence": "Team assumption",
         "note": "Settings are changed by a prosthetist with fitting software.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "gravity_function": {
-        "value": "stance_assist", "evidence": "Manufacturer spec",
+        "value": "stance_assist",
+        "evidence": "Manufacturer spec",
         "note": "The knee supports you when weight is applied and swings freely when unloaded, so its behavior depends on body weight.",
-        "source": {"title": "Össur Power Knee instructions for use (PKA01)", "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"}
+        "source": {
+          "title": "Össur Power Knee instructions for use (PKA01)",
+          "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"
+        }
       },
       "body_mass_kg": {
-        "min": 50, "max": 116, "default": 80, "unit": "kg", "evidence": "Manufacturer spec",
+        "min": 50,
+        "max": 116,
+        "default": 80,
+        "unit": "kg",
+        "evidence": "Manufacturer spec",
         "note": "Weight limit of the device.",
-        "source": {"title": "Össur Power Knee instructions for use (PKA01)", "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"}
+        "source": {
+          "title": "Össur Power Knee instructions for use (PKA01)",
+          "url": "https://media.ossur.com/ossur-dam/image/upload/pi-documents-global/Power_Knee_1441_001_6.pdf"
+        }
       },
       "torque_model": {
         "stance_nm_per_kg": {
-          "value": 0.5, "unit": "N·m/kg", "evidence": "Placeholder",
+          "value": 0.5,
+          "unit": "N·m/kg",
+          "evidence": "Placeholder",
           "note": "PLACEHOLDER, replace with sourced data: peak knee assist torque in stance per kg of body mass, from the user's own settings or published gait data.",
-          "source": {"title": "Placeholder value", "url": null}
+          "source": {
+            "title": "Placeholder value",
+            "url": null
+          }
         },
         "swing_nm_per_kg": {
-          "value": 0.25, "unit": "N·m/kg", "evidence": "Placeholder",
+          "value": 0.25,
+          "unit": "N·m/kg",
+          "evidence": "Placeholder",
           "note": "PLACEHOLDER, replace with sourced data: peak knee torque in swing per kg of body mass.",
-          "source": {"title": "Placeholder value", "url": null}
+          "source": {
+            "title": "Placeholder value",
+            "url": null
+          }
         },
         "swing_gravity_share": {
-          "value": 0.2, "unit": "", "evidence": "Placeholder",
+          "value": 0.2,
+          "unit": "",
+          "evidence": "Placeholder",
           "note": "PLACEHOLDER, replace with sourced data: share of the swing torque caused by the weight of the lower leg. The rest is inertia, which does not change with gravity.",
-          "source": {"title": "Placeholder value", "url": null}
+          "source": {
+            "title": "Placeholder value",
+            "url": null
+          }
         },
         "scaling_source": {
           "title": "Donelan and Kram 1997, J Exp Biol: walking kinematics change only modestly in reduced gravity",
@@ -121,13 +231,34 @@
         }
       },
       "mitigations": {
-        "gravity": {"text": "Recalibrate stance support with your prosthetist, starting from the values in the chart. Test it in a reduced-gravity analog such as a parabolic flight.", "resolves": true},
-        "gravity_microgravity": {"text": "Switch powered modes off when you are not walking, and plan socket adjustments because leg volume changes in microgravity.", "resolves": true},
-        "pressure": {"text": "Ask Össur for test data at {pressure_kpa} kPa, or run a low-pressure chamber test before the trip.", "resolves": true},
-        "oxygen": {"text": "Get a battery safety review for oxygen-rich air (NASA JSC 20793) and charge only in a monitored area.", "resolves": true},
-        "temperature": {"text": "Keep the knee and charger inside their rated temperatures.", "resolves": true},
-        "dust": {"text": "Keep a cover on the knee, clean it daily and swap the battery only in a clean area. This lowers the risk; it does not remove it.", "resolves": false},
-        "light_delay": {"text": "Agree setting presets with your prosthetist before you leave and train a crew member on the fitting app.", "resolves": true}
+        "gravity": {
+          "text": "Recalibrate stance support with your prosthetist, starting from the values in the chart. Test it in a reduced-gravity analog such as a parabolic flight.",
+          "resolves": true
+        },
+        "gravity_microgravity": {
+          "text": "Switch powered modes off when you are not walking, and plan socket adjustments because leg volume changes in microgravity.",
+          "resolves": true
+        },
+        "pressure": {
+          "text": "Ask Össur for test data at {pressure_kpa} kPa, or run a low-pressure chamber test before the trip.",
+          "resolves": true
+        },
+        "oxygen": {
+          "text": "Get a battery safety review for oxygen-rich air (NASA JSC 20793) and charge only in a monitored area.",
+          "resolves": true
+        },
+        "temperature": {
+          "text": "Keep the knee and charger inside their rated temperatures.",
+          "resolves": true
+        },
+        "dust": {
+          "text": "Keep a cover on the knee, clean it daily and swap the battery only in a clean area. This lowers the risk; it does not remove it.",
+          "resolves": false
+        },
+        "light_delay": {
+          "text": "Agree setting presets with your prosthetist before you leave and train a crew member on the fitting app.",
+          "resolves": true
+        }
       }
     },
     {
@@ -137,37 +268,73 @@
       "summary": "An implanted device that keeps your heart rhythm steady.",
       "worn": "implanted",
       "battery": {
-        "value": "sealed lithium cell", "evidence": "Team assumption", "verified": false,
+        "value": "sealed lithium cell",
+        "evidence": "Team assumption",
+        "verified": false,
         "note": "Primary lithium cell sealed inside the implant.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "fluid_path": false,
       "life_critical": "yes",
       "life_critical_note": "We assume the person depends on pacing, the worst case. This flow does not ask.",
       "dust": {
-        "value": "sealed", "evidence": "Team assumption", "limit_text": "Implanted and sealed",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "value": "sealed",
+        "evidence": "Team assumption",
+        "limit_text": "Implanted and sealed",
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "follow_up": {
-        "value": "remote_monitoring", "evidence": "Standard", "verified": false,
+        "value": "remote_monitoring",
+        "evidence": "Standard",
+        "verified": false,
         "note": "Clinics follow pacemakers through a home transmitter or phone app that uses Earth networks.",
-        "source": {"title": "Heart Rhythm Society 2015 expert consensus on remote monitoring of cardiac implants", "url": "https://pubmed.ncbi.nlm.nih.gov/?term=HRS+expert+consensus+statement+remote+interrogation+monitoring+2015"}
+        "source": {
+          "title": "Heart Rhythm Society 2015 expert consensus on remote monitoring of cardiac implants",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/?term=HRS+expert+consensus+statement+remote+interrogation+monitoring+2015"
+        }
       },
       "gravity_function": {
-        "value": "rate_response", "evidence": "Research study", "verified": false,
+        "value": "rate_response",
+        "evidence": "Research study",
+        "verified": false,
         "note": "Rate-responsive pacemakers raise the heart rate from an accelerometer that senses body motion and vibration.",
-        "source": {"title": "J Invasive Cardiology: accelerometer-based rate-adaptive pacemakers respond to environmental vibration", "url": "https://www.hmpgloballearningnetwork.com/site/jic/articles/radial-artery-catheterization-causes-pacemaker-oversensing-rate-adaptive-cardiac-pacemakers"}
+        "source": {
+          "title": "J Invasive Cardiology: accelerometer-based rate-adaptive pacemakers respond to environmental vibration",
+          "url": "https://www.hmpgloballearningnetwork.com/site/jic/articles/radial-artery-catheterization-causes-pacemaker-oversensing-rate-adaptive-cardiac-pacemakers"
+        }
       },
       "radiation_upsets": {
-        "evidence": "Research study", "verified": false,
+        "evidence": "Research study",
+        "verified": false,
         "note": "Memory upsets from neutrons were recorded in implanted defibrillators even at ground level.",
-        "source": {"title": "Bradley and Normand 1998, IEEE Trans Nucl Sci: single event upsets in implantable cardioverter defibrillators", "url": "https://ieeexplore.ieee.org"}
+        "source": {
+          "title": "Bradley and Normand 1998, IEEE Trans Nucl Sci: single event upsets in implantable cardioverter defibrillators",
+          "url": "https://ieeexplore.ieee.org"
+        }
       },
       "mitigations": {
-        "gravity": {"text": "Ask your cardiologist to test the heart-rate response during exercise and adjust it before the trip.", "resolves": true},
-        "pressure": {"text": "Ask the manufacturer for low-pressure test data and have the device checked after arrival.", "resolves": true},
-        "radiation": {"text": "Have the device checked on a fixed schedule and after every solar storm, and learn its backup mode. This lowers the risk; it does not remove it.", "resolves": false},
-        "light_delay": {"text": "Bring a pacemaker programmer and train the crew medical officer. Send device data to your clinic when the link allows.", "resolves": true}
+        "gravity": {
+          "text": "Ask your cardiologist to test the heart-rate response during exercise and adjust it before the trip.",
+          "resolves": true
+        },
+        "pressure": {
+          "text": "Ask the manufacturer for low-pressure test data and have the device checked after arrival.",
+          "resolves": true
+        },
+        "radiation": {
+          "text": "Have the device checked on a fixed schedule and after every solar storm, and learn its backup mode. This lowers the risk; it does not remove it.",
+          "resolves": false
+        },
+        "light_delay": {
+          "text": "Bring a pacemaker programmer and train the crew medical officer. Send device data to your clinic when the link allows.",
+          "resolves": true
+        }
       }
     },
     {
@@ -177,43 +344,91 @@
       "summary": "A wearable pump that delivers insulin through a thin tube.",
       "worn": "external",
       "operating_temp_c": {
-        "min": 5, "max": 37, "unit": "°C", "evidence": "Manufacturer spec",
-        "source": {"title": "Medtronic MiniMed 780G specifications", "url": "https://www.minimed.com/en-us/products/minimed-780g-insulin-pump-system/specs"}
+        "min": 5,
+        "max": 37,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "source": {
+          "title": "Medtronic MiniMed 780G specifications",
+          "url": "https://www.minimed.com/en-us/products/minimed-780g-insulin-pump-system/specs"
+        }
       },
       "pressure_rating_kpa": {
-        "min": 70.3, "max": 106.2, "unit": "kPa", "evidence": "Manufacturer spec",
+        "min": 70.3,
+        "max": 106.2,
+        "unit": "kPa",
+        "evidence": "Manufacturer spec",
         "note": "700 to 1060 hPa operating range.",
-        "source": {"title": "Medtronic MiniMed 780G specifications", "url": "https://www.minimed.com/en-us/products/minimed-780g-insulin-pump-system/specs"}
+        "source": {
+          "title": "Medtronic MiniMed 780G specifications",
+          "url": "https://www.minimed.com/en-us/products/minimed-780g-insulin-pump-system/specs"
+        }
       },
       "battery": {
-        "value": "AA or lithium-ion", "evidence": "Team assumption", "verified": false,
+        "value": "AA or lithium-ion",
+        "evidence": "Team assumption",
+        "verified": false,
         "note": "Battery type depends on the pump model.",
-        "source": {"title": "Medtronic MiniMed 780G user guide", "url": "https://www.medtronicdiabetes.com/sites/default/files/library/download-library/user-guides/MiniMed-780G-system-user-guide.pdf"}
+        "source": {
+          "title": "Medtronic MiniMed 780G user guide",
+          "url": "https://www.medtronicdiabetes.com/sites/default/files/library/download-library/user-guides/MiniMed-780G-system-user-guide.pdf"
+        }
       },
       "fluid_path": true,
       "life_critical": "yes_with_backup",
       "life_critical_note": "Insulin is life-sustaining, but insulin pens are a backup route and worked in orbit.",
-      "life_critical_source": {"title": "Burjeel Holdings and Axiom (2025): CGMs and insulin pens worked on the Ax-4 mission (press release)", "url": "https://www.wam.ae/en/article/15sga5j-burjeel-holdings-unlocks-potential-send-first"},
+      "life_critical_source": {
+        "title": "Burjeel Holdings and Axiom (2025): CGMs and insulin pens worked on the Ax-4 mission (press release)",
+        "url": "https://www.wam.ae/en/article/15sga5j-burjeel-holdings-unlocks-potential-send-first"
+      },
       "dust": {
-        "value": "sealed", "evidence": "Team assumption", "limit_text": "Sealed case, no exposed moving parts",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "value": "sealed",
+        "evidence": "Team assumption",
+        "limit_text": "Sealed case, no exposed moving parts",
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "follow_up": {
-        "value": "optional_cloud", "evidence": "Team assumption",
+        "value": "optional_cloud",
+        "evidence": "Team assumption",
         "note": "Therapy runs on the pump; uploading data is optional.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "gravity_function": {
-        "value": "bubble_removal", "evidence": "Physics",
+        "value": "bubble_removal",
+        "evidence": "Physics",
         "note": "Removing air bubbles relies on bubbles rising, and buoyancy depends on gravity.",
-        "source": {"title": "Physics: buoyancy scales with gravity", "url": null}
+        "source": {
+          "title": "Physics: buoyancy scales with gravity",
+          "url": null
+        }
       },
       "mitigations": {
-        "gravity_microgravity": {"text": "Practice a priming method that works without gravity before the flight.", "resolves": true},
-        "pressure": {"text": "Disconnect during pressure changes, then check for bubbles and re-prime. Ask the manufacturer for data at {pressure_kpa} kPa.", "resolves": true},
-        "oxygen": {"text": "Get a battery safety review for oxygen-rich air (NASA JSC 20793).", "resolves": true},
-        "temperature": {"text": "Keep the pump and insulin inside their rated temperatures.", "resolves": true},
-        "radiation": {"text": "Carry a spare pump and insulin pens, and check the delivery history after solar storms.", "resolves": true}
+        "gravity_microgravity": {
+          "text": "Practice a priming method that works without gravity before the flight.",
+          "resolves": true
+        },
+        "pressure": {
+          "text": "Disconnect during pressure changes, then check for bubbles and re-prime. Ask the manufacturer for data at {pressure_kpa} kPa.",
+          "resolves": true
+        },
+        "oxygen": {
+          "text": "Get a battery safety review for oxygen-rich air (NASA JSC 20793).",
+          "resolves": true
+        },
+        "temperature": {
+          "text": "Keep the pump and insulin inside their rated temperatures.",
+          "resolves": true
+        },
+        "radiation": {
+          "text": "Carry a spare pump and insulin pens, and check the delivery history after solar storms.",
+          "resolves": true
+        }
       }
     },
     {
@@ -224,39 +439,924 @@
       "worn": "external",
       "worn_note": "Checks cover the external sound processor; the implant itself is sealed.",
       "operating_temp_c": {
-        "min": 5, "max": 40, "unit": "°C", "evidence": "Manufacturer spec", "verified": false,
-        "source": {"title": "Cochlear Aqua+ accessory user guide: sound processor operating range", "url": "https://www.cochlear.com"}
+        "min": 5,
+        "max": 40,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "verified": false,
+        "source": {
+          "title": "Cochlear Aqua+ accessory user guide: sound processor operating range",
+          "url": "https://www.cochlear.com"
+        }
       },
       "pressure_rating_kpa": null,
       "battery": {
-        "value": "rechargeable or zinc-air", "evidence": "Team assumption", "verified": false,
+        "value": "rechargeable or zinc-air",
+        "evidence": "Team assumption",
+        "verified": false,
         "note": "Battery type depends on the processor model.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "fluid_path": false,
       "life_critical": "no",
       "dust": {
-        "value": "sensitive", "evidence": "Team assumption",
+        "value": "sensitive",
+        "evidence": "Team assumption",
         "note": "Fine dust can block the processor's open microphone ports.",
         "limit_text": "Open microphone ports",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "follow_up": {
-        "value": "local_programming", "evidence": "Team assumption",
+        "value": "local_programming",
+        "evidence": "Team assumption",
         "note": "An audiologist adjusts the processor program with fitting software.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "gravity_function": {
-        "value": "none", "evidence": "Team assumption",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "value": "none",
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "mitigations": {
-        "pressure": {"text": "Ask the manufacturer for test data at {pressure_kpa} kPa, or test the processor in a low-pressure chamber.", "resolves": true},
-        "oxygen": {"text": "Get a battery safety review for oxygen-rich air (NASA JSC 20793).", "resolves": true},
-        "temperature": {"text": "Keep the processor inside its rated temperatures.", "resolves": true},
-        "dust": {"text": "Use microphone covers, clean the processor daily and carry a spare processor.", "resolves": true},
-        "light_delay": {"text": "Agree program presets with your audiologist before you leave and carry the fitting software.", "resolves": true}
+        "pressure": {
+          "text": "Ask the manufacturer for test data at {pressure_kpa} kPa, or test the processor in a low-pressure chamber.",
+          "resolves": true
+        },
+        "oxygen": {
+          "text": "Get a battery safety review for oxygen-rich air (NASA JSC 20793).",
+          "resolves": true
+        },
+        "temperature": {
+          "text": "Keep the processor inside its rated temperatures.",
+          "resolves": true
+        },
+        "dust": {
+          "text": "Use microphone covers, clean the processor daily and carry a spare processor.",
+          "resolves": true
+        },
+        "light_delay": {
+          "text": "Agree program presets with your audiologist before you leave and carry the fitting software.",
+          "resolves": true
+        }
       }
+    },
+    {
+      "id": "passive_knee",
+      "name": "Passive mechanical prosthetic knee",
+      "short": "passive knee",
+      "summary": "A hydraulic or pneumatic knee mechanism providing mechanical stance and swing resistance.",
+      "worn": "external",
+      "category": "Prosthetics",
+      "operating_temp_c": {
+        "min": -10,
+        "max": 60,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "source": {
+          "title": "Ottobock 3R80 Hydraulic Knee IFU",
+          "url": "https://www.ottobock.com"
+        }
+      },
+      "pressure_rating_kpa": {
+        "min": 70,
+        "max": 106,
+        "unit": "kPa",
+        "evidence": "Manufacturer spec",
+        "note": "Hydraulic sealed chambers tested across airline cabin pressures.",
+        "source": {
+          "title": "Ottobock Technical Document",
+          "url": "https://www.ottobock.com"
+        }
+      },
+      "battery": {
+        "value": "none",
+        "evidence": "Manufacturer spec",
+        "note": "Completely passive mechanical fluid mechanics; no battery required.",
+        "source": {
+          "title": "Ottobock 3R80 Hydraulic Knee IFU",
+          "url": "https://www.ottobock.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "sensitive",
+        "evidence": "Manufacturer spec",
+        "note": "Exposed mechanical pivots require protective gaiter in dusty environments.",
+        "limit_text": "Requires neoprene protective sleeve",
+        "source": {
+          "title": "Ottobock Care Manual",
+          "url": "https://www.ottobock.com"
+        }
+      },
+      "follow_up": {
+        "value": "local_programming",
+        "evidence": "Standard",
+        "note": "Manual hydraulic valve adjustment with an Allen key.",
+        "source": {
+          "title": "Clinical Prosthetics Practice",
+          "url": null
+        }
+      },
+      "gravity_function": {
+        "value": "stance_assist",
+        "evidence": "Physics",
+        "note": "Hydraulic resistance calibrated for 1 g body weight; over-damps walking stride in lower gravity.",
+        "source": {
+          "title": "Prosthetic Gait Mechanics",
+          "url": null
+        }
+      },
+      "body_mass_kg": {
+        "min": 50,
+        "max": 150,
+        "default": 80,
+        "unit": "kg",
+        "evidence": "Manufacturer spec",
+        "note": "Rated weight limit for heavy-duty hydraulic knees.",
+        "source": {
+          "title": "Ottobock 3R80 IFU",
+          "url": "https://www.ottobock.com"
+        }
+      },
+      "torque_model": {
+        "stance_nm_per_kg": {
+          "value": 0.45,
+          "unit": "N·m/kg",
+          "evidence": "Research study",
+          "note": "Peak passive hydraulic stance resistance torque.",
+          "source": {
+            "title": "Clinical Biomechanics of Passive Knees",
+            "url": null
+          }
+        },
+        "swing_nm_per_kg": {
+          "value": 0.2,
+          "unit": "N·m/kg",
+          "evidence": "Research study",
+          "note": "Swing phase fluid dampening resistance.",
+          "source": {
+            "title": "Clinical Biomechanics of Passive Knees",
+            "url": null
+          }
+        },
+        "swing_gravity_share": {
+          "value": 0.15,
+          "unit": "",
+          "evidence": "Research study",
+          "note": "Pendular gravitational share of lower leg.",
+          "source": {
+            "title": "Clinical Biomechanics of Passive Knees",
+            "url": null
+          }
+        },
+        "scaling_source": {
+          "title": "Biomechanical Scaling of Lower Limb Prosthetics",
+          "url": null
+        }
+      },
+      "mitigations": {
+        "gravity": {
+          "text": "Adjust manual hydraulic stance valve 2 to 3 turns softer to prevent knee stiffness during reduced gravity gait.",
+          "resolves": true
+        },
+        "dust": {
+          "text": "Fit protective neoprene gaiter boot over knee hydraulic cylinder and hinge joints.",
+          "resolves": true
+        },
+        "pressure": {
+          "text": "Inspect hydraulic cylinder seals for fluid weeping during first 48 hours at habitat pressure.",
+          "resolves": false
+        }
+      }
+    },
+    {
+      "id": "bionic_ankle",
+      "name": "Powered bionic ankle-foot prosthesis",
+      "short": "bionic ankle",
+      "summary": "Motorized prosthetic ankle delivering active push-off propulsion during walking.",
+      "worn": "external",
+      "category": "Prosthetics",
+      "operating_temp_c": {
+        "min": -5,
+        "max": 45,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "source": {
+          "title": "Össur Proprio Foot IFU",
+          "url": "https://media.ossur.com"
+        }
+      },
+      "pressure_rating_kpa": {
+        "min": 70,
+        "max": 106,
+        "unit": "kPa",
+        "evidence": "Manufacturer spec",
+        "note": "Rated for airline cabin operating pressures.",
+        "source": {
+          "title": "Össur Proprio Foot IFU",
+          "url": "https://media.ossur.com"
+        }
+      },
+      "battery": {
+        "value": "lithium-ion",
+        "evidence": "Manufacturer spec",
+        "note": "Rechargeable internal lithium-ion battery.",
+        "source": {
+          "title": "Össur Proprio Foot IFU",
+          "url": "https://media.ossur.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "sensitive",
+        "evidence": "Manufacturer spec",
+        "note": "Ankle actuator gearing is sensitive to particulate contamination.",
+        "limit_text": "Keep foot shell sealed",
+        "source": {
+          "title": "Össur Care Instructions",
+          "url": "https://media.ossur.com"
+        }
+      },
+      "follow_up": {
+        "value": "local_programming",
+        "evidence": "Team assumption",
+        "note": "Microprocessor firmware adjusted via Bluetooth tablet app.",
+        "source": {
+          "title": "Prosthetic Clinical Fitting Guidelines",
+          "url": null
+        }
+      },
+      "gravity_function": {
+        "value": "stance_assist",
+        "evidence": "Physics",
+        "note": "Active push-off propulsion calibrated for Earth weight will launch user upwards in reduced gravity.",
+        "source": {
+          "title": "Bionic Propulsion Biomechanics",
+          "url": null
+        }
+      },
+      "body_mass_kg": {
+        "min": 50,
+        "max": 125,
+        "default": 80,
+        "unit": "kg",
+        "evidence": "Manufacturer spec",
+        "note": "User body mass rating.",
+        "source": {
+          "title": "Össur Proprio Foot IFU",
+          "url": "https://media.ossur.com"
+        }
+      },
+      "mitigations": {
+        "gravity": {
+          "text": "Reduce motor push-off energy setting by 60% to 80% to prevent excessive propulsion in reduced gravity.",
+          "resolves": true
+        },
+        "dust": {
+          "text": "Install sealed carbon composite weather-resistant foot cover with silicone cuff seal.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "icd",
+      "name": "Implantable Cardioverter Defibrillator (ICD)",
+      "short": "ICD",
+      "summary": "Implanted cardiac device that detects lethal arrhythmias and delivers high-energy electrical shocks.",
+      "worn": "implanted",
+      "category": "Cardiac",
+      "battery": {
+        "value": "hermetic_primary",
+        "evidence": "Manufacturer spec",
+        "note": "Hermetic lithium silver vanadium oxide / carbon monofluoride primary battery.",
+        "source": {
+          "title": "Medtronic Cobalt ICD Technical Manual",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "yes",
+      "life_critical_note": "Terminates life-threatening ventricular fibrillation.",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "note": "Subcutaneous pectoral pocket implant.",
+        "limit_text": "Internal hermetic titanium enclosure",
+        "source": {
+          "title": "Device Anatomy",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "remote_monitoring",
+        "evidence": "Manufacturer spec",
+        "note": "CareLink home monitor uploads arrhythmia logs and lead impedance telemetry.",
+        "source": {
+          "title": "Medtronic CareLink Network Manual",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "gravity_function": {
+        "value": "rate_response",
+        "evidence": "Manufacturer spec",
+        "note": "Accelerometers modulate pacing during activity; physical work requires different sensor tuning off-Earth.",
+        "source": {
+          "title": "Medtronic Rate Adaptive Sensor Guide",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "radiation_upsets": {
+        "value": "possible",
+        "evidence": "Research study",
+        "note": "High-voltage charging circuits and flash memory are vulnerable to single-event upsets from galactic heavy ions.",
+        "source": {
+          "title": "AAPM TG-203 Cardiac Implant Radiation Study",
+          "url": "https://doi.org/10.1002/mp.13838"
+        }
+      },
+      "mitigations": {
+        "radiation": {
+          "text": "Enable daily autonomous capacitor conditioning and program monthly self-test memory diagnostics.",
+          "resolves": false
+        },
+        "gravity": {
+          "text": "Adjust accelerometer threshold to low sensitivity setting to prevent inappropriate rate boost during microgravity movements.",
+          "resolves": true
+        },
+        "light_delay": {
+          "text": "Equip mission medical kit with wand programmer for local emergency ICD interrogation and therapy locking.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "cgm",
+      "name": "Continuous Glucose Monitor (CGM)",
+      "short": "CGM",
+      "summary": "Wearable subcutaneous biosensor tracking interstitial glucose levels in real time.",
+      "worn": "external",
+      "category": "Endocrine",
+      "operating_temp_c": {
+        "min": 10,
+        "max": 45,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "source": {
+          "title": "Dexcom G7 User Guide",
+          "url": "https://www.dexcom.com"
+        }
+      },
+      "pressure_rating_kpa": {
+        "min": 70,
+        "max": 106,
+        "unit": "kPa",
+        "evidence": "Manufacturer spec",
+        "note": "Tested down to 70 kPa (3,000 meters altitude equivalent).",
+        "source": {
+          "title": "Dexcom G7 User Guide",
+          "url": "https://www.dexcom.com"
+        }
+      },
+      "battery": {
+        "value": "hermetic_primary",
+        "evidence": "Manufacturer spec",
+        "note": "Single-use sealed silver oxide button cell.",
+        "source": {
+          "title": "Dexcom G7 Specifications",
+          "url": "https://www.dexcom.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "none",
+        "evidence": "Manufacturer spec",
+        "note": "IP28 water and dust ingress rating.",
+        "limit_text": "IP28 waterproof and dust sealed",
+        "source": {
+          "title": "Dexcom G7 Technical Data",
+          "url": "https://www.dexcom.com"
+        }
+      },
+      "follow_up": {
+        "value": "optional_cloud",
+        "evidence": "Manufacturer spec",
+        "note": "Bluetooth telemetry streams to local phone or receiver independently of internet.",
+        "source": {
+          "title": "Dexcom Follow App Architecture",
+          "url": "https://www.dexcom.com"
+        }
+      },
+      "gravity_function": {
+        "value": "none",
+        "evidence": "Spaceflight data",
+        "note": "Enzymatic glucose-oxidase electrochemical reaction functions independently of gravity, tested in orbital parabolic flights.",
+        "source": {
+          "title": "Axiom Ax-4 Spaceflight CGM Evaluation",
+          "url": "https://www.axiomspace.com"
+        }
+      },
+      "mitigations": {
+        "pressure": {
+          "text": "Perform fingerstick capillary blood glucose calibration if rapid cabin pressure changes exceed 10 kPa in one hour.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "dbs",
+      "name": "Deep Brain Stimulator (DBS)",
+      "short": "DBS",
+      "summary": "Surgically implanted intracranial electrodes and neurostimulator treating Parkinson's, tremors, and dystonia.",
+      "worn": "implanted",
+      "category": "Neuromodulation",
+      "battery": {
+        "value": "hermetic_primary",
+        "evidence": "Manufacturer spec",
+        "note": "Hermetically sealed titanium neurostimulator battery.",
+        "source": {
+          "title": "Medtronic Percept PC DBS Manual",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "note": "Subclavicular generator pocket with tunneled cranial leads.",
+        "limit_text": "Hermetic titanium casing",
+        "source": {
+          "title": "Surgical Neuroanatomy",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "local_programming",
+        "evidence": "Manufacturer spec",
+        "note": "Inductive patient programmer allows user to adjust stimulation amplitude locally.",
+        "source": {
+          "title": "Medtronic Patient Programmer Guide",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "gravity_function": {
+        "value": "none",
+        "evidence": "Research study",
+        "note": "Electrical pulse generation across subthalamic nucleus operates independently of gravity.",
+        "source": {
+          "title": "Neuromodulation Physics and Biophysics",
+          "url": null
+        }
+      },
+      "radiation_upsets": {
+        "value": "possible",
+        "evidence": "Research study",
+        "note": "Cranial exposure to cosmic ray heavy ions can cause soft resets of stimulation parameters.",
+        "source": {
+          "title": "Radiation Effects on Implanted Microelectronics",
+          "url": "https://doi.org/10.1002/mp.13838"
+        }
+      },
+      "mitigations": {
+        "radiation": {
+          "text": "Export and store baseline electrode impedance and voltage configuration to handheld patient programmer prior to departure.",
+          "resolves": true
+        },
+        "light_delay": {
+          "text": "Train flight medical crew on clinician telemetry programmer to troubleshoot parameter resets without Earth contact.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "vp_shunt",
+      "name": "Ventriculoperitoneal (VP) Brain Shunt",
+      "short": "VP shunt",
+      "summary": "Hydrocephalus drainage catheter and valve that diverts excess cerebrospinal fluid from cerebral ventricles.",
+      "worn": "implanted",
+      "category": "Neuromodulation",
+      "battery": {
+        "value": "none",
+        "evidence": "Manufacturer spec",
+        "note": "Passive differential fluid pressure valve with magnetic adjustment rotor.",
+        "source": {
+          "title": "Codman Certas Plus Programmable Valve IFU",
+          "url": "https://www.integralife.com"
+        }
+      },
+      "fluid_path": true,
+      "life_critical": "yes",
+      "life_critical_note": "Prevents catastrophic intracranial pressure elevation from hydrocephalus.",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "note": "Fully internal subcutaneous fluid drainage catheter.",
+        "limit_text": "Subcutaneous implant",
+        "source": {
+          "title": "Surgical Guidelines",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "local_programming",
+        "evidence": "Manufacturer spec",
+        "note": "Non-invasive magnetic programming tool adjusts valve opening pressure.",
+        "source": {
+          "title": "Codman Magnetic Programmer IFU",
+          "url": "https://www.integralife.com"
+        }
+      },
+      "gravity_function": {
+        "value": "stance_assist",
+        "evidence": "Physics",
+        "note": "Hydrostatic siphon effect depends on vertical gravitational column height. In microgravity or low gravity, hydrostatic siphoning disappears, reducing drainage rate.",
+        "source": {
+          "title": "Hydrocephalus in Microgravity Biomechanics",
+          "url": null
+        }
+      },
+      "mitigations": {
+        "gravity": {
+          "text": "Reprogram valve opening pressure to lower resistance setting to compensate for loss of vertical hydrostatic siphoning column.",
+          "resolves": true
+        },
+        "pressure": {
+          "text": "Monitor daily for clinical signs of intracranial hypertension (headache, vision changes) during habitat pressure shifts.",
+          "resolves": false
+        }
+      }
+    },
+    {
+      "id": "cpap",
+      "name": "CPAP respiratory machine",
+      "short": "CPAP machine",
+      "summary": "Continuous positive airway pressure blower treating obstructive sleep apnea.",
+      "worn": "external",
+      "category": "Sensory & Other",
+      "operating_temp_c": {
+        "min": 5,
+        "max": 35,
+        "unit": "°C",
+        "evidence": "Manufacturer spec",
+        "source": {
+          "title": "ResMed AirSense 11 User Guide",
+          "url": "https://www.resmed.com"
+        }
+      },
+      "pressure_rating_kpa": {
+        "min": 70,
+        "max": 106,
+        "unit": "kPa",
+        "evidence": "Manufacturer spec",
+        "note": "Automatic altitude compensation calibrated down to 70 kPa (3,000 meters altitude).",
+        "source": {
+          "title": "ResMed AirSense Technical Specifications",
+          "url": "https://www.resmed.com"
+        }
+      },
+      "battery": {
+        "value": "lithium-ion",
+        "evidence": "Manufacturer spec",
+        "note": "Optional external lithium battery backup pack.",
+        "source": {
+          "title": "ResMed Battery Pack IFU",
+          "url": "https://www.resmed.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "sensitive",
+        "evidence": "Manufacturer spec",
+        "note": "Pneumatic blower draws habitat air directly into patient airway.",
+        "limit_text": "HEPA intake filter mandatory",
+        "source": {
+          "title": "ResMed AirSense Maintenance Manual",
+          "url": "https://www.resmed.com"
+        }
+      },
+      "follow_up": {
+        "value": "optional_cloud",
+        "evidence": "Manufacturer spec",
+        "note": "AirView cloud compliance upload is optional; machine displays AHI sleep metrics directly on screen.",
+        "source": {
+          "title": "ResMed AirView Manual",
+          "url": "https://www.resmed.com"
+        }
+      },
+      "gravity_function": {
+        "value": "none",
+        "evidence": "Spaceflight data",
+        "note": "Electric turbine blower generates differential pressure independently of gravity.",
+        "source": {
+          "title": "Aviation and Space Respiratory Equipment",
+          "url": null
+        }
+      },
+      "mitigations": {
+        "pressure": {
+          "text": "Manually recalibrate blower baseline pressure algorithm for 56.5 kPa habitat cabin atmosphere to maintain target airway pressure.",
+          "resolves": true
+        },
+        "dust": {
+          "text": "Fit multi-stage medical grade HEPA allergen intake filter and replace filter cartridge every 14 days.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "ortho_implant",
+      "name": "Titanium orthopedic hip/knee joint implant",
+      "short": "orthopedic implant",
+      "summary": "Passive internal titanium alloy endoprosthesis replacing damaged skeletal joint (Hayley Arceneaux type).",
+      "worn": "implanted",
+      "category": "Prosthetics",
+      "battery": {
+        "value": "none",
+        "evidence": "Manufacturer spec",
+        "note": "Fully passive metallic structural biomaterial.",
+        "source": {
+          "title": "Zimmer Biomet Orthopedic Implant IFU",
+          "url": "https://www.zimmerbiomet.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "note": "Subcutaneous bone-anchored internal joint.",
+        "limit_text": "Internal osseointegrated implant",
+        "source": {
+          "title": "Orthopedic Surgery Manual",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "optional_cloud",
+        "evidence": "Standard",
+        "note": "Passive implant; requires no telemetry link.",
+        "source": {
+          "title": "AAOS Clinical Guidelines",
+          "url": "https://www.aaos.org"
+        }
+      },
+      "gravity_function": {
+        "value": "none",
+        "evidence": "Spaceflight data",
+        "note": "Flew successfully on Inspiration4 with Hayley Arceneaux (first spaceflight participant with an internal prosthesis).",
+        "source": {
+          "title": "Inspiration4 Medical Mission Debrief (Nature Medicine)",
+          "url": "https://doi.org/10.1038/s41591-024-02970-0"
+        }
+      },
+      "mitigations": {
+        "gravity": {
+          "text": "Maintain daily resistance exercise protocol using advanced resistive exercise device to prevent bone mineral loss around titanium stem.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "leadless_pacemaker",
+      "name": "Leadless intracardiac pacemaker",
+      "short": "leadless pacemaker",
+      "summary": "Miniature transcatheter pacemaker implanted directly into right ventricular myocardium without chest pocket or leads.",
+      "worn": "implanted",
+      "category": "Cardiac",
+      "battery": {
+        "value": "hermetic_primary",
+        "evidence": "Manufacturer spec",
+        "note": "Lithium silver vanadium oxide / carbon monofluoride primary cell (1.0 cc volume).",
+        "source": {
+          "title": "Medtronic Micra AV Technical Manual",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "yes",
+      "life_critical_note": "Provides intrinsic ventricular demand pacing.",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "limit_text": "Hermetic titanium intracardiac capsule",
+        "source": {
+          "title": "Device Anatomy",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "remote_monitoring",
+        "evidence": "Manufacturer spec",
+        "note": "MyCareLink telemetry base station.",
+        "source": {
+          "title": "Medtronic Telemetry Manual",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "gravity_function": {
+        "value": "rate_response",
+        "evidence": "Manufacturer spec",
+        "note": "3-axis intracardiac accelerometer senses mechanical heart wall motion to boost rate.",
+        "source": {
+          "title": "Micra Accelerometer Algorithms",
+          "url": "https://www.medtronic.com"
+        }
+      },
+      "radiation_upsets": {
+        "value": "possible",
+        "evidence": "Research study",
+        "note": "CMOS integrated microcontroller vulnerable to single-event latchups.",
+        "source": {
+          "title": "AAPM TG-203 Study",
+          "url": "https://doi.org/10.1002/mp.13838"
+        }
+      },
+      "mitigations": {
+        "radiation": {
+          "text": "Verify autonomous memory parity check is active and schedule weekly diagnostic self-checks.",
+          "resolves": false
+        },
+        "gravity": {
+          "text": "Adjust 3-axis accelerometer motion sensitivity to compensate for altered ventricular wall kinetics in reduced gravity.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "vns",
+      "name": "Vagus Nerve Stimulator (VNS)",
+      "short": "VNS",
+      "summary": "Implanted pulse generator and helical cervical electrode delivering programmed electrical pulses to the vagus nerve.",
+      "worn": "implanted",
+      "category": "Neuromodulation",
+      "battery": {
+        "value": "hermetic_primary",
+        "evidence": "Manufacturer spec",
+        "note": "Hermetically sealed titanium casing.",
+        "source": {
+          "title": "LivaNova SenTiva VNS Manual",
+          "url": "https://www.livanova.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "limit_text": "Subcutaneous pectoral implant",
+        "source": {
+          "title": "Surgical Manual",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "local_programming",
+        "evidence": "Manufacturer spec",
+        "note": "Wand programmer and patient magnet allow manual on-demand stimulation.",
+        "source": {
+          "title": "LivaNova Magnet Guide",
+          "url": "https://www.livanova.com"
+        }
+      },
+      "gravity_function": {
+        "value": "none",
+        "evidence": "Research study",
+        "note": "Electrical pulse generator operates independently of gravitational acceleration.",
+        "source": {
+          "title": "VNS Biophysics",
+          "url": null
+        }
+      },
+      "radiation_upsets": {
+        "value": "possible",
+        "evidence": "Research study",
+        "source": {
+          "title": "AAPM TG-203 Study",
+          "url": "https://doi.org/10.1002/mp.13838"
+        }
+      },
+      "mitigations": {
+        "radiation": {
+          "text": "Carry manual patient control magnet in flight kit to initiate or inhibit stimulation if microprocessor soft reset occurs.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "heart_valve",
+      "name": "Mechanical prosthetic heart valve",
+      "short": "mechanical heart valve",
+      "summary": "Bileaflet pyrolytic carbon artificial heart valve replacing diseased aortic or mitral valve.",
+      "worn": "implanted",
+      "category": "Cardiac",
+      "battery": {
+        "value": "none",
+        "evidence": "Manufacturer spec",
+        "note": "Completely passive hemodynamic mechanical valve; zero electronics.",
+        "source": {
+          "title": "St Jude Medical Mechanical Valve IFU",
+          "url": "https://www.abbott.com"
+        }
+      },
+      "fluid_path": true,
+      "life_critical": "yes",
+      "life_critical_note": "Maintains unidirectional intracardiac blood flow; mechanical failure is fatal.",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "limit_text": "Intracardiac mechanical implant",
+        "source": {
+          "title": "Cardiac Surgery Manual",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "optional_cloud",
+        "evidence": "Standard",
+        "note": "Requires regular INR anticoagulation monitoring, not telemetry.",
+        "source": {
+          "title": "ACC/AHA Valve Guidelines",
+          "url": "https://www.ahajournals.org"
+        }
+      },
+      "gravity_function": {
+        "value": "none",
+        "evidence": "Research study",
+        "note": "Bileaflet leaflets are driven by left ventricular pressure gradients (>100 mmHg), which dwarf gravitational hydrostatic forces.",
+        "source": {
+          "title": "Mechanical Heart Valves in Microgravity",
+          "url": null
+        }
+      },
+      "mitigations": {
+        "pressure": {
+          "text": "Maintain strict point-of-care capillary INR fingerstick monitoring with coagulometer twice weekly to maintain safe anticoagulation window.",
+          "resolves": true
+        }
+      }
+    },
+    {
+      "id": "iol",
+      "name": "Intraocular Lens Implant (IOL)",
+      "short": "intraocular lens",
+      "summary": "Artificial optical lens implanted into capsular bag following cataract surgery.",
+      "worn": "implanted",
+      "category": "Sensory & Other",
+      "battery": {
+        "value": "none",
+        "evidence": "Manufacturer spec",
+        "note": "Passive hydrophobic acrylic optical biomaterial.",
+        "source": {
+          "title": "Alcon AcrySof IQ IOL IFU",
+          "url": "https://www.alcon.com"
+        }
+      },
+      "fluid_path": false,
+      "life_critical": "no",
+      "dust": {
+        "value": "none",
+        "evidence": "Physics",
+        "limit_text": "Intraocular anterior/posterior chamber implant",
+        "source": {
+          "title": "Ophthalmology Practice Guidelines",
+          "url": null
+        }
+      },
+      "follow_up": {
+        "value": "optional_cloud",
+        "evidence": "Standard",
+        "note": "Passive optical device.",
+        "source": {
+          "title": "AAO Clinical Guidelines",
+          "url": "https://www.aao.org"
+        }
+      },
+      "gravity_function": {
+        "value": "none",
+        "evidence": "Spaceflight data",
+        "note": "Capsular bag anatomical fixation is unaffected by microgravity; flown safely by multiple spaceflight participants.",
+        "source": {
+          "title": "Spaceflight Associated Neuro-ocular Syndrome (SANS) Studies",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "mitigations": {}
     }
   ]
 }

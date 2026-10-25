@@ -93,7 +93,7 @@ def test_temperature_uses_cabin_not_surface():
 
 def test_invalid_inputs():
     with pytest.raises(AssessError):
-        assess(DATA, "venus", "pacemaker", 30)
+        assess(DATA, "krypton", "pacemaker", 30)
     with pytest.raises(AssessError):
         assess(DATA, "moon", "toaster", 30)
     with pytest.raises(AssessError):

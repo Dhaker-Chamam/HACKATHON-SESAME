@@ -1,8 +1,14 @@
 {
   "_readme": "Bionic Passport destination data. Read by the server (app/engine.py) and by the browser fallback (static/engine.js). Every value has an evidence level and a source. Values with evidence 'Placeholder' are PLACEHOLDER, replace with sourced data. Values with \"verified\": false have a real source that still needs checking against the original document.",
   "standard_gravity_ms2": {
-    "value": 9.80665, "unit": "m/s²", "evidence": "Standard", "verified": false,
-    "source": {"title": "BIPM, 3rd CGPM (1901): standard acceleration of gravity", "url": "https://www.bipm.org/en/committees/cg/cgpm/3-1901"}
+    "value": 9.80665,
+    "unit": "m/s²",
+    "evidence": "Standard",
+    "verified": false,
+    "source": {
+      "title": "BIPM, 3rd CGPM (1901): standard acceleration of gravity",
+      "url": "https://www.bipm.org/en/committees/cg/cgpm/3-1901"
+    }
   },
   "destinations": [
     {
@@ -11,57 +17,119 @@
       "place": "Low Earth orbit",
       "where": "in the orbital habitat",
       "gravity_ms2": {
-        "value": 0, "unit": "m/s²", "evidence": "Physics",
+        "value": 0,
+        "unit": "m/s²",
+        "evidence": "Physics",
         "note": "Continuous free fall: nothing has weight (microgravity).",
-        "source": {"title": "Physics: orbital free fall", "url": null}
+        "source": {
+          "title": "Physics: orbital free fall",
+          "url": null
+        }
       },
       "outside_temp_c": {
-        "min": -157, "max": 121, "unit": "°C", "evidence": "Placeholder",
+        "min": -157,
+        "max": 121,
+        "unit": "°C",
+        "evidence": "Placeholder",
         "note": "PLACEHOLDER, replace with sourced data. Widely cited hull range in sunlight and shadow; no NASA primary page found.",
-        "source": {"title": "ScienceABC: Is it hot or cold at the International Space Station?", "url": "https://www.scienceabc.com/nature/universe/is-it-hot-or-cold-at-the-international-space-station.html"}
+        "source": {
+          "title": "ScienceABC: Is it hot or cold at the International Space Station?",
+          "url": "https://www.scienceabc.com/nature/universe/is-it-hot-or-cold-at-the-international-space-station.html"
+        }
       },
       "cabin_temp_c": {
-        "min": 18, "max": 27, "unit": "°C", "evidence": "Standard",
+        "min": 18,
+        "max": 27,
+        "unit": "°C",
+        "evidence": "Standard",
         "note": "NASA crew health limit for cabin temperature (NASA-STD-3001, V2 6012).",
-        "source": {"title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)", "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"}
+        "source": {
+          "title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"
+        }
       },
       "cabin_pressure_kpa": {
-        "value": 101.3, "unit": "kPa", "evidence": "Spaceflight data", "verified": false,
+        "value": 101.3,
+        "unit": "kPa",
+        "evidence": "Spaceflight data",
+        "verified": false,
         "note": "ISS cabin is held near sea-level pressure (14.7 psia).",
-        "source": {"title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa, about 21% oxygen", "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"}
+        "source": {
+          "title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa, about 21% oxygen",
+          "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"
+        }
       },
       "oxygen_percent": {
-        "value": 21, "unit": "%", "evidence": "Spaceflight data", "verified": false,
-        "source": {"title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa, about 21% oxygen", "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"}
+        "value": 21,
+        "unit": "%",
+        "evidence": "Spaceflight data",
+        "verified": false,
+        "source": {
+          "title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa, about 21% oxygen",
+          "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"
+        }
       },
       "radiation_msv_day": {
-        "value": 0.88, "unit": "mSv/day", "evidence": "Spaceflight data", "verified": false,
+        "value": 0.88,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
+        "verified": false,
         "note": "Upper end of 80 to 160 mSv per six months, depending on the solar cycle. Secondary source; replace with the NASA report.",
-        "source": {"title": "ABC News citing a 2017 NASA report: ISS crews receive 80 to 160 mSv in six months", "url": "https://abc7news.com/15271598"}
+        "source": {
+          "title": "ABC News citing a 2017 NASA report: ISS crews receive 80 to 160 mSv in six months",
+          "url": "https://abc7news.com/15271598"
+        }
       },
       "transit_days_each_way": {
-        "value": 0, "unit": "days", "evidence": "Team assumption",
+        "value": 0,
+        "unit": "days",
+        "evidence": "Team assumption",
         "note": "Launch to orbit takes hours to days; travel dose is ignored.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "transit_radiation_msv_day": null,
       "light_delay_s": {
-        "min": 0, "max": 1, "unit": "s", "evidence": "Team assumption",
+        "min": 0,
+        "max": 1,
+        "unit": "s",
+        "evidence": "Team assumption",
         "note": "Near-continuous relay coverage with sub-second delay.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "blackout": {
-        "value": false, "evidence": "Team assumption",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "value": false,
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "dust": {
-        "value": "none", "evidence": "Team assumption",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "value": "none",
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        },
+        "note": "Surface mineral particles may penetrate mechanical seals."
       },
       "arrival_pressure_kpa": {
-        "from": 101.3, "to": 101.3, "unit": "kPa", "evidence": "Spaceflight data", "verified": false,
+        "from": 101.3,
+        "to": 101.3,
+        "unit": "kPa",
+        "evidence": "Spaceflight data",
+        "verified": false,
         "note": "Launch and arrival stay at sea-level pressure.",
-        "source": {"title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa", "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"}
+        "source": {
+          "title": "MIT 16.423J lecture notes (Hoffman 2003): ISS cabin 101.3 kPa",
+          "url": "https://ocw.mit.edu/courses/16-423j-aerospace-biomedical-and-life-support-engineering-spring-2006/ca341d84bb2dd698b6a70d7ac1b39270_eva_hoffman2003.pdf"
+        }
       }
     },
     {
@@ -70,57 +138,118 @@
       "place": "Lunar base, south polar region",
       "where": "in a lunar base",
       "gravity_ms2": {
-        "value": 1.62, "unit": "m/s²", "evidence": "Spaceflight data",
-        "source": {"title": "NASA Moon Fact Sheet (2024)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"}
+        "value": 1.62,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "NASA Moon Fact Sheet (2024)",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+        }
       },
       "outside_temp_c": {
-        "min": -178, "max": 117, "unit": "°C", "evidence": "Spaceflight data",
+        "min": -178,
+        "max": 117,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
         "note": "95 to 390 K at the equator, night to day.",
-        "source": {"title": "NASA Moon Fact Sheet (2024)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"}
+        "source": {
+          "title": "NASA Moon Fact Sheet (2024)",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+        }
       },
       "cabin_temp_c": {
-        "min": 18, "max": 27, "unit": "°C", "evidence": "Standard",
+        "min": 18,
+        "max": 27,
+        "unit": "°C",
+        "evidence": "Standard",
         "note": "NASA crew health limit, applied as a design requirement for the base.",
-        "source": {"title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)", "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"}
+        "source": {
+          "title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"
+        }
       },
       "cabin_pressure_kpa": {
-        "value": 56.5, "unit": "kPa", "evidence": "Standard", "verified": false,
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "verified": false,
         "note": "8.2 psia exploration atmosphere recommended by NASA's Exploration Atmospheres Working Group. The real Artemis base atmosphere is not final.",
-        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+        "source": {
+          "title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen",
+          "url": "https://ntrs.nasa.gov/citations/20130013505"
+        }
       },
       "oxygen_percent": {
-        "value": 34, "unit": "%", "evidence": "Standard", "verified": false,
-        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "verified": false,
+        "source": {
+          "title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen",
+          "url": "https://ntrs.nasa.gov/citations/20130013505"
+        }
       },
       "radiation_msv_day": {
-        "value": 1.369, "unit": "mSv/day", "evidence": "Spaceflight data", "verified": false,
+        "value": 1.369,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
+        "verified": false,
         "note": "Chang'E-4 measurement on the open surface. Used as an upper bound; base shielding lowers it.",
-        "source": {"title": "Zhang et al. 2020, Science Advances: first radiation dose measured on the lunar surface", "url": "https://doi.org/10.1126/sciadv.aaz1334"}
+        "source": {
+          "title": "Zhang et al. 2020, Science Advances: first radiation dose measured on the lunar surface",
+          "url": "https://doi.org/10.1126/sciadv.aaz1334"
+        }
       },
       "transit_days_each_way": {
-        "value": 0, "unit": "days", "evidence": "Team assumption",
+        "value": 0,
+        "unit": "days",
+        "evidence": "Team assumption",
         "note": "The three-day trip adds little dose and is ignored.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "transit_radiation_msv_day": null,
       "light_delay_s": {
-        "min": 1.21, "max": 1.35, "unit": "s", "evidence": "Physics",
+        "min": 1.21,
+        "max": 1.35,
+        "unit": "s",
+        "evidence": "Physics",
         "note": "Earth-Moon distance 363,300 to 405,500 km divided by the speed of light.",
-        "source": {"title": "NASA Moon Fact Sheet (2024): perigee and apogee", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"}
+        "source": {
+          "title": "NASA Moon Fact Sheet (2024): perigee and apogee",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+        }
       },
       "blackout": {
-        "value": false, "evidence": "Team assumption",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "value": false,
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "dust": {
-        "value": "habitat", "evidence": "Spaceflight data",
+        "value": "habitat",
+        "evidence": "Spaceflight data",
         "note": "Apollo crews carried lunar dust into the cabin. It clogged mechanisms, abraded surfaces and damaged seals; ground tests underestimated it.",
-        "source": {"title": "Gaier 2005, NASA/TM-2005-213610: effects of lunar dust on EVA systems during Apollo", "url": "https://ntrs.nasa.gov/citations/20050160460"}
+        "source": {
+          "title": "Gaier 2005, NASA/TM-2005-213610: effects of lunar dust on EVA systems during Apollo",
+          "url": "https://ntrs.nasa.gov/citations/20050160460"
+        }
       },
       "arrival_pressure_kpa": {
-        "from": 101.3, "to": 56.5, "unit": "kPa", "evidence": "Standard", "verified": false,
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "verified": false,
         "note": "From sea-level pressure on Earth to the base atmosphere.",
-        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+        "source": {
+          "title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen",
+          "url": "https://ntrs.nasa.gov/citations/20130013505"
+        }
       }
     },
     {
@@ -129,63 +258,1608 @@
       "place": "Mars surface base",
       "where": "in a Mars base",
       "gravity_ms2": {
-        "value": 3.73, "unit": "m/s²", "evidence": "Spaceflight data",
-        "source": {"title": "NASA Mars Fact Sheet (2025)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"}
+        "value": 3.73,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "NASA Mars Fact Sheet (2025)",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+        }
       },
       "outside_temp_c": {
-        "min": -89, "max": -31, "unit": "°C", "evidence": "Spaceflight data",
+        "min": -89,
+        "max": -31,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
         "note": "Daily range measured at the Viking 1 lander site (184 to 242 K). Average about -59 °C.",
-        "source": {"title": "NASA Mars Fact Sheet (2025)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"}
+        "source": {
+          "title": "NASA Mars Fact Sheet (2025)",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+        }
       },
       "cabin_temp_c": {
-        "min": 18, "max": 27, "unit": "°C", "evidence": "Standard",
+        "min": 18,
+        "max": 27,
+        "unit": "°C",
+        "evidence": "Standard",
         "note": "NASA crew health limit, applied as a design requirement for the base.",
-        "source": {"title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)", "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"}
+        "source": {
+          "title": "NASA OCHMO-TB-002 Rev B: ECLSS technical brief (NASA-STD-3001 Vol 2)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"
+        }
       },
       "cabin_pressure_kpa": {
-        "value": 56.5, "unit": "kPa", "evidence": "Team assumption",
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Team assumption",
         "note": "Assumes the same exploration atmosphere as a lunar base.",
-        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+        "source": {
+          "title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen",
+          "url": "https://ntrs.nasa.gov/citations/20130013505"
+        }
       },
       "oxygen_percent": {
-        "value": 34, "unit": "%", "evidence": "Team assumption",
+        "value": 34,
+        "unit": "%",
+        "evidence": "Team assumption",
         "note": "Assumes the same exploration atmosphere as a lunar base.",
-        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+        "source": {
+          "title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen",
+          "url": "https://ntrs.nasa.gov/citations/20130013505"
+        }
       },
       "radiation_msv_day": {
-        "value": 0.67, "unit": "mSv/day", "evidence": "Spaceflight data",
+        "value": 0.67,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
         "note": "Curiosity rover surface average, August 2012 to June 2013.",
-        "source": {"title": "SwRI (2013): first radiation measurements from the surface of Mars (Hassler et al., Science 2014)", "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars"}
+        "source": {
+          "title": "SwRI (2013): first radiation measurements from the surface of Mars (Hassler et al., Science 2014)",
+          "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars"
+        }
       },
       "transit_days_each_way": {
-        "value": 180, "unit": "days", "evidence": "Team assumption",
+        "value": 180,
+        "unit": "days",
+        "evidence": "Team assumption",
         "note": "Six-month transfer each way, a common planning value.",
-        "source": {"title": "Bionic Passport team assumption", "url": null}
+        "source": {
+          "title": "Bionic Passport team assumption",
+          "url": null
+        }
       },
       "transit_radiation_msv_day": {
-        "value": 1.8, "unit": "mSv/day", "evidence": "Spaceflight data",
+        "value": 1.8,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
         "note": "Measured inside the Curiosity spacecraft on the way to Mars.",
-        "source": {"title": "SwRI (2013): first radiation measurements from the surface of Mars", "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars"}
+        "source": {
+          "title": "SwRI (2013): first radiation measurements from the surface of Mars",
+          "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars"
+        }
       },
       "light_delay_s": {
-        "min": 182, "max": 1339, "unit": "s", "evidence": "Physics",
+        "min": 182,
+        "max": 1339,
+        "unit": "s",
+        "evidence": "Physics",
         "note": "Earth-Mars distance 54.6 to 401.4 million km divided by the speed of light.",
-        "source": {"title": "NASA Mars Fact Sheet (2025): distance from Earth", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"}
+        "source": {
+          "title": "NASA Mars Fact Sheet (2025): distance from Earth",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+        }
       },
       "blackout": {
-        "value": true, "evidence": "Research study",
+        "value": true,
+        "evidence": "Research study",
         "note": "Solar conjunction disrupts links for about two weeks, roughly every two years.",
-        "source": {"title": "NASA Langley (2022): Communication delays, disruptions, and blackouts for crewed Mars missions", "url": "https://ntrs.nasa.gov/citations/20220013418"}
+        "source": {
+          "title": "NASA Langley (2022): Communication delays, disruptions, and blackouts for crewed Mars missions",
+          "url": "https://ntrs.nasa.gov/citations/20220013418"
+        }
       },
       "dust": {
-        "value": "habitat", "evidence": "Team assumption",
+        "value": "habitat",
+        "evidence": "Team assumption",
         "note": "By analogy with Apollo cabin dust. Martian soil also contains perchlorate, a toxic salt.",
-        "source": {"title": "Hecht et al. 2009, Science: perchlorate in Martian soil at the Phoenix site", "url": "https://doi.org/10.1126/science.1172466"}
+        "source": {
+          "title": "Hecht et al. 2009, Science: perchlorate in Martian soil at the Phoenix site",
+          "url": "https://doi.org/10.1126/science.1172466"
+        }
       },
       "arrival_pressure_kpa": {
-        "from": 101.3, "to": 56.5, "unit": "kPa", "evidence": "Team assumption",
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Team assumption",
         "note": "From sea-level pressure on Earth to the assumed base atmosphere.",
-        "source": {"title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen", "url": "https://ntrs.nasa.gov/citations/20130013505"}
+        "source": {
+          "title": "NASA Exploration Atmospheres Working Group: 8.2 psia, 34% oxygen",
+          "url": "https://ntrs.nasa.gov/citations/20130013505"
+        }
+      }
+    },
+    {
+      "id": "mercury",
+      "name": "Mercury",
+      "place": "Hermian polar crater base (permanently shadowed)",
+      "where": "in the Mercury polar habitat",
+      "category": "Solar Planet",
+      "gravity_ms2": {
+        "value": 3.7,
+        "unit": "m/s²",
+        "evidence": "Physics",
+        "note": "Mercury surface gravity is about 0.38 g, similar to Mars.",
+        "source": {
+          "title": "NASA Mercury Fact Sheet",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html"
+        }
+      },
+      "outside_temp_c": {
+        "min": -180,
+        "max": 430,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "note": "Extreme day-night temperature swings on the airless surface.",
+        "source": {
+          "title": "NASA MESSENGER Mission Data",
+          "url": "https://science.nasa.gov/mission/messenger/"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 18,
+        "max": 25,
+        "unit": "°C",
+        "evidence": "Standard",
+        "note": "Standard habitat environmental control range.",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-002-eclss.pdf"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "NASA Exploration Atmosphere (8.2 psia).",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 1.9,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Elevated solar particle flux due to proximity to the Sun (0.39 AU).",
+        "source": {
+          "title": "Solar Orbiter Radiation Measurements",
+          "url": "https://www.esa.int"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 150,
+        "unit": "days",
+        "evidence": "Physics",
+        "note": "Hohmann transfer with gravity assists.",
+        "source": {
+          "title": "BepiColombo Trajectory Analysis",
+          "url": "https://www.esa.int"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.8,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 280,
+        "max": 860,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "Light travel time between Mercury and Earth (4.7 to 14.3 minutes).",
+        "source": {
+          "title": "JPL Planetary Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Superior solar conjunction geometry",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "fine regolith",
+        "evidence": "Spaceflight data",
+        "note": "Extremely abrasive micro-fractured basaltic regolith from solar wind bombardment.",
+        "source": {
+          "title": "MESSENGER Surface Science",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Controlled decompression during orbital descent.",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "venus",
+      "name": "Venus",
+      "place": "High-altitude cloud station (55 km aerostat)",
+      "where": "in the Venus cloud aerostat habitat",
+      "category": "Solar Planet",
+      "gravity_ms2": {
+        "value": 8.87,
+        "unit": "m/s²",
+        "evidence": "Physics",
+        "note": "Near Earth-equivalent gravity (0.90 g).",
+        "source": {
+          "title": "NASA Venus Fact Sheet",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html"
+        }
+      },
+      "outside_temp_c": {
+        "min": 0,
+        "max": 50,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "note": "At 55 km altitude, Venus atmosphere offers Earth-like pressure and temperature.",
+        "source": {
+          "title": "NASA HAVOC Study: High Altitude Venus Operational Concept",
+          "url": "https://ntrs.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 19,
+        "max": 25,
+        "unit": "°C",
+        "evidence": "Standard",
+        "note": "Climate-controlled habitat gondola.",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 75.0,
+        "unit": "kPa",
+        "evidence": "Aviation data",
+        "note": "Airliner equivalent pressure matched to ambient buoyant cloud level.",
+        "source": {
+          "title": "NASA HAVOC Engineering Architecture",
+          "url": "https://ntrs.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 24,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Architecture",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 0.35,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Heavy upper cloud mass provides superior cosmic ray shielding.",
+        "source": {
+          "title": "Venus Atmospheric Radiation Shielding Modeling",
+          "url": "https://ntrs.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 110,
+        "unit": "days",
+        "evidence": "Physics",
+        "note": "Direct transfer trajectory.",
+        "source": {
+          "title": "Planetary Flight Handbook",
+          "url": "https://ntrs.nasa.gov"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.5,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 134,
+        "max": 1500,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "2.2 to 25 minutes light delay.",
+        "source": {
+          "title": "JPL Planetary Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Solar conjunction blackout",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "acidic aerosols",
+        "evidence": "Spaceflight data",
+        "note": "Concentrated sulfuric acid droplets in external clouds require PTFE exterior seals.",
+        "source": {
+          "title": "Venera and Pioneer Venus Probe Data",
+          "url": "https://nssdc.gsfc.nasa.gov"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 75.0,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Arrival transition to buoyant habitat.",
+        "source": {
+          "title": "NASA HAVOC Study",
+          "url": "https://ntrs.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "ceres",
+      "name": "Ceres",
+      "place": "Occator Crater sub-crust station",
+      "where": "in the Ceres mining outpost",
+      "category": "Dwarf Planet",
+      "gravity_ms2": {
+        "value": 0.28,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "note": "Micro-gravity regime: only 0.029 g.",
+        "source": {
+          "title": "NASA Dawn Mission Gravity Science",
+          "url": "https://science.nasa.gov/mission/dawn/"
+        }
+      },
+      "outside_temp_c": {
+        "min": -106,
+        "max": -73,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "note": "Cold asteroid belt surface.",
+        "source": {
+          "title": "Dawn VIR Spectrometer Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 18,
+        "max": 24,
+        "unit": "°C",
+        "evidence": "Standard",
+        "note": "Sub-crust insulated habitat.",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "NASA Exploration Atmosphere.",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 1.15,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Deep space galactic cosmic ray flux; sub-regolith habitat provides shielding.",
+        "source": {
+          "title": "Deep Space Radiation Models (Badhwar-O'Neill)",
+          "url": "https://ntrs.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 450,
+        "unit": "days",
+        "evidence": "Physics",
+        "note": "Ion propulsion trajectory to the asteroid belt.",
+        "source": {
+          "title": "Dawn Trajectory Design",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.5,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 1300,
+        "max": 2000,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "21 to 33 minutes one-way delay.",
+        "source": {
+          "title": "JPL Horizons Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Solar conjunction geometry",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "fine clay particulates",
+        "evidence": "Spaceflight data",
+        "note": "Phyllosilicate and carbonate dust with sharp cleavage planes.",
+        "source": {
+          "title": "Dawn Mineralogical Analysis",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Arrival habitat transition.",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "europa",
+      "name": "Europa",
+      "place": "Jovian ice crust oceanographic station",
+      "where": "in the Europa sub-ice habitat",
+      "category": "Moons & Ocean Worlds",
+      "gravity_ms2": {
+        "value": 1.31,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "note": "0.134 g surface gravity, similar to the Moon.",
+        "source": {
+          "title": "Galileo Mission Geodesy Data",
+          "url": "https://science.nasa.gov/mission/galileo/"
+        }
+      },
+      "outside_temp_c": {
+        "min": -220,
+        "max": -160,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "note": "Cryogenic ice shell surface.",
+        "source": {
+          "title": "Galileo PPR Instrument Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 18,
+        "max": 24,
+        "unit": "°C",
+        "evidence": "Standard",
+        "note": "Habitat heated by nuclear thermal auxiliary units.",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Exploration standard pressure.",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 5.4,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
+        "note": "Trapped energetic electrons in Jupiter inner magnetosphere; requires multi-meter water ice shielding.",
+        "source": {
+          "title": "Galileo Energetic Particle Detector Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 850,
+        "unit": "days",
+        "evidence": "Physics",
+        "note": "Jupiter transfer with gravity assists.",
+        "source": {
+          "title": "Europa Clipper Mission Trajectory",
+          "url": "https://europa.nasa.gov"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.6,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 1970,
+        "max": 3180,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "32.8 to 53 minutes light travel time.",
+        "source": {
+          "title": "JPL Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Solar conjunction geometry",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "ice cryo-ejecta",
+        "evidence": "Spaceflight data",
+        "note": "Sub-micron ice crystals and salt hydrates (sodium chloride and magnesium sulfate).",
+        "source": {
+          "title": "Hubble and Galileo Europa Observations",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Descent stage depressurization.",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "titan",
+      "name": "Titan",
+      "place": "Kraken Mare coastal base",
+      "where": "in the Titan surface station",
+      "category": "Moons & Ocean Worlds",
+      "gravity_ms2": {
+        "value": 1.35,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "note": "0.138 g lunar-like gravity combined with dense atmosphere.",
+        "source": {
+          "title": "Cassini-Huygens Mission Data",
+          "url": "https://science.nasa.gov/mission/cassini/"
+        }
+      },
+      "outside_temp_c": {
+        "min": -180,
+        "max": -178,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "note": "Uniform cryogenic temperature supported by dense nitrogen greenhouse.",
+        "source": {
+          "title": "ESA Huygens Probe Surface Measurements",
+          "url": "https://www.esa.int"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 19,
+        "max": 25,
+        "unit": "°C",
+        "evidence": "Standard",
+        "note": "Climate-controlled habitat dome.",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 101.3,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Sea-level pressure (ambient outside is 147 kPa).",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 21,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "Standard Sea-Level ECLSS",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 0.05,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Virtually zero surface radiation: 1.5 bar atmosphere absorbs cosmic rays and solar particles.",
+        "source": {
+          "title": "Cassini-Huygens Radiation Environment Study",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 1400,
+        "unit": "days",
+        "evidence": "Physics",
+        "note": "Saturn system transfer trajectory.",
+        "source": {
+          "title": "Dragonfly Mission Design",
+          "url": "https://dragonfly.jhuapl.edu"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.5,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 4100,
+        "max": 5500,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "68 to 92 minutes one-way radio delay.",
+        "source": {
+          "title": "JPL Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Saturn solar conjunction",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "sticky organic tholins",
+        "evidence": "Spaceflight data",
+        "note": "Complex organic tholin aerosols coat surfaces with hydrophobic sticky residue.",
+        "source": {
+          "title": "Huygens Aerosol Collector and Pyrolyser Data",
+          "url": "https://www.esa.int"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 101.3,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Habitat pressure maintained at nominal sea level.",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "proxima_b",
+      "name": "Proxima Centauri b",
+      "place": "Alpha Centauri system, tidally locked twilight base",
+      "where": "in the Proxima Centauri b colony habitat",
+      "category": "Exoplanet",
+      "gravity_ms2": {
+        "value": 10.6,
+        "unit": "m/s²",
+        "evidence": "Research study",
+        "note": "1.08 g surface gravity, closely matching Earth.",
+        "source": {
+          "title": "ESO Discovery Paper (Anglada-Escudé et al. 2016)",
+          "url": "https://www.nature.com/articles/nature19106"
+        }
+      },
+      "outside_temp_c": {
+        "min": -40,
+        "max": 30,
+        "unit": "°C",
+        "evidence": "Research study",
+        "note": "Temperate twilight terminator zone between permanent day and night sides.",
+        "source": {
+          "title": "Climate Models of Tidally Locked Terrestrial Exoplanets (Turbet et al.)",
+          "url": "https://www.aanda.org"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 19,
+        "max": 25,
+        "unit": "°C",
+        "evidence": "Standard",
+        "note": "Controlled colony microclimate.",
+        "source": {
+          "title": "Interstellar Habitat ECLSS Study",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 85.0,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Intermediate high-efficiency human habitability pressure.",
+        "source": {
+          "title": "Interstellar Habitat ECLSS Study",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 24,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "Interstellar Habitat ECLSS Study",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 2.8,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Active M-dwarf stellar flaring causes intense magnetic storm radiation; requires heavy colony regolith burrows.",
+        "source": {
+          "title": "Proxima Flare Physics and Habitability (Ribas et al.)",
+          "url": "https://iopscience.iop.org"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 1500,
+        "unit": "days",
+        "evidence": "Team assumption",
+        "note": "Relativistic cruise mission profile.",
+        "source": {
+          "title": "Breakthrough Starshot Concept",
+          "url": "https://breakthroughinitiatives.org"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.2,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 133800000,
+        "max": 133800000,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "4.24 years light delay. Real-time teleconsultation is impossible; full local autonomy required.",
+        "source": {
+          "title": "BIPM Astronomical Unit Constants",
+          "url": "https://www.bipm.org"
+        }
+      },
+      "blackout": {
+        "value": false,
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Relay satellite constellation",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "fine weathered silicates",
+        "evidence": "Research study",
+        "note": "Mineral dust weathered by stellar coronal mass ejections.",
+        "source": {
+          "title": "Exoplanetary Surface Dust Modeling",
+          "url": "https://iopscience.iop.org"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 85.0,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Arrival equilibration to colony pressure.",
+        "source": {
+          "title": "Interstellar Habitat ECLSS Study",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "trappist_1e",
+      "name": "TRAPPIST-1e",
+      "place": "TRAPPIST-1 system, temperate rocky planetary base",
+      "where": "in the TRAPPIST-1e colony habitat",
+      "category": "Exoplanet",
+      "gravity_ms2": {
+        "value": 9.12,
+        "unit": "m/s²",
+        "evidence": "Research study",
+        "note": "0.93 g surface gravity, almost identical to Earth.",
+        "source": {
+          "title": "Grimm et al. 2018: TRAPPIST-1 Mass and Density Survey",
+          "url": "https://www.aanda.org/articles/aa/full_html/2018/05/aa32233-17/aa32233-17.html"
+        }
+      },
+      "outside_temp_c": {
+        "min": -25,
+        "max": 15,
+        "unit": "°C",
+        "evidence": "Research study",
+        "note": "Habitable zone equilibrium temperature with moderate greenhouse effect.",
+        "source": {
+          "title": "JWST Atmosphere Characterization Reports",
+          "url": "https://webbtelescope.org"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 19,
+        "max": 25,
+        "unit": "°C",
+        "evidence": "Standard",
+        "note": "Standard terrestrial comfort zone.",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 80.0,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Controlled colonial pressurized habitat.",
+        "source": {
+          "title": "Interstellar Habitability Studies",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 25,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "Interstellar Habitability Studies",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 1.4,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Compact M-dwarf system with compact stellar wind interactions.",
+        "source": {
+          "title": "TRAPPIST-1 Space Weather Modeling",
+          "url": "https://iopscience.iop.org"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 1500,
+        "unit": "days",
+        "evidence": "Team assumption",
+        "note": "Relativistic interstellar flight.",
+        "source": {
+          "title": "Interstellar Flight Concepts",
+          "url": null
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.2,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 1230000000,
+        "max": 1230000000,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "39 years light delay to Earth.",
+        "source": {
+          "title": "SIMBAD Astronomical Database",
+          "url": "https://simbad.u-strasbg.fr"
+        }
+      },
+      "blackout": {
+        "value": false,
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Laser communication relay network",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "basaltic mineral dust",
+        "evidence": "Research study",
+        "note": "Dense basaltic and iron-rich mineral crust.",
+        "source": {
+          "title": "Exoplanet Surface Composition Models",
+          "url": "https://www.nature.com"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 80.0,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "note": "Pressurization equilibration.",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "ganymede",
+      "name": "Ganymede",
+      "place": "Jovian magnetosphere surface station",
+      "where": "in the Ganymede colony habitat",
+      "category": "Moons & Ocean Worlds",
+      "gravity_ms2": {
+        "value": 1.43,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "note": "0.146 g surface gravity.",
+        "source": {
+          "title": "Galileo Mission Geodesy Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "outside_temp_c": {
+        "min": -203,
+        "max": -121,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "Galileo PPR Instrument Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 18,
+        "max": 24,
+        "unit": "°C",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 0.8,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
+        "note": "Protected by Ganymedes unique intrinsic magnetic field.",
+        "source": {
+          "title": "Juno and Galileo Magnetometer Science",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 900,
+        "unit": "days",
+        "evidence": "Physics",
+        "source": {
+          "title": "Jupiter Transfer Trajectories",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.6,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 1970,
+        "max": 3180,
+        "unit": "s",
+        "evidence": "Physics",
+        "source": {
+          "title": "JPL Planetary Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Solar conjunction geometry",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "silicate and water ice grit",
+        "evidence": "Spaceflight data",
+        "note": "Ice and silicate impact debris.",
+        "source": {
+          "title": "Galileo Surface Studies",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "callisto",
+      "name": "Callisto",
+      "place": "Valhalla Basin Jovian logistics hub",
+      "where": "in the Callisto logistics station",
+      "category": "Moons & Ocean Worlds",
+      "gravity_ms2": {
+        "value": 1.24,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "note": "0.126 g gravity.",
+        "source": {
+          "title": "NASA Planetary Fact Sheet",
+          "url": "https://nssdc.gsfc.nasa.gov"
+        }
+      },
+      "outside_temp_c": {
+        "min": -193,
+        "max": -108,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "Galileo PPR Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 18,
+        "max": 24,
+        "unit": "°C",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 0.15,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
+        "note": "Safest Jovian habitat: sits outside Jupiters lethal radiation belts.",
+        "source": {
+          "title": "NASA HOPE Study (Callisto Outpost Architecture)",
+          "url": "https://ntrs.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 900,
+        "unit": "days",
+        "evidence": "Physics",
+        "source": {
+          "title": "Jupiter Transfer Trajectories",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.6,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 1970,
+        "max": 3180,
+        "unit": "s",
+        "evidence": "Physics",
+        "source": {
+          "title": "JPL Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Solar conjunction geometry",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "ancient crater impact dust",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "Galileo Surface Studies",
+          "url": "https://science.nasa.gov"
+        },
+        "note": "Surface mineral particles may penetrate mechanical seals."
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "enceladus",
+      "name": "Enceladus",
+      "place": "Tiger Stripe cryo-vent exploration base",
+      "where": "in the Enceladus geyser research station",
+      "category": "Moons & Ocean Worlds",
+      "gravity_ms2": {
+        "value": 0.11,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "note": "0.011 g near-weightless regime.",
+        "source": {
+          "title": "Cassini Geodesy Science",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "outside_temp_c": {
+        "min": -200,
+        "max": -198,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "Cassini CIRS Instrument Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 18,
+        "max": 24,
+        "unit": "°C",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 0.4,
+        "unit": "mSv/day",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "Cassini Radiation Models",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 1450,
+        "unit": "days",
+        "evidence": "Physics",
+        "source": {
+          "title": "Saturn Mission Design",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.5,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 4100,
+        "max": 5500,
+        "unit": "s",
+        "evidence": "Physics",
+        "source": {
+          "title": "JPL Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Saturn conjunction",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "saline ice crystal plume spray",
+        "evidence": "Spaceflight data",
+        "note": "Sodium chloride and silica cryo-volcanic plume crystals.",
+        "source": {
+          "title": "Cassini Cosmic Dust Analyzer Science",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "pluto",
+      "name": "Pluto",
+      "place": "Sputnik Planitia nitrogen ice outpost",
+      "where": "in the Pluto Kuiper research habitat",
+      "category": "Dwarf Planet",
+      "gravity_ms2": {
+        "value": 0.62,
+        "unit": "m/s²",
+        "evidence": "Spaceflight data",
+        "note": "0.063 g surface gravity.",
+        "source": {
+          "title": "New Horizons Flyby Science Data",
+          "url": "https://science.nasa.gov/mission/new-horizons/"
+        }
+      },
+      "outside_temp_c": {
+        "min": -233,
+        "max": -223,
+        "unit": "°C",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "New Horizons Ralph Instrument Data",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 18,
+        "max": 24,
+        "unit": "°C",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 34,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA Exploration Atmosphere Brief",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 0.2,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Very low solar energetic particle flux; galactic cosmic ray background dominates.",
+        "source": {
+          "title": "Kuiper Belt Radiation Environment",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 1500,
+        "unit": "days",
+        "evidence": "Physics",
+        "source": {
+          "title": "New Horizons Trajectory Analysis",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.5,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 16000,
+        "max": 20000,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "4.4 to 5.5 hours one-way radio delay.",
+        "source": {
+          "title": "JPL Horizons Ephemeris",
+          "url": "https://ssd.jpl.nasa.gov"
+        }
+      },
+      "blackout": {
+        "value": true,
+        "evidence": "Physics",
+        "source": {
+          "title": "Solar conjunction",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "methane and nitrogen volatile frost",
+        "evidence": "Spaceflight data",
+        "source": {
+          "title": "New Horizons Science Team Reports",
+          "url": "https://science.nasa.gov"
+        },
+        "note": "Surface mineral particles may penetrate mechanical seals."
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 56.5,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
+      }
+    },
+    {
+      "id": "kepler_452b",
+      "name": "Kepler-452b",
+      "place": "G-type star habitable super-Earth colony",
+      "where": "in the Kepler-452b surface colony",
+      "category": "Exoplanet",
+      "gravity_ms2": {
+        "value": 18.6,
+        "unit": "m/s²",
+        "evidence": "Research study",
+        "note": "Heavy super-Earth gravity: 1.90 g (nearly double Earth weight!).",
+        "source": {
+          "title": "NASA Kepler Discovery Paper (Jenkins et al. 2015)",
+          "url": "https://iopscience.iop.org/article/10.1088/0004-6256/150/2/56"
+        }
+      },
+      "outside_temp_c": {
+        "min": -20,
+        "max": 40,
+        "unit": "°C",
+        "evidence": "Research study",
+        "source": {
+          "title": "Kepler-452b Climate Modeling Reports",
+          "url": "https://science.nasa.gov"
+        }
+      },
+      "cabin_temp_c": {
+        "min": 19,
+        "max": 25,
+        "unit": "°C",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA-STD-3001 Vol 2",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "cabin_pressure_kpa": {
+        "value": 95.0,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "Interstellar Habitat Architecture Studies",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "oxygen_percent": {
+        "value": 22,
+        "unit": "%",
+        "evidence": "Standard",
+        "source": {
+          "title": "Standard Interstellar ECLSS",
+          "url": "https://www.nasa.gov"
+        }
+      },
+      "radiation_msv_day": {
+        "value": 0.6,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "note": "Strong planetary magnetic field shields surface from cosmic rays.",
+        "source": {
+          "title": "Exoplanetary Magnetosphere Studies",
+          "url": "https://iopscience.iop.org"
+        }
+      },
+      "transit_days_each_way": {
+        "value": 1500,
+        "unit": "days",
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Interstellar Mission Concepts",
+          "url": null
+        }
+      },
+      "transit_radiation_msv_day": {
+        "value": 1.2,
+        "unit": "mSv/day",
+        "evidence": "Research study",
+        "source": {
+          "title": "Deep space cruise dosimetry estimate",
+          "url": null
+        }
+      },
+      "light_delay_s": {
+        "min": 44000000000,
+        "max": 44000000000,
+        "unit": "s",
+        "evidence": "Physics",
+        "note": "1400 years light delay.",
+        "source": {
+          "title": "NASA Exoplanet Archive",
+          "url": "https://exoplanetarchive.ipac.caltech.edu"
+        }
+      },
+      "blackout": {
+        "value": false,
+        "evidence": "Team assumption",
+        "source": {
+          "title": "Colony autonomy",
+          "url": null
+        }
+      },
+      "dust": {
+        "value": "volcanic basalt dust",
+        "evidence": "Research study",
+        "source": {
+          "title": "Super-Earth Geodynamics (Valencia et al.)",
+          "url": "https://www.nature.com"
+        },
+        "note": "Surface mineral particles may penetrate mechanical seals."
+      },
+      "arrival_pressure_kpa": {
+        "from": 101.3,
+        "to": 95.0,
+        "unit": "kPa",
+        "evidence": "Standard",
+        "source": {
+          "title": "NASA OCHMO-TB-002",
+          "url": "https://www.nasa.gov"
+        }
       }
     }
   ]

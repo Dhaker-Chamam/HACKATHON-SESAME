@@ -14,19 +14,37 @@
   <a class="skip" href="#view">Skip to content</a>
   <header class="topbar">
     <div class="topbar-inner">
-      <span class="brand">
+      <div class="brand">
         <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14"/><circle cx="32" cy="32" r="15"/><path d="M17 32h30M32 17c-6 8-6 22 0 30M32 17c6 8 6 22 0 30"/></svg>
-        Bionic Passport
-      </span>
-      <div class="tabs" role="tablist" aria-label="Sections">
-        <button type="button" class="tab" role="tab" aria-selected="true" id="tab-config" aria-controls="view">Medical Device Configuration</button>
+        <span>Bionic Passport</span>
+        <span class="brand-badge">Traveler Companion</span>
+      </div>
+      <div class="nav-right">
+        <div class="tabs" role="tablist" aria-label="Sections">
+          <button type="button" class="tab" role="tab" aria-selected="true" id="tab-config" aria-controls="view">Medical Device Configuration</button>
+        </div>
+        <button type="button" class="account-btn" id="account-btn" aria-haspopup="dialog" aria-expanded="false" title="Open My Traveler Passport and Saved Trips">
+          <span class="account-avatar" id="nav-avatar">AM</span>
+          <span class="account-text">
+            <span class="account-name" id="nav-name">Alex Mercer</span>
+            <span class="account-role" id="nav-role">Space Traveler</span>
+          </span>
+          <svg class="account-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8l4 4 4-4"/></svg>
+        </button>
       </div>
     </div>
   </header>
 
   <main id="view" class="view" role="tabpanel" aria-labelledby="tab-config" tabindex="-1">
-    <p class="boot">Loading destinations and devices…</p>
+    <p class="boot">Loading destinations and devices...</p>
   </main>
+
+  <!-- Account Space Dialog -->
+  <dialog id="account-dialog" class="account-dialog" aria-labelledby="account-modal-title">
+    <div class="account-dialog-card" id="account-dialog-content">
+      <!-- Dynamically populated by app.js -->
+    </div>
+  </dialog>
 
   <nav class="progress" aria-label="Progress">
     <div class="progress-inner">

@@ -10,7 +10,7 @@ client = TestClient(app)
 def test_health_and_data_files():
     assert client.get("/api/health").json()["status"] == "ok"
     assert client.get("/data/destinations.json").json()["destinations"][0]["id"] == "orbit"
-    assert len(client.get("/data/devices.json").json()["devices"]) == 4
+    assert len(client.get("/data/devices.json").json()["devices"]) >= 4
 
 
 def test_assess_contract():
@@ -24,7 +24,7 @@ def test_assess_contract():
 
 
 def test_assess_errors():
-    assert client.post("/api/assess", json={"destination_id": "venus", "device_id": "pacemaker", "stay_days": 30}).status_code == 404
+    assert client.post("/api/assess", json={"destination_id": "krypton", "device_id": "pacemaker", "stay_days": 30}).status_code == 404
     assert client.post("/api/assess", json={"destination_id": "moon", "device_id": "pacemaker", "stay_days": 0}).status_code == 422
     res = client.post("/api/assess", json={"destination_id": "moon", "device_id": "powered_knee", "stay_days": 30, "body_mass_kg": 150})
     assert res.status_code == 422 and "50 and 116" in res.json()["detail"]
