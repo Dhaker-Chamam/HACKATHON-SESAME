@@ -1,10 +1,6 @@
 "use strict";
 
-/* Bionic Passport UI.
-   Full celestial destination catalog and clinical medical devices directory.
-   Graphic environmental stressor cockpit, visual passport credentials,
-   Account Space with flight surgeon personas and 1-click clinical dossiers.
-   No em dashes used anywhere. */
+/* Bionic Passport UI. No em dashes used anywhere. */
 
 const STAY_OPTIONS = [
   { days: 7, label: "1 week" },
@@ -32,14 +28,10 @@ const session = {
   set(v) { try { sessionStorage.setItem("bp-flow", JSON.stringify(v)); } catch { /* storage unavailable */ } },
 };
 
-// ---------- Personas & Saved Patient Dossiers ----------
-// Loaded in boot() from /data/personas.json and /data/dossiers.json.
-
-let PERSONAS = [];
-
-let DOSSIERS = [];
-
-let activePersonaId = "alex";
+const auth = {
+  token: sessionStorage.getItem("bp-token") || "",
+  user: null,
+};
 
 const DATA = { destinations: null, devices: null };
 const state = {
@@ -61,7 +53,7 @@ const state = {
 
 function persist() {
   const { step, maxStep, destId, deviceId, stayDays, bodyMass, withMit } = state;
-  session.set({ step, maxStep, destId, deviceId, stayDays, bodyMass, withMit, activePersonaId });
+  session.set({ step, maxStep, destId, deviceId, stayDays, bodyMass, withMit });
 }
 
 const dests = () => DATA.destinations.destinations;
@@ -242,14 +234,18 @@ async function fetchAssessment(req) {
   try {
     res = await fetch("/api/assess", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
       body: JSON.stringify(req),
     });
   } catch {
     res = null; // server unreachable
   }
   if (res && res.ok) return { data: await res.json(), via: "server" };
-  if (res && (res.status === 404 || res.status === 422)) {
+  if (res && (res.status === 401 || res.status === 404 || res.status === 422)) {
+    if (res.status === 401) {
+      await logout();
+      throw new InputError("Your session expired. Please sign in again.");
+    }
     let detail = "The request was rejected.";
     try {
       const j = await res.json();
@@ -303,85 +299,37 @@ function enterAnimation(el) {
   el.animate(frames, { duration: reducedMotion() ? 80 : 160, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
 }
 
-// ---------- Account Space Functions ----------
-
-function getActivePersona() {
-  return PERSONAS.find((p) => p.id === activePersonaId) || PERSONAS[0];
-}
-
 function updateNavAccount() {
-  const p = getActivePersona();
+  const nameValue = auth.user?.full_name || auth.user?.email || "Account";
+  const initials = nameValue.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
   const avatar = $("#nav-avatar");
   const name = $("#nav-name");
   const role = $("#nav-role");
-  if (avatar) avatar.textContent = p.initials;
-  if (name) name.textContent = p.shortName;
-  if (role) role.textContent = p.role;
+  if (avatar) avatar.textContent = initials;
+  if (name) name.textContent = nameValue;
+  if (role) role.textContent = "Authenticated traveler";
 }
 
 function renderAccountDialogContent() {
-  const p = getActivePersona();
-  const personasHtml = PERSONAS.map((item) => `
-    <button type="button" class="persona-btn ${item.id === activePersonaId ? "active" : ""}" data-persona="${esc(item.id)}">
-      <span class="persona-btn-title">${esc(item.name)}</span>
-      <span class="persona-btn-desc">${esc(item.role)} &bull; ${esc(item.device)}</span>
-    </button>
-  `).join("");
-
-  const dossiersHtml = DOSSIERS.map((d) => `
-    <div class="dossier-item">
-      <div class="dossier-info">
-        <span class="dossier-name">${esc(d.patient)} <span class="tag ${d.badgeCls}">${esc(d.badgeLabel)}</span></span>
-        <span class="dossier-meta">${esc(d.summary)}</span>
-      </div>
-      <button type="button" class="dossier-load-btn" data-load-dossier="${esc(d.id)}">
-        Load This Trip
-      </button>
-    </div>
-  `).join("");
-
+  const nameValue = auth.user?.full_name || auth.user?.email || "Authenticated traveler";
+  const initials = nameValue.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
   return `
     <div class="account-dialog-header">
-      <h2 id="account-modal-title" class="account-dialog-title">My Traveler Health Passport</h2>
+      <h2 id="account-modal-title" class="account-dialog-title">My Traveler Passport</h2>
       <button type="button" class="account-close-btn" id="account-dialog-close" aria-label="Close Traveler Passport">&times;</button>
     </div>
     <div class="account-dialog-body">
-      <!-- Active Traveler Card -->
       <div class="account-profile-box">
-        <div class="account-profile-avatar">${esc(p.initials)}</div>
+        <div class="account-profile-avatar">${esc(initials)}</div>
         <div class="account-profile-details">
-          <span class="account-profile-name">${esc(p.name)}</span>
-          <span class="account-profile-sub">${esc(p.role)} &bull; ${esc(p.org)}</span>
-          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
-            <span class="tag" style="font-weight: 700;">${esc(p.license)}</span>
-            <span class="tag tag-fixed" style="font-weight: 600;">${esc(p.device)}</span>
-          </div>
-          <p style="font-size: 0.78rem; color: var(--text-2); margin-top: 6px; line-height: 1.35;">
-            <strong>Primary Physician:</strong> ${esc(p.doctor)}<br>
-            ${esc(p.desc)}
-          </p>
+          <span class="account-profile-name">${esc(nameValue)}</span>
+          <span class="account-profile-sub">${esc(auth.user?.email || "")}</span>
         </div>
       </div>
-
-      <!-- Traveler Persona Switcher -->
-      <div>
-        <span class="field-label" style="font-size: 0.8rem; margin-bottom: 6px;">Switch Traveler Profile</span>
-        <div class="persona-grid">${personasHtml}</div>
-      </div>
-
-      <!-- Saved Trips & Configurations -->
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
-          <span class="field-label" style="font-size: 0.8rem; margin: 0;">My Saved Trips & Medical Setups</span>
-          <span style="font-size: 0.72rem; color: var(--text-muted);">${DOSSIERS.length} saved trips</span>
-        </div>
-        <div class="dossier-list">${dossiersHtml}</div>
-      </div>
-
-      <!-- Standards Reference -->
       <div style="padding: 10px; background: var(--surface-muted); border-radius: var(--r-ctl); border: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted);">
-        <strong style="color: var(--text);">Passenger Safety Guidelines:</strong> NASA-STD-3001 Vol 2 (Crew Health) &bull; FAA 14 CFR 460 Commercial Human Spaceflight.
+        <strong style="color: var(--text);">Session security:</strong> Your password is hashed and your access token is issued by Supabase Auth.
       </div>
+      <button type="button" class="btn" id="logout">Sign out</button>
     </div>
   `;
 }
@@ -410,27 +358,12 @@ function closeAccountModal() {
   $("#account-btn").setAttribute("aria-expanded", "false");
 }
 
-function selectPersona(id) {
-  activePersonaId = id;
-  updateNavAccount();
-  const content = $("#account-dialog-content");
-  if (content) content.innerHTML = renderAccountDialogContent();
-  persist();
-}
-
-function loadDossier(dossierId) {
-  const d = DOSSIERS.find((item) => item.id === dossierId);
-  if (!d) return;
-  state.destId = d.destId;
-  state.deviceId = d.deviceId;
-  state.stayDays = d.stayDays;
-  state.bodyMass = d.bodyMass;
-  state.withMit = d.withMit;
-  state.step = 3;
-  state.maxStep = 3;
-  closeAccountModal();
-  persist();
-  render(true);
+async function logout() {
+  auth.token = "";
+  auth.user = null;
+  sessionStorage.removeItem("bp-token");
+  document.body.classList.add("auth-mode");
+  renderAuth();
 }
 
 // ---------- Step 1: Destination Selection with Search Bar ----------
@@ -1110,7 +1043,7 @@ function wire() {
     accountBtn.addEventListener("click", () => openAccountModal());
   }
 
-  // Account Dialog Event Delegation (persona clicks, dossier loads, close)
+  // Account Dialog Event Delegation
   const accountDlg = $("#account-dialog");
   if (accountDlg) {
     accountDlg.addEventListener("click", (e) => {
@@ -1118,14 +1051,9 @@ function wire() {
         closeAccountModal();
         return;
       }
-      const personaBtn = e.target.closest("[data-persona]");
-      if (personaBtn) {
-        selectPersona(personaBtn.dataset.persona);
-        return;
-      }
-      const loadBtn = e.target.closest("[data-load-dossier]");
-      if (loadBtn) {
-        loadDossier(loadBtn.dataset.loadDossier);
+      if (e.target.closest("#logout")) {
+        closeAccountModal();
+        logout();
         return;
       }
       // Click outside dialog card (on backdrop) closes dialog
@@ -1186,37 +1114,102 @@ function wire() {
   });
 }
 
-async function boot() {
+function renderAuth(mode = "login", error = "") {
+  const isRegister = mode === "register";
+  const view = $("#view");
+  if (!view) return;
+  view.innerHTML = `
+    <section class="auth-shell" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <span class="step-badge">Bionic Passport</span>
+        <h1 id="auth-title">${isRegister ? "Create your traveler account" : "Welcome back, traveler"}</h1>
+        <p class="auth-intro">${isRegister ? "Save your secure traveler profile and access the medical device assessment." : "Sign in to continue to your personal medical device assessment."}</p>
+        ${error ? `<div class="auth-error" role="alert">${esc(error)}</div>` : ""}
+        <form id="auth-form" class="auth-form">
+          ${isRegister ? `<label class="field-label" for="auth-name">Full name</label><input id="auth-name" name="full_name" autocomplete="name" required minlength="2" maxlength="100">` : ""}
+          <label class="field-label" for="auth-email">Email address</label>
+          <input id="auth-email" name="email" type="email" autocomplete="email" required>
+          <label class="field-label" for="auth-password">Password</label>
+          <input id="auth-password" name="password" type="password" autocomplete="${isRegister ? "new-password" : "current-password"}" minlength="8" required>
+          <button class="btn btn-primary auth-submit" type="submit">${isRegister ? "Create account" : "Sign in"}</button>
+        </form>
+        <p class="auth-switch">${isRegister ? "Already have an account?" : "New to Bionic Passport?"}
+          <button type="button" class="auth-link" id="auth-toggle">${isRegister ? "Sign in" : "Register here"}</button>
+        </p>
+      </div>
+    </section>
+  `;
+  $("#auth-toggle").addEventListener("click", () => renderAuth(isRegister ? "login" : "register"));
+  $("#auth-form").addEventListener("submit", (event) => submitAuth(event, mode));
+  $("#auth-email").focus();
+}
+
+async function submitAuth(event, mode) {
+  event.preventDefault();
+  const form = new FormData(event.currentTarget);
+  const payload = Object.fromEntries(form.entries());
+  const endpoint = mode === "register" ? "/api/auth/register" : "/api/auth/login";
+  const submit = $(".auth-submit");
+  submit.disabled = true;
+  submit.textContent = mode === "register" ? "Creating account..." : "Signing in...";
   try {
-    const files = ["destinations", "devices", "personas", "dossiers"];
-    const res = await Promise.all(files.map((f) => fetch(`/data/${f}.json`)));
-    if (res.some((r) => !r.ok)) throw new Error("Data files missing.");
-    const [dests, devs, personas, dossiers] = await Promise.all(res.map((r) => r.json()));
-    DATA.destinations = dests;
-    DATA.devices = devs;
-    PERSONAS = personas.personas;
-    DOSSIERS = dossiers.dossiers;
-  } catch {
-    $("#view").innerHTML = '<div class="card error-card" style="padding: 24px;"><h2>Data files failed to load</h2><p>Please launch the app via run.bat or run.ps1 and refresh.</p></div>';
-    return;
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.detail || "Authentication failed.");
+    if (mode === "register" && !body.access_token) {
+      renderAuth("login", "Account created. Check your email if confirmation is enabled, then sign in.");
+      return;
+    }
+    auth.token = body.access_token;
+    sessionStorage.setItem("bp-token", auth.token);
+    await startAuthenticatedApp();
+  } catch (error) {
+    renderAuth(mode, error.message);
   }
+}
 
-  const saved = session.get();
-  if (saved.destId && destById(saved.destId)) state.destId = saved.destId;
-  if (saved.deviceId && deviceById(saved.deviceId)) state.deviceId = saved.deviceId;
-  if (STAY_OPTIONS.some((o) => o.days === saved.stayDays)) state.stayDays = saved.stayDays;
-  if (typeof saved.bodyMass === "number") state.bodyMass = saved.bodyMass;
-  if (saved.activePersonaId && PERSONAS.some((p) => p.id === saved.activePersonaId)) activePersonaId = saved.activePersonaId;
-  state.withMit = Boolean(saved.withMit);
-  state.maxStep = Math.min(saved.maxStep || 1, state.deviceId ? 3 : state.destId ? 2 : 1);
-
-  const fromHash = Number(Object.keys(STEP_HASH).find((k) => STEP_HASH[k] === location.hash)) || saved.step || 1;
-  state.step = Math.min(fromHash, state.maxStep);
-  history.replaceState({ step: state.step }, "", STEP_HASH[state.step]);
-
+async function startAuthenticatedApp() {
+  const response = await fetch("/api/auth/me", { headers: { Authorization: "Bearer " + auth.token } });
+  if (!response.ok) throw new Error("Could not load your account.");
+  auth.user = await response.json();
+  document.body.classList.remove("auth-mode");
+  await loadCatalog();
   wire();
   updateNavAccount();
   render(false);
+}
+
+async function loadCatalog() {
+  try {
+    const files = ["destinations", "devices"];
+    const res = await Promise.all(files.map((f) => fetch(`/data/${f}.json`)));
+    if (res.some((r) => !r.ok)) throw new Error("Data files missing.");
+    const [dests, devs] = await Promise.all(res.map((r) => r.json()));
+    DATA.destinations = dests;
+    DATA.devices = devs;
+  } catch {
+    $("#view").innerHTML = '<div class="card error-card" style="padding: 24px;"><h2>Data files failed to load</h2><p>Please launch the app via run.bat or run.ps1 and refresh.</p></div>';
+    throw new Error("Data files failed to load.");
+  }
+}
+
+async function boot() {
+  document.body.classList.add("auth-mode");
+  if (!auth.token) {
+    renderAuth();
+    return;
+  }
+  try {
+    await startAuthenticatedApp();
+  } catch {
+    sessionStorage.removeItem("bp-token");
+    auth.token = "";
+    renderAuth("login", "Your session has expired. Please sign in again.");
+  }
 }
 
 boot();

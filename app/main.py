@@ -7,13 +7,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from .datasource import load_catalog, log
 from .engine import AssessError, assess, validate_data
+from .auth import current_user, login, register
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 VERSION = "2.0.0"
@@ -36,6 +37,17 @@ class AssessRequest(BaseModel):
     stay_days: int = Field(30, ge=1, le=1500)
     body_mass_kg: float | None = Field(None, ge=20, le=300)
     with_mitigations: bool = False
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str = Field(min_length=8)
+
+
+class RegisterRequest(BaseModel):
+    email: str
+    password: str = Field(min_length=8)
+    full_name: str = Field(min_length=2, max_length=100)
 
 
 @app.middleware("http")
@@ -64,8 +76,26 @@ def health():
     return {"status": "ok", "version": VERSION, "data_source": DATA_SOURCE}
 
 
+@app.post("/api/auth/login")
+def auth_login(req: LoginRequest):
+    return login(req.email, req.password)
+
+
+@app.post("/api/auth/register")
+def auth_register(req: RegisterRequest):
+    return register(req.email, req.password, req.full_name)
+
+
+@app.get("/api/auth/me")
+def auth_me(request: Request):
+    user = current_user(request)
+    metadata = user.get("user_metadata") or {}
+    name = metadata.get("full_name") or user.get("email", "").split("@")[0]
+    return {"id": user["id"], "email": user.get("email"), "full_name": name}
+
+
 @app.post("/api/assess")
-def post_assess(req: AssessRequest):
+def post_assess(req: AssessRequest, _: dict = Depends(current_user)):
     return assess(DATA, req.destination_id, req.device_id, req.stay_days, req.body_mass_kg, req.with_mitigations)
 
 
