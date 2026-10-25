@@ -45,6 +45,7 @@
     client: null,
     configError: null,
     ready: false,
+    authGate: false,
     session: null,
     profile: null,
     services: null, // id -> service row
@@ -77,6 +78,7 @@
       S.client = window.supabase.createClient(cfg.supabase_url, cfg.supabase_publishable_key, {
         auth: { persistSession: true, autoRefreshToken: true, storageKey: "bp-auth" },
       });
+      S.configError = null;
       const { data } = await S.client.auth.getSession();
       await applySession(data.session);
       S.client.auth.onAuthStateChange((event, session) => {
@@ -87,19 +89,40 @@
     } catch {
       S.client = null;
       S.configError = "Booking is offline: the Supabase connection is not configured or cannot be reached.";
+      setAuthGate(true);
     }
+  }
+
+  function fallbackProfile(session) {
+    if (!session || !session.user) return null;
+    const meta = session.user.user_metadata || {};
+    const email = session.user.email || "";
+    const fullName = meta.full_name || meta.name || meta.display_name || (email ? email.split("@")[0] : "Traveler");
+    return {
+      id: session.user.id,
+      full_name: fullName,
+      role: meta.role || "traveler",
+      persona_id: meta.persona_id || null,
+    };
   }
 
   async function applySession(session) {
     const sameUser = S.session && session && S.session.user.id === session.user.id && S.profile;
     S.session = session;
-    if (!session) S.profile = null;
-    if (session && !sameUser) {
-      const { data } = await S.client.from("profiles").select("id, full_name, role, persona_id").eq("id", session.user.id).maybeSingle();
-      S.profile = data || null;
+    if (!session) {
+      S.profile = null;
+    } else if (session && !sameUser) {
+      try {
+        const { data, error } = await S.client.from("profiles").select("id, full_name, role, persona_id").eq("id", session.user.id).maybeSingle();
+        if (error && error.code !== "PGRST116") throw error;
+        S.profile = data || fallbackProfile(session);
+      } catch {
+        S.profile = fallbackProfile(session);
+      }
     }
     if (!session) S.appts = { status: "idle", items: [], error: null, highlight: null, confirming: null, message: null };
     if (S.profile && S.profile.persona_id && app() && app().setPersona) app().setPersona(S.profile.persona_id);
+    setAuthGate(!session);
     updateNav();
     refreshAccountDialog();
     document.dispatchEvent(new CustomEvent("bp:auth", { detail: { user: session ? session.user : null, profile: S.profile } }));
@@ -127,12 +150,14 @@
     if (error) return fail(/invalid login credentials/i.test(error.message || "") ? "That email and password do not match an account." : friendlyError(error));
     const { data } = await S.client.auth.getSession();
     await applySession(data.session);
+    closeDialog($("#account-dialog"));
     if (S.pendingBooking) {
       const prefill = S.pendingBooking;
       S.pendingBooking = null;
-      closeDialog($("#account-dialog"));
       openBooking(prefill);
+      return;
     }
+    if (currentTab() !== "config") showTab("config", { push: false });
   }
 
   async function signOut() {
@@ -224,6 +249,53 @@
   function closeDialog(dlg) {
     if (dlg && dlg.open) dlg.close();
     if (dlg && dlg.id === "account-dialog" && $("#account-btn")) $("#account-btn").setAttribute("aria-expanded", "false");
+  }
+
+  function authGateHtml() {
+    const message = S.configError
+      ? `<p class="bk-alert bk-alert-error">${esc(S.configError)}</p>`
+      : `<p class="auth-gate-lead">Sign in to access your medical device dashboard and appointments.</p>`;
+    const form = S.client
+      ? loginFormHtml("gate")
+      : `<button type="button" class="btn btn-primary" data-bp-retry-auth>Try again</button>`;
+    return `<section class="auth-gate-card" aria-labelledby="auth-gate-title">
+      <div class="auth-gate-mark" aria-hidden="true">BP</div>
+      <p class="eyebrow">Bionic Passport</p>
+      <h1 id="auth-gate-title">Welcome back</h1>
+      ${message}
+      ${form}
+    </section>`;
+  }
+
+  function setAuthGate(show) {
+    const view = $("#view");
+    if (!view) return;
+    let gate = $("#auth-gate");
+    if (show) {
+      if (!gate) {
+        gate = document.createElement("main");
+        gate.id = "auth-gate";
+        gate.className = "auth-gate";
+        view.before(gate);
+      }
+      gate.innerHTML = authGateHtml();
+      gate.hidden = false;
+      view.hidden = true;
+      $("#appointments-view").hidden = true;
+      document.querySelector(".progress").hidden = true;
+      document.querySelector(".tabs").hidden = true;
+      $("#account-btn").hidden = true;
+      $("#chat-fab").hidden = true;
+      S.authGate = true;
+      return;
+    }
+    if (gate) gate.remove();
+    view.hidden = false;
+    document.querySelector(".progress").hidden = false;
+    document.querySelector(".tabs").hidden = false;
+    $("#account-btn").hidden = false;
+    $("#chat-fab").hidden = false;
+    S.authGate = false;
   }
 
   // ---------- reference data ----------
@@ -880,6 +952,10 @@
       signIn(form);
     });
     document.addEventListener("click", (e) => {
+      if (e.target.closest("[data-bp-retry-auth]")) {
+        connect();
+        return;
+      }
       const demo = e.target.closest("[data-bp-demo]");
       if (demo) {
         const form = demo.closest("[data-bp-login]");
