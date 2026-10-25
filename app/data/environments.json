@@ -1,0 +1,142 @@
+[
+  {
+    "id": "leo_station",
+    "name": "Orbital station (LEO)",
+    "short": "LEO station",
+    "kind": "station",
+    "body": "leo",
+    "summary": "ISS-class station in low Earth orbit. Sea-level cabin air, microgravity.",
+    "params": {
+      "gravity_ms2": {"value": 0.0, "unit": "m/s²", "level": "F", "source": "DERIVED", "note": "Continuous free fall in orbit: effective weight is near zero (microgravity)."},
+      "p_kpa": {"value": 101.3, "unit": "kPa", "level": "VERIFY", "source": "S59", "note": "Cabin held near sea-level pressure (14.7 psia)."},
+      "o2_fraction": {"value": 0.21, "unit": "", "level": "VERIFY", "source": "S59"},
+      "temp_c": {"min": 18, "max": 27, "unit": "°C", "level": "F", "source": "S16", "note": "NASA-STD-3001 V2 6012 crew health limit (25 to 75% RH)."},
+      "h_rate_msv_day": {"min": 0.44, "max": 0.88, "unit": "mSv/day", "level": "VERIFY", "source": "S09", "note": "80 to 160 mSv per six months, depending on the solar cycle. The engine uses the upper value."},
+      "delay_s": {"min": 0.0, "max": 1.0, "unit": "s", "level": "A", "source": "TEAM", "note": "Near-continuous relay coverage, sub-second delay."},
+      "blackout": {"value": false, "level": "A", "source": "TEAM"},
+      "dust_class": {"value": "none", "level": "A", "source": "TEAM"},
+      "neutrons": {"value": true, "level": "A", "source": "TEAM", "note": "Secondary neutrons form wherever cosmic rays hit structure."}
+    },
+    "transitions": [
+      {"label": "Earth launch to station cabin", "from_kpa": 101.3, "to_kpa": 101.3, "connected_required": false, "level": "VERIFY", "source": "S59"}
+    ],
+    "transit_legs": [],
+    "context": {}
+  },
+  {
+    "id": "moon_habitat",
+    "name": "Lunar habitat (south polar)",
+    "short": "Moon habitat",
+    "kind": "habitat",
+    "body": "moon",
+    "summary": "Pressurized surface habitat on NASA's exploration atmosphere: lower pressure, more oxygen.",
+    "params": {
+      "gravity_ms2": {"value": 1.62, "unit": "m/s²", "level": "F", "source": "S01"},
+      "p_kpa": {"value": 56.5, "unit": "kPa", "level": "E", "source": "S18", "note": "8.2 psia exploration atmosphere recommended by NASA. The Artemis surface habitat atmosphere is not final."},
+      "o2_fraction": {"value": 0.34, "unit": "", "level": "E", "source": "S18"},
+      "temp_c": {"min": 18, "max": 27, "unit": "°C", "level": "F", "source": "S16", "note": "NASA-STD-3001 V2 6012 crew health limit, applied as a design requirement."},
+      "h_rate_msv_day": {"value": 1.369, "unit": "mSv/day", "level": "E", "source": "S07", "note": "Chang'E-4 surface measurement, unshielded. Used as an upper bound inside the habitat; shielding lowers it."},
+      "delay_s": {"min": 1.21, "max": 1.35, "unit": "s", "level": "F", "source": "DERIVED", "note": "Earth-Moon distance 363,300 to 405,500 km (S01) divided by the speed of light."},
+      "blackout": {"value": false, "level": "A", "source": "TEAM"},
+      "dust_class": {"value": "habitat_ingress", "level": "F", "source": "S14", "note": "Apollo crews carried dust into the cabin. Dust caused clogging, abrasion and seal problems; ground tests underestimated it."},
+      "neutrons": {"value": true, "level": "E", "source": "S07", "note": "Neutral-particle dose about 3.1 µGy/h measured on the surface."}
+    },
+    "transitions": [
+      {"label": "Earth to habitat cabin (one-time)", "from_kpa": 101.3, "to_kpa": 56.5, "connected_required": false, "level": "E", "source": "S18"}
+    ],
+    "transit_legs": [],
+    "context": {
+      "surface_temp_k": {"min": 95, "max": 390, "unit": "K", "level": "F", "source": "S01", "note": "Equator, night to day. Context only: devices inside the habitat do not see it."},
+      "external_pressure_bar": {"value": 3e-15, "unit": "bar", "level": "F", "source": "S01", "note": "Night-time surface pressure."}
+    }
+  },
+  {
+    "id": "moon_eva",
+    "name": "Lunar EVA (spacesuit)",
+    "short": "Moon EVA",
+    "kind": "eva",
+    "body": "moon",
+    "summary": "Moonwalk in a pressurized suit: pure oxygen at about 30 kPa, lunar gravity, abrasive dust.",
+    "params": {
+      "gravity_ms2": {"value": 1.62, "unit": "m/s²", "level": "F", "source": "S01"},
+      "p_kpa": {"value": 29.6, "unit": "kPa", "level": "F", "source": "S19", "note": "Heritage EMU suit pressure (4.3 psi). Future lunar suits may differ."},
+      "o2_fraction": {"value": 1.0, "unit": "", "level": "F", "source": "S58"},
+      "temp_c": {"min": 10, "max": 35, "unit": "°C", "level": "A", "source": "TEAM", "note": "No published device-level suit-interior range found. Placeholder until verified."},
+      "h_rate_msv_day": {"value": 1.369, "unit": "mSv/day", "level": "E", "source": "S07"},
+      "delay_s": {"min": 1.21, "max": 1.35, "unit": "s", "level": "F", "source": "DERIVED", "note": "Earth-Moon distance (S01) divided by the speed of light."},
+      "blackout": {"value": false, "level": "A", "source": "TEAM"},
+      "dust_class": {"value": "high", "level": "F", "source": "S14"},
+      "neutrons": {"value": true, "level": "E", "source": "S07"},
+      "m_carried_kg": {"value": 96.0, "unit": "kg", "level": "F", "source": "S23", "note": "Apollo A7LB suit, wet mass. Modern suits differ."},
+      "suit_self_support": {"min": 0.0, "max": 1.0, "unit": "fraction of suit weight on the legs", "level": "E", "source": "S23", "note": "Pressurized suits partially (1 g) or completely (lunar g) carry their own weight. 0 = suit carries itself; 1 (conservative) = all suit weight goes through the legs."},
+      "eva_h": {"value": 7.0, "unit": "h", "level": "A", "source": "TEAM", "note": "Planning value for one EVA."}
+    },
+    "transitions": [
+      {"label": "Habitat cabin to suit (each EVA, device stays worn)", "from_kpa": 56.5, "to_kpa": 29.6, "connected_required": true, "level": "E", "source": "S19"}
+    ],
+    "transit_legs": [],
+    "context": {
+      "surface_temp_k": {"min": 95, "max": 390, "unit": "K", "level": "F", "source": "S01", "note": "Equator, night to day. The suit's thermal control isolates worn devices from it."}
+    }
+  },
+  {
+    "id": "mars_habitat",
+    "name": "Mars habitat",
+    "short": "Mars habitat",
+    "kind": "habitat",
+    "body": "mars",
+    "summary": "Long-stay surface habitat. Mars gravity, minutes of light delay, months of transit.",
+    "params": {
+      "gravity_ms2": {"value": 3.73, "unit": "m/s²", "level": "F", "source": "S02", "note": "Mean surface gravity."},
+      "p_kpa": {"value": 56.5, "unit": "kPa", "level": "A", "source": "S18", "note": "Assumes the same exploration atmosphere as lunar habitats."},
+      "o2_fraction": {"value": 0.34, "unit": "", "level": "A", "source": "S18"},
+      "temp_c": {"min": 18, "max": 27, "unit": "°C", "level": "F", "source": "S16"},
+      "h_rate_msv_day": {"value": 0.67, "unit": "mSv/day", "level": "F", "source": "S06", "note": "Curiosity RAD surface average, Aug 2012 to Jun 2013."},
+      "delay_s": {"min": 182, "max": 1339, "unit": "s", "level": "F", "source": "DERIVED", "note": "Earth-Mars distance 54.6 to 401.4 million km (S02) divided by the speed of light: 3.0 to 22.3 min."},
+      "blackout": {"value": true, "level": "E", "source": "S20", "note": "Solar conjunction disrupts links for about two weeks, roughly every two years."},
+      "dust_class": {"value": "habitat_ingress", "level": "A", "source": "TEAM", "note": "By analogy with Apollo cabin dust (S14). Martian soil contains perchlorate (S15)."},
+      "neutrons": {"value": true, "level": "E", "source": "S05"}
+    },
+    "transitions": [
+      {"label": "Earth to habitat cabin (one-time)", "from_kpa": 101.3, "to_kpa": 56.5, "connected_required": false, "level": "A", "source": "S18"}
+    ],
+    "transit_legs": [
+      {"label": "Earth to Mars cruise", "days": {"value": 180, "unit": "days", "level": "A", "source": "TEAM", "note": "Six-month transfer, typical planning value."}, "h_rate_msv_day": {"value": 1.8, "unit": "mSv/day", "level": "F", "source": "S06"}},
+      {"label": "Mars to Earth cruise", "days": {"value": 180, "unit": "days", "level": "A", "source": "TEAM"}, "h_rate_msv_day": {"value": 1.8, "unit": "mSv/day", "level": "F", "source": "S06"}}
+    ],
+    "context": {
+      "surface_temp_k": {"min": 184, "max": 242, "unit": "K", "level": "F", "source": "S02", "note": "Viking 1 site daily range; average about 214 K. Context only."},
+      "external_pressure_mbar": {"min": 4.0, "max": 8.7, "unit": "mbar", "level": "F", "source": "S02", "note": "Seasonal range."}
+    }
+  },
+  {
+    "id": "mars_eva",
+    "name": "Mars EVA (spacesuit)",
+    "short": "Mars EVA",
+    "kind": "eva",
+    "body": "mars",
+    "summary": "Surface EVA on Mars. No Mars suit exists yet; suit values follow lunar heritage.",
+    "params": {
+      "gravity_ms2": {"value": 3.73, "unit": "m/s²", "level": "F", "source": "S02"},
+      "p_kpa": {"value": 29.6, "unit": "kPa", "level": "A", "source": "S19", "note": "Assumes heritage suit pressure (4.3 psi)."},
+      "o2_fraction": {"value": 1.0, "unit": "", "level": "A", "source": "S58"},
+      "temp_c": {"min": 10, "max": 35, "unit": "°C", "level": "A", "source": "TEAM", "note": "No published device-level suit-interior range found. Placeholder until verified."},
+      "h_rate_msv_day": {"value": 0.67, "unit": "mSv/day", "level": "F", "source": "S06"},
+      "delay_s": {"min": 182, "max": 1339, "unit": "s", "level": "F", "source": "DERIVED", "note": "3.0 to 22.3 min one way (S02 distances)."},
+      "blackout": {"value": true, "level": "E", "source": "S20"},
+      "dust_class": {"value": "high", "level": "A", "source": "S15", "note": "Fine dust; perchlorate-bearing soil."},
+      "neutrons": {"value": true, "level": "E", "source": "S05"},
+      "m_carried_kg": {"value": 96.0, "unit": "kg", "level": "A", "source": "S23", "note": "No Mars suit exists. Apollo A7LB wet mass assumed."},
+      "suit_self_support": {"min": 0.0, "max": 1.0, "unit": "fraction of suit weight on the legs", "level": "A", "source": "S23", "note": "Full self-support is shown at lunar g (S23). At Mars g, partial support is likely; we keep the full 0 to 1 band."},
+      "eva_h": {"value": 7.0, "unit": "h", "level": "A", "source": "TEAM"}
+    },
+    "transitions": [
+      {"label": "Habitat cabin to suit (each EVA, device stays worn)", "from_kpa": 56.5, "to_kpa": 29.6, "connected_required": true, "level": "A", "source": "S19"}
+    ],
+    "transit_legs": [
+      {"label": "Earth to Mars cruise", "days": {"value": 180, "unit": "days", "level": "A", "source": "TEAM"}, "h_rate_msv_day": {"value": 1.8, "unit": "mSv/day", "level": "F", "source": "S06"}},
+      {"label": "Mars to Earth cruise", "days": {"value": 180, "unit": "days", "level": "A", "source": "TEAM"}, "h_rate_msv_day": {"value": 1.8, "unit": "mSv/day", "level": "F", "source": "S06"}}
+    ],
+    "context": {}
+  }
+]

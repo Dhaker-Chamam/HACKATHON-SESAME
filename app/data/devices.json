@@ -1,0 +1,184 @@
+[
+  {
+    "id": "pacemaker",
+    "name": "Rate-responsive pacemaker",
+    "short": "Pacemaker",
+    "category": "Cardiac implant",
+    "summary": "Implanted pulse generator. An accelerometer raises the heart rate with body motion.",
+    "params": {
+      "location": {"value": "implanted", "level": "F", "source": "TEAM", "note": "Pectoral pocket, inside the body."},
+      "inside_suit_on_eva": {"value": true, "level": "F", "source": "TEAM"},
+      "memory_electronics": {"value": true, "level": "E", "source": "S11", "note": "Programmable CMOS electronics; radiation risk factors are dose, neutrons and pacing dependence."},
+      "battery_chem": {"value": "li_primary", "level": "VERIFY", "source": "TEAM", "note": "Primary (non-rechargeable) lithium cell, sealed inside the housing."},
+      "rechargeable": {"value": false, "level": "VERIFY", "source": "TEAM"},
+      "fluid_path": {"value": false, "level": "F", "source": "TEAM"},
+      "exposed_mechanics": {"value": false, "level": "F", "source": "TEAM"},
+      "followup": {"value": "remote_monitoring", "level": "VERIFY", "source": "S52", "note": "In-clinic programmer plus remote monitoring through a home transmitter or app."},
+      "gravity_function": {"value": "rate_response", "level": "E", "source": "S51", "note": "Accelerometers respond to body motion and vibration, not to metabolic demand."},
+      "life_critical": {"value": "conditional", "level": "F", "source": "S11", "note": "Life-critical for pacing-dependent patients."}
+    },
+    "inputs": [
+      {"key": "pacing_dependent", "label": "Pacing-dependent", "type": "bool", "default": true, "help": "Would the patient have no adequate heart rhythm without pacing?"}
+    ],
+    "mitigations": {}
+  },
+  {
+    "id": "icd",
+    "name": "Implantable cardioverter-defibrillator (ICD)",
+    "short": "ICD",
+    "category": "Cardiac implant",
+    "summary": "Implanted defibrillator. Detects dangerous rhythms and delivers therapy.",
+    "params": {
+      "location": {"value": "implanted", "level": "F", "source": "TEAM"},
+      "inside_suit_on_eva": {"value": true, "level": "F", "source": "TEAM"},
+      "memory_electronics": {"value": true, "level": "E", "source": "S12", "note": "Single-event upsets were documented in ICD memory even at ground level."},
+      "battery_chem": {"value": "li_primary", "level": "VERIFY", "source": "TEAM", "note": "Primary lithium cell and high-voltage capacitor."},
+      "rechargeable": {"value": false, "level": "VERIFY", "source": "TEAM"},
+      "fluid_path": {"value": false, "level": "F", "source": "TEAM"},
+      "exposed_mechanics": {"value": false, "level": "F", "source": "TEAM"},
+      "followup": {"value": "remote_monitoring", "level": "VERIFY", "source": "S52", "note": "Remote alerts after therapy events are clinically important."},
+      "gravity_function": {"value": "none", "level": "A", "source": "TEAM", "note": "Assumes rate response is off."},
+      "life_critical": {"value": "yes", "level": "F", "source": "S11"}
+    },
+    "inputs": [],
+    "mitigations": {}
+  },
+  {
+    "id": "insulin_pump",
+    "name": "Tubed insulin pump with CGM",
+    "short": "Insulin pump",
+    "category": "Body-worn drug delivery",
+    "summary": "Body-worn pump with reservoir and tubing, paired with a continuous glucose monitor.",
+    "params": {
+      "location": {"value": "body_worn", "level": "F", "source": "TEAM"},
+      "inside_suit_on_eva": {"value": true, "level": "A", "source": "TEAM", "note": "Insulin delivery cannot pause for a whole EVA."},
+      "op_temp_c": {"min": 5, "max": 37, "unit": "°C", "level": "F", "source": "S26"},
+      "storage_temp_c": {"min": -20, "max": 50, "unit": "°C", "level": "F", "source": "S26"},
+      "p_rating_kpa": {"min": 70.3, "max": 106.2, "unit": "kPa", "level": "F", "source": "S26", "note": "700 to 1060 hPa operating. User guide: not tested above 10,150 ft (S49)."},
+      "fluid_path": {"value": true, "level": "E", "source": "S13", "note": "A pressure drop of about 200 mmHg caused unintended delivery of about 0.62% of cartridge volume."},
+      "battery_chem": {"value": "unknown", "level": "VERIFY", "source": "S55", "note": "AA cell or built-in Li-ion, depending on model."},
+      "rechargeable": {"value": false, "level": "VERIFY", "source": "S55"},
+      "memory_electronics": {"value": true, "level": "A", "source": "TEAM"},
+      "exposed_mechanics": {"value": false, "level": "A", "source": "TEAM"},
+      "followup": {"value": "optional_cloud", "level": "A", "source": "TEAM", "note": "Data upload is optional; therapy runs locally."},
+      "gravity_function": {"value": "bubble_mgmt", "level": "A", "source": "DERIVED", "note": "Removing air bubbles relies on buoyancy (bubbles rise). Buoyancy scales with gravity."},
+      "life_critical": {"value": "yes_with_backup", "level": "E", "source": "S41", "note": "Life-sustaining therapy; insulin pens worked in orbit on Ax-4 as a backup route."}
+    },
+    "inputs": [],
+    "mitigations": {
+      "R3_red": "Do not wear inside the suit unless pump and battery pass flight certification. A clinician must design an alternative insulin plan for EVA days.",
+      "R2_red": "The pump cannot stay connected through this pressure drop safely. A clinician must design an alternative insulin plan for EVA days."
+    }
+  },
+  {
+    "id": "cochlear_implant",
+    "name": "Cochlear implant with sound processor",
+    "short": "Cochlear implant",
+    "category": "Hearing implant",
+    "summary": "Implanted stimulator plus a behind-the-ear sound processor with microphones and battery.",
+    "params": {
+      "location": {"value": "body_worn", "level": "F", "source": "TEAM", "note": "Rules evaluate the external processor; the implant is hermetic and passive between stimulations."},
+      "inside_suit_on_eva": {"value": true, "level": "A", "source": "TEAM", "note": "Head-worn, inside the helmet."},
+      "op_temp_c": {"min": 5, "max": 40, "unit": "°C", "level": "VERIFY", "source": "S27"},
+      "battery_chem": {"value": "unknown", "level": "VERIFY", "source": "S27", "note": "Rechargeable Li-ion or disposable zinc-air, depending on model."},
+      "rechargeable": {"value": false, "level": "VERIFY", "source": "S27"},
+      "fluid_path": {"value": false, "level": "F", "source": "TEAM"},
+      "memory_electronics": {"value": true, "level": "A", "source": "TEAM", "note": "The processor stores the patient's stimulation settings (MAP)."},
+      "exposed_mechanics": {"value": false, "level": "F", "source": "TEAM"},
+      "dust_sensitive": {"value": true, "level": "A", "source": "TEAM", "note": "Open microphone ports."},
+      "followup": {"value": "local_programming", "level": "VERIFY", "source": "TEAM", "note": "Audiologist fitting software."},
+      "gravity_function": {"value": "none", "level": "F", "source": "TEAM"},
+      "life_critical": {"value": "no", "level": "A", "source": "TEAM", "note": "Safety-relevant: hearing voice comms and alarms."}
+    },
+    "inputs": [],
+    "mitigations": {
+      "R3_red": "Do not wear the processor inside the helmet unless it passes flight certification. Agree an EVA communication plan that works without it."
+    }
+  },
+  {
+    "id": "mpk_knee",
+    "name": "Microprocessor knee (passive hydraulic)",
+    "short": "Microprocessor knee",
+    "category": "Lower-limb prosthesis",
+    "summary": "Hydraulic knee whose stance and swing resistance are set by a microprocessor from load and angle sensors.",
+    "params": {
+      "location": {"value": "body_worn", "level": "F", "source": "TEAM"},
+      "inside_suit_on_eva": {"value": true, "level": "A", "source": "TEAM"},
+      "op_temp_c": {"min": -10, "max": 60, "unit": "°C", "level": "F", "source": "S24"},
+      "charge_temp_c": {"min": 10, "max": 45, "unit": "°C", "level": "F", "source": "S24"},
+      "charger_p_rating_kpa": {"min": 70, "max": 106, "unit": "kPa", "level": "F", "source": "S24", "note": "Power supply unit rating (up to 3,000 m)."},
+      "battery_chem": {"value": "li_ion", "level": "F", "source": "S24"},
+      "rechargeable": {"value": true, "level": "F", "source": "S24"},
+      "runtime_h": {"value": 16, "unit": "h", "level": "F", "source": "S24", "note": "At least 16 h uninterrupted walking."},
+      "fluid_path": {"value": false, "level": "F", "source": "TEAM", "note": "Sealed hydraulics, no gas path to the user."},
+      "memory_electronics": {"value": true, "level": "F", "source": "S24"},
+      "exposed_mechanics": {"value": true, "level": "F", "source": "S24", "note": "IP68, water-resistant, not corrosion-resistant."},
+      "body_mass_kg": {"min": 45, "max": 136, "unit": "kg", "level": "F", "source": "S24", "note": "Maximum body weight includes carried weight."},
+      "followup": {"value": "local_programming", "level": "F", "source": "S24", "note": "Prosthetist software via Bluetooth. Calibration is required; without it, swing may start too early or too late."},
+      "gravity_function": {"value": "prosthesis_passive_mpk", "level": "E", "source": "S24", "note": "Switching to swing requires rolling over the forefoot. Settings depend on body weight and calibration."},
+      "life_critical": {"value": "no", "level": "A", "source": "TEAM", "note": "Safety-critical: fall risk."}
+    },
+    "inputs": [
+      {"key": "body_mass_kg", "label": "Body mass incl. prosthesis", "type": "number", "default": 80, "min": 30, "max": 200, "unit": "kg"},
+      {"key": "stance_resistance_pct", "label": "Stance flexion resistance (Earth setting)", "type": "number", "default": 100, "min": 1, "max": 300, "unit": "%"},
+      {"key": "walking_speed_ms", "label": "Comfortable walking speed on Earth", "type": "number", "default": 1.3, "min": 0.3, "max": 2.5, "unit": "m/s"},
+      {"key": "leg_length_m", "label": "Leg length", "type": "number", "default": 0.9, "min": 0.5, "max": 1.2, "unit": "m"}
+    ],
+    "mitigations": {
+      "R3_red": "Do not wear the powered knee inside the suit unless it passes flight certification. Use a mechanical (non-electronic) knee for EVA."
+    }
+  },
+  {
+    "id": "powered_ankle",
+    "name": "Powered ankle-foot prosthesis",
+    "short": "Powered ankle",
+    "category": "Lower-limb prosthesis",
+    "summary": "Motorized ankle that adds push-off power at the end of each step.",
+    "params": {
+      "location": {"value": "body_worn", "level": "F", "source": "TEAM"},
+      "inside_suit_on_eva": {"value": true, "level": "A", "source": "TEAM"},
+      "op_temp_c": {"min": 0, "max": 45, "unit": "°C", "level": "F", "source": "S25"},
+      "charge_temp_c": {"min": 5, "max": 40, "unit": "°C", "level": "F", "source": "S25"},
+      "storage_temp_c": {"min": -30, "max": 60, "unit": "°C", "level": "F", "source": "S25"},
+      "battery_chem": {"value": "li_ion", "level": "F", "source": "S25"},
+      "rechargeable": {"value": true, "level": "F", "source": "S25"},
+      "runtime_h": {"value": 8, "unit": "h", "level": "F", "source": "S25", "note": "Up to 8 h in normal use; about 90 min to charge."},
+      "fluid_path": {"value": false, "level": "F", "source": "TEAM"},
+      "memory_electronics": {"value": true, "level": "A", "source": "TEAM"},
+      "exposed_mechanics": {"value": true, "level": "F", "source": "S25"},
+      "dust_prohibited": {"value": true, "level": "F", "source": "S25", "note": "IFU: no contact with sand or dust; it can get into the joint and damage the mechanics. Also avoid vibrations and strong electromagnetic fields."},
+      "followup": {"value": "local_programming", "level": "A", "source": "TEAM", "note": "Prosthetist app."},
+      "gravity_function": {"value": "prosthesis_powered", "level": "F", "source": "S25", "note": "Push-off is calculated in real time for every step and depends on walking speed, stride length and terrain."},
+      "life_critical": {"value": "no", "level": "A", "source": "TEAM", "note": "Safety-critical: fall risk."}
+    },
+    "inputs": [
+      {"key": "body_mass_kg", "label": "Body mass incl. prosthesis", "type": "number", "default": 80, "min": 30, "max": 200, "unit": "kg"},
+      {"key": "push_off_nm", "label": "Peak push-off assist (Earth setting)", "type": "number", "default": 120, "min": 1, "max": 400, "unit": "N·m"},
+      {"key": "walking_speed_ms", "label": "Comfortable walking speed on Earth", "type": "number", "default": 1.3, "min": 0.3, "max": 2.5, "unit": "m/s"},
+      {"key": "leg_length_m", "label": "Leg length", "type": "number", "default": 0.9, "min": 0.5, "max": 1.2, "unit": "m"}
+    ],
+    "mitigations": {
+      "R3_red": "Do not wear the powered ankle inside the suit unless it passes flight certification. Use a passive (unpowered) prosthetic foot for EVA."
+    }
+  },
+  {
+    "id": "endoprosthesis",
+    "name": "Passive endoprosthesis (internal leg prosthesis)",
+    "short": "Endoprosthesis",
+    "category": "Orthopedic implant",
+    "summary": "Internal knee replacement and femoral rod after limb-salvage surgery. No electronics.",
+    "params": {
+      "location": {"value": "implanted", "level": "F", "source": "S38", "note": "Same type of implant Hayley Arceneaux flew with on Inspiration4."},
+      "inside_suit_on_eva": {"value": true, "level": "F", "source": "TEAM"},
+      "battery_chem": {"value": "none", "level": "F", "source": "TEAM"},
+      "memory_electronics": {"value": false, "level": "F", "source": "TEAM"},
+      "fluid_path": {"value": false, "level": "F", "source": "TEAM"},
+      "exposed_mechanics": {"value": false, "level": "F", "source": "TEAM"},
+      "followup": {"value": "none", "level": "A", "source": "TEAM", "note": "Imaging before and after the mission."},
+      "gravity_function": {"value": "bone_load", "level": "F", "source": "S30", "note": "Bone around the implant depends on loading. Spaceflight bone loss was measured on 4 to 14.4 month Mir missions."},
+      "life_critical": {"value": "no", "level": "F", "source": "TEAM"}
+    },
+    "inputs": [],
+    "mitigations": {}
+  }
+]
